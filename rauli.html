@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>RAULI — Panadería & Dulcería</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f4fa3">
+
+<style>
+  :root{
+    --bg:#f6f9ff; --card:#ffffff; --text:#0b1220; --muted:#475569;
+    --blue:#1f4fa3; --blue2:#163b7c; --blueSoft:#e7efff;
+    --yellow:#f2c94c; --yellow2:#d7ac2b; --yellowSoft:#fff6d6;
+    --danger:#dc2626; --ok:#16a34a;
+    --shadow:0 10px 24px rgba(11,18,32,.10);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
+  header{position:sticky;top:0;z-index:20;background:linear-gradient(90deg,var(--blue),var(--blue2));color:#fff;padding:12px 14px;box-shadow:var(--shadow);}
+  header .row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  header .left{display:flex;align-items:center;gap:10px;min-width:0;}
+  header .title{font-weight:950;letter-spacing:.2px;font-size:18px;display:flex;align-items:center;gap:10px;min-width:0;}
+  header .pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);padding:6px 10px;border-radius:999px;font-size:12px;white-space:nowrap;}
+  header .pill.yellow{background:rgba(242,201,76,.18);border-color:rgba(242,201,76,.40);color:#fff;}
+  header .pill.btn{cursor:pointer;user-select:none}
+  header .pill.btn:hover{filter:brightness(1.06)}
+  header .pill.btn.yellow{color:#0b1220;background:rgba(242,201,76,.95);border-color:rgba(255,255,255,.20)}
+  header .pill.btn.ghost{background:rgba(255,255,255,.10)}
+
+  .container{padding:16px;padding-bottom:180px;max-width:1050px;margin:0 auto;}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin:12px 0;border:1px solid rgba(11,18,32,.08);}
+  .card h3{margin:0 0 10px 0;font-size:16px;}
+  .muted{color:var(--muted);font-size:12px;}
+  .grid{display:grid;grid-template-columns:1fr;gap:10px}
+  @media(min-width:720px){
+    .grid-2{grid-template-columns:1fr 1fr}
+    .grid-3{grid-template-columns:1fr 1fr 1fr}
+    .grid-4{grid-template-columns:repeat(4,1fr)}
+    .grid-5{grid-template-columns:repeat(5,1fr)}
+  }
+  input,select,button,textarea{width:100%;padding:10px;border-radius:12px;border:1px solid #dbe4f3;outline:none;font-size:14px;background:#fff;}
+  textarea{min-height:90px;resize:vertical}
+  button{border:none;background:var(--blue);color:#fff;font-weight:950;cursor:pointer;}
+  button:hover{background:var(--blue2);}
+  .btn-yellow{background:var(--yellow);color:#0b1220;}
+  .btn-yellow:hover{background:var(--yellow2);}
+  .btn-secondary{background:#0b1220;}
+  .btn-secondary:hover{background:#050a13;}
+  .btn-danger{background:var(--danger);}
+  .btn-danger:hover{filter:brightness(.95);}
+  .hidden{display:none!important}
+
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(min-width:720px){.kpis{grid-template-columns:repeat(4,1fr);}}
+  .kpi{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:12px;border:1px solid rgba(11,18,32,.08);}
+  .kpi .label{color:var(--muted);font-size:12px;}
+  .kpi .value{font-size:18px;font-weight:950;margin-top:4px;}
+
+  table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:12px;}
+  th,td{padding:10px;border-bottom:1px solid #eef2ff;text-align:left;font-size:13px;}
+  th{background:var(--blueSoft);color:#0b1b3a;}
+  tr:last-child td{border-bottom:none;}
+  .tag{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:950;}
+  .tag-ok{background:#dcfce7;color:#166534;}
+  .tag-warn{background:var(--yellowSoft);color:#7a4b00;}
+  .tag-bad{background:#fee2e2;color:#991b1b;}
+
+  .alert-box{border:1px solid #fecaca;background:#fff1f2;padding:10px;border-radius:12px;color:#9f1239;font-weight:950;white-space:pre-line;}
+  .ok-box{border:1px solid #bbf7d0;background:#f0fdf4;padding:10px;border-radius:12px;color:#166534;font-weight:950;}
+
+  .role-tiles{display:grid;grid-template-columns:1fr;gap:10px;}
+  @media(min-width:720px){.role-tiles{grid-template-columns:repeat(5,1fr);}}
+  .tile{border:1px solid rgba(11,18,32,.12);background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:12px;cursor:pointer;transition:transform .08s ease,border-color .08s ease;min-height:130px;}
+  .tile:hover{transform:translateY(-1px);border-color:rgba(31,79,163,.35);}
+  .tile .name{font-weight:950;}
+  .tile .desc{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.25;}
+  .tile .badge{display:inline-block;margin-top:10px;padding:5px 9px;border-radius:999px;font-weight:950;font-size:11px;background:var(--blueSoft);color:#0b1b3a;}
+
+  .bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,1));
+    border-top:3px solid rgba(31,79,163,.22);padding:12px 12px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(11,18,32,.12);}
+  .nav-row{max-width:1050px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+  .nav-btn{background:#fff;color:#0b1220;border:1px solid rgba(11,18,32,.20);border-radius:16px;padding:12px 10px;font-weight:950;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px;}
+  .nav-btn.active{background:var(--blue);color:#fff;border-color:transparent;}
+  .nav-btn.accent.active{background:var(--yellow);color:#0b1220;}
+
+  .timeline{border:1px solid rgba(11,18,32,.10);border-radius:14px;padding:12px;background:#fff;box-shadow:var(--shadow);}
+  .step{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #eef2ff;}
+  .step:last-child{border-bottom:none;}
+  .dot{width:12px;height:12px;border-radius:999px;background:var(--blue);margin-top:4px;flex:0 0 auto;}
+  .step .h{font-weight:950;}
+  .step .s{color:var(--muted);font-size:12px;margin-top:2px;white-space:pre-line;}
+
+  .bot-log{background:#fff;border:1px solid rgba(11,18,32,.14);border-radius:12px;padding:10px;max-height:260px;overflow:auto;font-size:13px;}
+  .msg-user{font-weight:950;color:#0b1220}
+  .msg-bot{font-weight:950;color:var(--blue)}
+
+  .evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(min-width:720px){.evidence-grid{grid-template-columns:repeat(4,1fr);}}
+  .ev-card{border:1px solid rgba(11,18,32,.12);border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow);}
+  .ev-card img{width:100%;height:130px;object-fit:cover;display:block;}
+  .ev-meta{padding:10px;}
+  .ev-meta .small{font-size:11px;color:var(--muted);font-weight:800;}
+  .ev-meta .t{font-weight:950;margin-top:4px;}
+
+  .mic-fab{position:fixed;right:14px;bottom:175px;z-index:40;width:54px;height:54px;border-radius:18px;border:none;background:var(--yellow);box-shadow:var(--shadow);font-weight:950;cursor:pointer;color:#0b1220;}
+  .mic-fab:hover{background:var(--yellow2);}
+
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#0b1220;color:#fff;padding:10px;border-radius:12px;overflow:auto;}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="row">
+    <div class="left">
+      <div class="title">
+        🧁 RAULI
+        <span class="pill yellow" id="rolePill">Sin sesión</span>
+      </div>
+
+      <!-- VOLVER (aparece cuando no estás en Home/Login) -->
+      <div class="pill btn ghost hidden" id="btnBack" onclick="goBack()">⬅️ Volver</div>
+    </div>
+
+    <!-- Señales + Actualizar -->
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+      <div class="pill btn yellow" onclick="forceUpdate()">🔄 Actualizar</div>
+      <div class="pill" id="sigOnline" style="display:none">🟢 Online</div>
+      <div class="pill yellow" id="sigOffline" style="display:none">🔴 Offline</div>
+      <div class="pill" id="offlinePill">📦 Guardando</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- LOGIN -->
+  <div class="card" id="loginCard">
+    <h3>Entrar (pantalla personalizada)</h3>
+    <div class="muted">Elige quién entra. Cada quien verá su trabajo.</div>
+
+    <div class="role-tiles" style="margin-top:12px">
+      <div class="tile" onclick="loginAs('RAUL')">
+        <div class="name">Raúl (Dueño)</div>
+        <div class="desc">Control total + Auditoría + Cierres.</div>
+        <div class="badge">Acceso total</div>
+      </div>
+      <div class="tile" onclick="loginAs('LISI')">
+        <div class="name">Lisi (Copropietaria)</div>
+        <div class="desc">Operación completa (sin módulo inversión/amortización).</div>
+        <div class="badge">Operación</div>
+      </div>
+      <div class="tile" onclick="loginAs('ORLANDITO')">
+        <div class="name">Orlandito (Supervisor)</div>
+        <div class="desc">Calidad/insumos + autorizaciones operativas.</div>
+        <div class="badge">Supervisión</div>
+      </div>
+      <div class="tile" onclick="loginAs('PAPITO')">
+        <div class="name">Papito (Producción)</div>
+        <div class="desc">Producción + ventas + salidas de insumos.</div>
+        <div class="badge">Producción</div>
+      </div>
+      <div class="tile" onclick="loginAs('BETY')">
+        <div class="name">Bety (Contadora)</div>
+        <div class="desc">Caja + gastos + cierres + evidencias.</div>
+        <div class="badge">Finanzas</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:14px">
+      <button class="btn-yellow" onclick="openPwaWizard()">📲 Instalar como App (PWA) + Ícono</button>
+      <button class="btn-secondary" onclick="quickDemo()">Cargar demo</button>
+    </div>
+
+    <div class="muted" style="margin-top:10px">
+      PWA se instala desde <b>http://localhost</b> (no desde file://).
+    </div>
+  </div>
+
+  <!-- KPIS -->
+  <div class="kpis hidden" id="kpiRow">
+    <div class="kpi"><div class="label">Ventas hoy</div><div class="value">$<span id="kpiSales">0</span></div></div>
+    <div class="kpi"><div class="label">Gastos hoy</div><div class="value">$<span id="kpiExp">0</span></div></div>
+    <div class="kpi"><div class="label">Caja estimada</div><div class="value">$<span id="kpiCash">0</span></div></div>
+    <div class="kpi"><div class="label">Alertas</div><div class="value"><span id="kpiAlerts">0</span></div></div>
+  </div>
+
+  <!-- UPDATE BANNER -->
+  <div class="card hidden" id="updateCard">
+    <h3>🚀 Hay una nueva versión disponible</h3>
+    <div class="muted">Toca “Actualizar” (arriba) para cargar los cambios. Tus datos no se pierden.</div>
+    <div class="grid grid-2" style="margin-top:10px">
+      <button class="btn-yellow" onclick="forceUpdate()">🔄 Actualizar ahora</button>
+      <button class="btn-secondary" onclick="hideUpdateBanner()">Después</button>
+    </div>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="card hidden" id="alertsCard">
+    <h3>🚨 Alertas</h3>
+    <div id="alertsBox" class="muted">Sin alertas.</div>
+  </div>
+
+  <!-- HOME -->
+  <div class="card hidden" id="homeSection">
+    <h3>Inicio</h3>
+    <div class="muted" id="homeText"></div>
+    <div id="homeActions" style="margin-top:10px"></div>
+  </div>
+
+  <!-- INVENTARIO -->
+  <div class="card hidden" id="inventorySection">
+    <h3>📦 Inventario</h3>
+    <div class="grid grid-3">
+      <input id="invItem" placeholder="Insumo (harina, azúcar, levadura)" />
+      <input id="invQty" type="number" placeholder="Cantidad (+/-)" />
+      <input id="invMin" type="number" placeholder="Mínimo (opcional)" />
+    </div>
+    <button onclick="addInventory()">Guardar movimiento</button>
+    <div class="muted">Usa cantidad negativa para salida (ej: -5).</div>
+    <div style="margin-top:10px">
+      <table>
+        <thead><tr><th>Insumo</th><th>Stock</th><th>Mínimo</th><th>Estado</th></tr></thead>
+        <tbody id="invTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PRODUCCIÓN -->
+  <div class="card hidden" id="productionSection">
+    <h3>🏭 Producción</h3>
+    <div class="grid grid-2">
+      <input id="prodItem" placeholder="Producto (pan, galletas, dulces)" />
+      <input id="prodQty" type="number" placeholder="Cantidad producida" />
+    </div>
+    <textarea id="prodNotes" placeholder="Notas (mermas, calidad, incidentes)"></textarea>
+    <button onclick="addProduction()">Registrar producción</button>
+    <div style="margin-top:10px">
+      <table>
+        <thead><tr><th>Fecha</th><th>Producto</th><th>Cant.</th><th>Responsable</th></tr></thead>
+        <tbody id="prodTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VENTAS -->
+  <div class="card hidden" id="salesSection">
+    <h3>🛒 Ventas</h3>
+    <div class="grid grid-2">
+      <input id="saleItem" placeholder="Producto vendido" />
+      <input id="saleAmount" type="number" placeholder="Monto $" />
+    </div>
+    <button onclick="addSale()">Registrar venta</button>
+
+    <div class="grid grid-2" style="margin-top:10px">
+      <button class="btn-yellow" onclick="openHandover()">💵 Entregar efectivo a Bety (con evidencia)</button>
+      <button class="btn-secondary" onclick="go('flow')">🔁 Ver Flujo</button>
+    </div>
+
+    <div style="margin-top:10px">
+      <table>
+        <thead><tr><th>Fecha</th><th>Producto</th><th>Monto</th><th>Vendedor</th></tr></thead>
+        <tbody id="salesTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FLUJO -->
+  <div class="card hidden" id="flowSection">
+    <h3>🔁 Flujo (Trazabilidad)</h3>
+    <div class="muted">Cadena: Insumos → Almacén → Proceso → Ventas → Caja → Entrega → Cierre.</div>
+
+    <div class="timeline" style="margin-top:10px" id="flowTimeline"></div>
+
+    <div class="grid grid-2" style="margin-top:12px">
+      <div class="card" style="margin:0">
+        <h3>📥 Entrada de insumo</h3>
+        <div class="grid grid-2">
+          <input id="recItem" placeholder="Insumo" />
+          <input id="recQty" type="number" placeholder="Cantidad" />
+        </div>
+        <div class="grid grid-2">
+          <input id="recCost" type="number" placeholder="Costo $ (opcional)" />
+          <input id="recProvider" placeholder="Proveedor (opcional)" />
+        </div>
+        <input id="recNote" placeholder="Nota (factura, lote, etc.)" />
+        <div class="grid grid-2">
+          <input id="recEvidence" type="file" accept="image/*" />
+          <button class="btn-yellow" onclick="addReceipt()">Guardar + evidencia</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin:0">
+        <h3>📤 Salida a producción</h3>
+        <div class="grid grid-2">
+          <input id="wmItem" placeholder="Insumo" />
+          <input id="wmQty" type="number" placeholder="Cantidad (- salida)" />
+        </div>
+        <input id="wmReason" placeholder="Motivo (pan, galletas, etc.)" />
+        <button class="btn-yellow" onclick="addWarehouseMove()">Registrar salida (y descuenta inventario)</button>
+        <div class="muted" style="margin-top:6px">Tip: si pones positivo, RAULI lo convierte a salida automática.</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2" style="margin-top:12px">
+      <div class="card" style="margin:0">
+        <h3>🏷️ Lote de producción</h3>
+        <div class="grid grid-2">
+          <input id="batchProduct" placeholder="Producto" />
+          <input id="batchQty" type="number" placeholder="Cantidad producida" />
+        </div>
+        <input id="batchNote" placeholder="Nota (calidad/merma)" />
+        <button class="btn-yellow" onclick="addBatch()">Crear lote</button>
+      </div>
+
+      <div class="card" style="margin:0">
+        <h3>🤖 Bot (offline)</h3>
+        <div class="muted">Comandos: venta / gasto / inv / prod / estado / alertas.</div>
+        <textarea id="botInput" placeholder="Ej: venta pan 120"></textarea>
+        <div class="grid grid-2">
+          <button class="btn-yellow" onclick="runBot()">Ejecutar</button>
+          <button class="btn-secondary" onclick="botHelp()">Ayuda</button>
+        </div>
+        <div class="bot-log" id="botLog" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MÁS -->
+  <div class="card hidden" id="moreSection">
+    <h3>⭐ Más (Finanzas, Cierre, Evidencias)</h3>
+    <div class="muted">Caja, gastos, cierres, evidencias y auditoría (según rol).</div>
+
+    <div class="grid grid-2" style="margin-top:10px">
+      <button class="btn-yellow" onclick="showMoreTab('cash')">💰 Caja</button>
+      <button class="btn-yellow" onclick="showMoreTab('exp')">💸 Gastos</button>
+      <button class="btn-yellow" id="btnClosing" onclick="showMoreTab('closing')">✅ Cierre</button>
+      <button class="btn-yellow" onclick="showMoreTab('evidence')">🧾 Evidencias</button>
+      <button class="btn-secondary" id="btnAudit" onclick="showMoreTab('audit')">🕵️ Auditoría</button>
+      <button class="btn-secondary" onclick="showMoreTab('settings')">⚙️ Ajustes</button>
+    </div>
+
+    <!-- CASH -->
+    <div class="card" id="cashSection" style="margin-top:12px">
+      <h3>💰 Caja</h3>
+      <div class="grid grid-2">
+        <select id="cashType">
+          <option value="INGRESO">Ingreso (entra efectivo)</option>
+          <option value="EGRESO">Egreso (sale efectivo)</option>
+          <option value="ENTREGA">Entrega de efectivo</option>
+          <option value="RECEPCION">Recepción/validación</option>
+          <option value="REEMBOLSO">Reembolso</option>
+        </select>
+        <input id="cashAmount" type="number" placeholder="Monto $" />
+      </div>
+      <input id="cashNote" placeholder="Nota (motivo, evidencia, a quién, etc.)" />
+      <button onclick="addCash()">Registrar movimiento de caja</button>
+      <div style="margin-top:10px">
+        <table>
+          <thead><tr><th>Fecha</th><th>Tipo</th><th>Monto</th><th>Responsable</th><th>Nota</th></tr></thead>
+          <tbody id="cashTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXP -->
+    <div class="card hidden" id="expensesSection" style="margin-top:12px">
+      <h3>💸 Gastos</h3>
+      <div class="grid grid-2">
+        <input id="expConcept" placeholder="Concepto (harina, gas, luz, sueldos)" />
+        <input id="expAmount" type="number" placeholder="Monto $" />
+      </div>
+      <button onclick="addExpense()">Registrar gasto</button>
+      <div style="margin-top:10px">
+        <table>
+          <thead><tr><th>Fecha</th><th>Concepto</th><th>Monto</th><th>Responsable</th></tr></thead>
+          <tbody id="expTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CLOSING -->
+    <div class="card hidden" id="closingSection" style="margin-top:12px">
+      <h3>✅ Cierre de caja (anti-faltantes)</h3>
+      <div class="muted">Esperado vs contado. Si hay diferencia → alerta roja + evidencia recomendada.</div>
+
+      <div class="grid grid-3" style="margin-top:10px">
+        <select id="closeShift">
+          <option value="AM">Turno AM (06:00–14:00)</option>
+          <option value="PM">Turno PM (14:00–23:59)</option>
+          <option value="CUSTOM">Personalizado</option>
+        </select>
+        <input id="closeStart" type="datetime-local" />
+        <input id="closeEnd" type="datetime-local" />
+      </div>
+
+      <div class="grid grid-4" style="margin-top:10px">
+        <div class="kpi"><div class="label">Ventas (rango)</div><div class="value">$<span id="cSales">0</span></div></div>
+        <div class="kpi"><div class="label">Gastos (rango)</div><div class="value">$<span id="cExp">0</span></div></div>
+        <div class="kpi"><div class="label">Entregas</div><div class="value">$<span id="cHand">0</span></div></div>
+        <div class="kpi"><div class="label">Esperado</div><div class="value">$<span id="cExpected">0</span></div></div>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:10px">
+        <input id="closeCounted" type="number" placeholder="Efectivo CONTADO ($)" />
+        <input id="closeNote" placeholder="Nota (arqueo, incidentes, etc.)" />
+      </div>
+      <div class="grid grid-2" style="margin-top:10px">
+        <input id="closeEvidence" type="file" accept="image/*" />
+        <button class="btn-yellow" onclick="saveClosing()">Guardar cierre</button>
+      </div>
+
+      <div style="margin-top:10px">
+        <table>
+          <thead><tr><th>Fecha</th><th>Turno</th><th>Esperado</th><th>Contado</th><th>Diferencia</th><th>Por</th></tr></thead>
+          <tbody id="closingTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EVIDENCE -->
+    <div class="card hidden" id="evidenceSection" style="margin-top:12px">
+      <h3>🧾 Evidencias (fotos)</h3>
+      <div class="muted">Si el almacenamiento se llena, borra evidencias antiguas aquí.</div>
+      <div class="evidence-grid" id="evidenceGrid" style="margin-top:10px"></div>
+    </div>
+
+    <!-- AUDIT -->
+    <div class="card hidden" id="auditSection" style="margin-top:12px">
+      <h3>🕵️ Auditoría (solo Raúl)</h3>
+      <div class="muted">Quién hizo qué y cuándo.</div>
+      <div style="margin-top:10px">
+        <table>
+          <thead><tr><th>Fecha</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr></thead>
+          <tbody id="auditTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="card hidden" id="settingsSection" style="margin-top:12px">
+      <h3>⚙️ Ajustes</h3>
+      <div class="muted">Sesión: <b id="who"></b></div>
+
+      <div class="grid grid-2" style="margin-top:10px">
+        <button class="btn-yellow" onclick="forceUpdate()">🔄 Actualizar a nueva versión</button>
+        <button class="btn-secondary" onclick="logout()">Cambiar de usuario</button>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:10px">
+        <button class="btn-secondary" onclick="exportJSON()">Exportar respaldo (JSON)</button>
+        <button class="btn-secondary" onclick="clearSwAndReload()">Limpiar SW y recargar</button>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:10px">
+        <button class="btn-danger" onclick="resetAll()">Borrar TODO (solo si estás seguro)</button>
+        <button class="btn-secondary" onclick="quickDemo()">Cargar demo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="mic-fab hidden" id="micFab" onclick="startDictation()" title="Dictar comando al Bot">🎙️</button>
+
+<div class="bottom-nav hidden" id="bottomNav">
+  <div class="nav-row">
+    <button class="nav-btn" id="navHome" onclick="go('home')">🏠 Inicio</button>
+    <button class="nav-btn" id="navInv" onclick="go('inv')">📦 Invent.</button>
+    <button class="nav-btn" id="navProd" onclick="go('prod')">🏭 Prod.</button>
+    <button class="nav-btn" id="navSales" onclick="go('sales')">🛒 Ventas</button>
+    <button class="nav-btn accent" id="navMore" onclick="go('more')">⭐ Más</button>
+  </div>
+</div>
+
+<!-- PWA MODAL -->
+<div id="pwaModal" class="hidden"></div>
+
+<script>
+/* =========================
+   DATOS
+========================= */
+const KEY="RAULI_BAKERY_V3";
+const BOT_KEY="RAULI_BOT_V1";
+
+let state = JSON.parse(localStorage.getItem(KEY)) || {
+  inventory:{}, production:[], sales:[], cash:[], expenses:[],
+  receipts:[], warehouseMoves:[], batches:[], handovers:[], closings:[], evidences:[], audit:[]
+};
+
+let botHistory = JSON.parse(localStorage.getItem(BOT_KEY)) || [];
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); refreshAll(); }
+function saveBot(){ localStorage.setItem(BOT_KEY, JSON.stringify(botHistory)); renderBotLog(); }
+
+function ts(){ return new Date().toLocaleString(); }
+function role(){ return localStorage.getItem("RAULI_ROLE") || ""; }
+function userLabel(){ return localStorage.getItem("RAULI_ROLE_LABEL") || ""; }
+function uid(){ return Math.random().toString(16).slice(2) + "-" + Date.now().toString(16); }
+function money(n){ return (Number(n)||0).toFixed(0); }
+function escapeHtml(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+
+function parseMaybeDate(s){ const d=new Date(s); return String(d)==="Invalid Date"?null:d; }
+function isSameDay(d1,d2){ return d1.getFullYear()===d2.getFullYear() && d1.getMonth()===d2.getMonth() && d1.getDate()===d2.getDate(); }
+
+function addAudit(action, detail){
+  state.audit.unshift({ts: ts(), user: userLabel() || "Sin sesión", action, detail});
+  if(state.audit.length>700) state.audit.length = 700;
+}
+
+/* =========================
+   ROLES
+========================= */
+const ROLES = {
+  RAUL:{label:"Raúl (Dueño)", home:"Panel maestro: control absoluto + auditoría + cierres.", can:{inv:1,prod:1,sales:1,flow:1,more:1,closing:1,evidence:1,audit:1}},
+  LISI:{label:"Lisi (Copropietaria)", home:"Operación completa: inventario/producción/ventas/flujo + cierres.", can:{inv:1,prod:1,sales:1,flow:1,more:1,closing:1,evidence:1,audit:0}},
+  ORLANDITO:{label:"Orlandito (Supervisor)", home:"Supervisión: flujo, calidad, inventarios, entregas y alertas.", can:{inv:1,prod:1,sales:1,flow:1,more:1,closing:0,evidence:1,audit:0}},
+  PAPITO:{label:"Papito (Producción)", home:"Producción y ventas: registra rápido y deja evidencia.", can:{inv:1,prod:1,sales:1,flow:1,more:0,closing:0,evidence:0,audit:0}},
+  BETY:{label:"Bety (Contadora)", home:"Finanzas: caja, gastos, cierres y evidencias.", can:{inv:0,prod:0,sales:1,flow:1,more:1,closing:1,evidence:1,audit:0}}
+};
+
+function loginAs(r){
+  localStorage.setItem("RAULI_ROLE", r);
+  localStorage.setItem("RAULI_ROLE_LABEL", ROLES[r].label);
+  initUI();
+}
+function logout(){
+  localStorage.removeItem("RAULI_ROLE");
+  localStorage.removeItem("RAULI_ROLE_LABEL");
+  navStack.length = 0;
+  currentView = "login";
+  loginCard.classList.remove("hidden");
+  bottomNav.classList.add("hidden");
+  kpiRow.classList.add("hidden");
+  micFab.classList.add("hidden");
+  btnBack.classList.add("hidden");
+  rolePill.textContent="Sin sesión";
+  hideAll();
+}
+
+/* =========================
+   NAVEGACIÓN + VOLVER
+========================= */
+let currentView = "login";      // login | home | inv | prod | sales | flow | more
+const navStack = [];            // historial para "Volver"
+
+function hideAll(){
+  ["updateCard","alertsCard","homeSection","inventorySection","productionSection","salesSection","flowSection","moreSection"]
+    .forEach(id=>document.getElementById(id).classList.add("hidden"));
+}
+
+function updateBackButton(){
+  // Mostrar "Volver" cuando ya estás logueado y no estás en Home
+  const r = role();
+  const show = !!r && currentView !== "home";
+  btnBack.classList.toggle("hidden", !show);
+}
+
+function go(where){
+  const r = role(); if(!r) return;
+
+  // push al stack si cambio de vista real
+  if(currentView && currentView !== where && currentView !== "login"){
+    navStack.push(currentView);
+    if(navStack.length > 30) navStack.shift();
+  }
+
+  currentView = where;
+  updateBackButton();
+
+  hideAll();
+  setActive(where);
+
+  updateCard.classList.toggle("hidden", !__updateAvailable);
+
+  alertsCard.classList.remove("hidden");
+  homeSection.classList.remove("hidden");
+
+  if(where==="home") homeSection.classList.remove("hidden");
+  if(where==="inv" && ROLES[r].can.inv) inventorySection.classList.remove("hidden");
+  if(where==="prod" && ROLES[r].can.prod) productionSection.classList.remove("hidden");
+  if(where==="sales" && ROLES[r].can.sales) salesSection.classList.remove("hidden");
+  if(where==="flow" && ROLES[r].can.flow) flowSection.classList.remove("hidden");
+  if(where==="more" && ROLES[r].can.more){ moreSection.classList.remove("hidden"); showMoreTab("cash"); }
+
+  renderFlow();
+  renderBotLog();
+}
+
+function goBack(){
+  // Si hay historial, vuelve a la vista anterior. Si no, vuelve a Home.
+  const prev = navStack.pop();
+  if(prev) { currentView = prev; } else { currentView = "home"; }
+  updateBackButton();
+
+  // No empujes otra vez al stack al volver
+  const tmp = currentView;
+  hideAll();
+  setActive(tmp);
+  updateCard.classList.toggle("hidden", !__updateAvailable);
+  alertsCard.classList.remove("hidden");
+  homeSection.classList.remove("hidden");
+
+  const r = role(); if(!r) return;
+  if(tmp==="inv" && ROLES[r].can.inv) inventorySection.classList.remove("hidden");
+  if(tmp==="prod" && ROLES[r].can.prod) productionSection.classList.remove("hidden");
+  if(tmp==="sales" && ROLES[r].can.sales) salesSection.classList.remove("hidden");
+  if(tmp==="flow" && ROLES[r].can.flow) flowSection.classList.remove("hidden");
+  if(tmp==="more" && ROLES[r].can.more){ moreSection.classList.remove("hidden"); showMoreTab("cash"); }
+
+  renderFlow();
+  renderBotLog();
+}
+
+function setActive(which){
+  ["navHome","navInv","navProd","navSales","navMore"].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove("active");
+  });
+  if(which==="home") navHome.classList.add("active");
+  if(which==="inv") navInv.classList.add("active");
+  if(which==="prod") navProd.classList.add("active");
+  if(which==="sales") navSales.classList.add("active");
+  if(which==="flow") navMore.classList.add("active");
+  if(which==="more") navMore.classList.add("active");
+}
+
+function renderHomeActions(){
+  const r = role(); if(!r) return;
+  const btns = [];
+  btns.push({t:"🔁 Flujo", cls:"btn-yellow", f:"go('flow')"});
+  if(ROLES[r].can.sales) btns.push({t:"Registrar venta", cls:"btn-yellow", f:"go('sales')"});
+  if(ROLES[r].can.inv) btns.push({t:"Inventario", cls:"btn-yellow", f:"go('inv')"});
+  if(ROLES[r].can.prod) btns.push({t:"Producción", cls:"btn-yellow", f:"go('prod')"});
+  if(ROLES[r].can.more) btns.push({t:"Finanzas / Más", cls:"btn-secondary", f:"go('more')"});
+  homeActions.innerHTML = `
+    <div class="grid grid-3">
+      ${btns.map(b=>`<button class="${b.cls}" onclick="${b.f}">${b.t}</button>`).join("")}
+    </div>
+    <div class="ok-box" style="margin-top:10px">✅ Offline activo: RAULI guarda todo aunque no haya señal.</div>
+  `;
+}
+
+function initUI(){
+  const r = role(); if(!r) return;
+
+  loginCard.classList.add("hidden");
+  bottomNav.classList.remove("hidden");
+  kpiRow.classList.remove("hidden");
+  micFab.classList.remove("hidden");
+
+  rolePill.textContent = ROLES[r].label;
+  homeText.textContent = ROLES[r].home;
+  who.textContent = ROLES[r].label;
+
+  navInv.classList.toggle("hidden", !ROLES[r].can.inv);
+  navProd.classList.toggle("hidden", !ROLES[r].can.prod);
+  navSales.classList.toggle("hidden", !ROLES[r].can.sales);
+  navMore.classList.toggle("hidden", !ROLES[r].can.more && !ROLES[r].can.flow);
+
+  btnAudit.classList.toggle("hidden", !ROLES[r].can.audit);
+  btnClosing.classList.toggle("hidden", !ROLES[r].can.closing);
+
+  renderHomeActions();
+  navStack.length = 0;
+  currentView = "home";
+  updateBackButton();
+
+  hideAll();
+  alertsCard.classList.remove("hidden");
+  homeSection.classList.remove("hidden");
+  refreshAll();
+}
+
+/* =========================
+   OPERACIONES BASE
+========================= */
+function addInventory(){
+  const name = invItem.value.trim();
+  const qty = Number(invQty.value);
+  const min = Number(invMin.value || 0);
+  if(!name || !qty) return;
+
+  if(!state.inventory[name]) state.inventory[name] = {stock:0, min:0};
+  state.inventory[name].stock += qty;
+  if(min > 0) state.inventory[name].min = min;
+
+  addAudit("Inventario", `${name} ${qty>0?"+":""}${qty} (min:${min||state.inventory[name].min||0})`);
+  invItem.value=""; invQty.value=""; invMin.value="";
+  save();
+}
+
+function addProduction(){
+  const item = prodItem.value.trim();
+  const qty = Number(prodQty.value);
+  const notes = prodNotes.value.trim();
+  if(!item || !qty) return;
+
+  state.production.unshift({ts:ts(), item, qty, notes, user:userLabel()});
+  addAudit("Producción", `${item} x ${qty}${notes?(" · "+notes):""}`);
+  prodItem.value=""; prodQty.value=""; prodNotes.value="";
+  save();
+}
+
+function addSale(){
+  const item = saleItem.value.trim();
+  const amount = Number(saleAmount.value);
+  if(!item || !amount) return;
+
+  state.sales.unshift({ts:ts(), item, amount, user:userLabel()});
+  addAudit("Venta", `${item} $${amount}`);
+  saleItem.value=""; saleAmount.value="";
+  save();
+}
+
+function addCash(){
+  const type = cashType.value;
+  const amount = Number(cashAmount.value);
+  const note = cashNote.value.trim();
+  if(!amount) return;
+
+  state.cash.unshift({ts:ts(), type, amount, note, user:userLabel()});
+  addAudit("Caja", `${type} $${amount}${note?(" · "+note):""}`);
+  cashAmount.value=""; cashNote.value="";
+  save();
+}
+
+function addExpense(){
+  const concept = expConcept.value.trim();
+  const amount = Number(expAmount.value);
+  if(!concept || !amount) return;
+
+  state.expenses.unshift({ts:ts(), concept, amount, user:userLabel()});
+  addAudit("Gasto", `${concept} $${amount}`);
+  expConcept.value=""; expAmount.value="";
+  save();
+}
+
+/* =========================
+   EVIDENCIAS
+========================= */
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve(String(r.result));
+    r.onerror=reject;
+    r.readAsDataURL(file);
+  });
+}
+async function addEvidence(kind, title, file){
+  if(!file) return null;
+  const dataUrl = await fileToDataUrl(file);
+  const id = uid();
+  state.evidences.unshift({id, ts: ts(), kind, title, user: userLabel(), dataUrl});
+  addAudit("Evidencia", `${kind} · ${title}`);
+  return id;
+}
+function deleteEvidence(id){
+  state.evidences = state.evidences.filter(e=>e.id!==id);
+  addAudit("Evidencia", `Eliminada ${id}`);
+  save();
+}
+function renderEvidence(){
+  if(!window.evidenceGrid) return;
+  const list = state.evidences.slice(0,40);
+  evidenceGrid.innerHTML = list.map(e=>`
+    <div class="ev-card">
+      <img src="${e.dataUrl}" alt="evidencia">
+      <div class="ev-meta">
+        <div class="small">${escapeHtml(e.kind)} · ${escapeHtml(e.user)}</div>
+        <div class="t">${escapeHtml(e.title)}</div>
+        <div class="small" style="margin-top:6px">${escapeHtml(e.ts)}</div>
+        <div class="grid grid-2" style="margin-top:8px">
+          <button class="btn-secondary" onclick="openImage('${e.id}')">Ver</button>
+          <button class="btn-danger" onclick="deleteEvidence('${e.id}')">Borrar</button>
+        </div>
+      </div>
+    </div>
+  `).join("") || `<div class="muted">Sin evidencias aún.</div>`;
+}
+function openImage(id){
+  const e = state.evidences.find(x=>x.id===id);
+  if(!e) return;
+  const w = window.open();
+  w.document.write(`<title>Evidencia</title><img src="${e.dataUrl}" style="max-width:100%;height:auto">`);
+}
+
+/* =========================
+   FLUJO
+========================= */
+async function addReceipt(){
+  const item = recItem.value.trim();
+  const qty = Number(recQty.value);
+  const cost = Number(recCost.value||0);
+  const provider = recProvider.value.trim();
+  const note = recNote.value.trim();
+  const file = recEvidence.files?.[0] || null;
+  if(!item || !qty) return;
+
+  const evidenceId = await addEvidence("EntradaInsumo", `Entrada ${item} x ${qty}`, file);
+
+  if(!state.inventory[item]) state.inventory[item] = {stock:0, min:0};
+  state.inventory[item].stock += qty;
+
+  if(cost>0){
+    state.expenses.unshift({ts:ts(), concept:`Compra insumo: ${item}${provider?(" ("+provider+")"):""}`, amount:cost, user:userLabel()});
+  }
+
+  state.receipts.unshift({ts:ts(), item, qty, cost, provider, note, user:userLabel(), evidenceId});
+  addAudit("Flujo", `Entrada insumo: ${item} x ${qty}${cost?(" · $"+cost):""}`);
+
+  recItem.value=""; recQty.value=""; recCost.value=""; recProvider.value=""; recNote.value="";
+  recEvidence.value="";
+  save();
+}
+
+function addWarehouseMove(){
+  const item = wmItem.value.trim();
+  let qty = Number(wmQty.value);
+  const reason = wmReason.value.trim();
+  if(!item || !qty) return;
+
+  if(qty > 0) qty = -Math.abs(qty);
+
+  if(!state.inventory[item]) state.inventory[item] = {stock:0, min:0};
+  state.inventory[item].stock += qty;
+
+  state.warehouseMoves.unshift({ts:ts(), item, qty, reason, user:userLabel()});
+  addAudit("Flujo", `Salida a producción: ${item} ${qty} (${reason||"sin motivo"})`);
+
+  wmItem.value=""; wmQty.value=""; wmReason.value="";
+  save();
+}
+
+function addBatch(){
+  const product = batchProduct.value.trim();
+  const qty = Number(batchQty.value);
+  const note = batchNote.value.trim();
+  if(!product || !qty) return;
+
+  const id = uid();
+  state.batches.unshift({id, ts:ts(), product, qty, note, user:userLabel()});
+  addAudit("Flujo", `Lote: ${product} x ${qty}${note?(" · "+note):""}`);
+
+  batchProduct.value=""; batchQty.value=""; batchNote.value="";
+  save();
+}
+
+async function openHandover(){
+  const amount = prompt("Monto entregado a Bety ($):");
+  if(amount===null) return;
+  const amt = Number(amount);
+  if(!amt) return;
+
+  const input = document.createElement("input");
+  input.type="file"; input.accept="image/*";
+  input.onchange = async ()=>{
+    const file = input.files?.[0] || null;
+    const evId = file ? await addEvidence("EntregaEfectivo", `Entrega $${amt}`, file) : null;
+
+    state.handovers.unshift({ts:ts(), amount:amt, from:userLabel(), to:"Bety (Contadora)", evidenceId:evId, status:"ENTREGADO"});
+    state.cash.unshift({ts:ts(), type:"ENTREGA", amount:amt, note:"Entrega a Bety", user:userLabel()});
+    addAudit("Caja", `Entrega a Bety $${amt}`);
+    save();
+    alert("✅ Entrega registrada" + (file ? " con evidencia." : "."));
+  };
+  input.click();
+}
+
+function renderFlow(){
+  if(!window.flowTimeline) return;
+  const items = [];
+
+  state.receipts.slice(0,4).forEach(r=>{
+    items.push({t:"Entrada de insumo", s:`${r.ts}\n${r.item} x ${r.qty} · ${r.user}${r.cost?("\nCosto: $"+r.cost):""}`});
+  });
+  state.warehouseMoves.slice(0,4).forEach(m=>{
+    items.push({t:"Salida a producción", s:`${m.ts}\n${m.item} ${m.qty} · ${m.user}${m.reason?("\nMotivo: "+m.reason):""}`});
+  });
+  state.batches.slice(0,4).forEach(b=>{
+    items.push({t:"Lote de producción", s:`${b.ts}\n${b.product} x ${b.qty} · ${b.user}${b.note?("\nNota: "+b.note):""}`});
+  });
+  state.sales.slice(0,4).forEach(v=>{
+    items.push({t:"Venta", s:`${v.ts}\n${v.item} · $${v.amount} · ${v.user}`});
+  });
+  state.handovers.slice(0,4).forEach(h=>{
+    items.push({t:"Entrega a Bety", s:`${h.ts}\n$${h.amount} · de ${h.from}`});
+  });
+  state.closings.slice(0,3).forEach(c=>{
+    items.push({t:"Cierre de caja", s:`${c.ts}\nTurno ${c.shift} · Esperado $${c.expected} · Contado $${c.counted} · Dif $${c.diff}\nPor: ${c.user}`});
+  });
+
+  flowTimeline.innerHTML = items.slice(0,10).map(x=>`
+    <div class="step">
+      <div class="dot"></div>
+      <div>
+        <div class="h">${x.t}</div>
+        <div class="s">${escapeHtml(x.s)}</div>
+      </div>
+    </div>
+  `).join("") || `<div class="muted">Aún no hay trazabilidad. Empieza con “Entrada de insumo”.</div>`;
+}
+
+/* =========================
+   CIERRE
+========================= */
+function getRangeForShift(){
+  const shift = closeShift.value;
+  const d = new Date();
+  const start = new Date(d); start.setSeconds(0); start.setMilliseconds(0);
+  const end = new Date(d); end.setSeconds(59); end.setMilliseconds(999);
+
+  if(shift==="AM"){ start.setHours(6,0,0,0); end.setHours(14,0,0,0); return {start,end,label:"AM"}; }
+  if(shift==="PM"){ start.setHours(14,0,0,0); end.setHours(23,59,59,999); return {start,end,label:"PM"}; }
+
+  const ds = closeStart.value ? new Date(closeStart.value) : new Date(new Date().setHours(0,0,0,0));
+  const de = closeEnd.value ? new Date(closeEnd.value) : new Date(new Date().setHours(23,59,59,999));
+  return {start:ds,end:de,label:"CUSTOM"};
+}
+function inRange(tsStr, start, end){
+  const d = parseMaybeDate(tsStr);
+  if(!d) return false;
+  return d >= start && d <= end;
+}
+function calcClosingPreview(){
+  const {start,end} = getRangeForShift();
+  const sales = state.sales.filter(x=>inRange(x.ts,start,end)).reduce((a,b)=>a+(Number(b.amount)||0),0);
+  const exp   = state.expenses.filter(x=>inRange(x.ts,start,end)).reduce((a,b)=>a+(Number(b.amount)||0),0);
+  const hand  = state.handovers.filter(x=>inRange(x.ts,start,end)).reduce((a,b)=>a+(Number(b.amount)||0),0);
+  const expected = (sales - exp - hand);
+
+  cSales.textContent = money(sales);
+  cExp.textContent = money(exp);
+  cHand.textContent = money(hand);
+  cExpected.textContent = money(expected);
+
+  return {sales, exp, hand, expected, start, end};
+}
+async function saveClosing(){
+  const r = role();
+  if(!ROLES[r].can.closing){ alert("Este usuario no tiene permiso para hacer cierres."); return; }
+
+  const preview = calcClosingPreview();
+  const counted = Number(closeCounted.value);
+  const note = closeNote.value.trim();
+  const file = closeEvidence.files?.[0] || null;
+
+  if(!Number.isFinite(counted)){ alert("Escribe el efectivo contado."); return; }
+
+  const diff = (counted - preview.expected);
+  let evId = null;
+
+  if(diff !== 0 && !file){
+    const ok = confirm("Hay DIFERENCIA. Se recomienda evidencia (foto). ¿Guardar sin evidencia?");
+    if(!ok) return;
+  }
+  if(file){
+    evId = await addEvidence("CierreCaja", `Cierre ${closeShift.value} dif ${diff}`, file);
+  }
+
+  state.closings.unshift({
+    ts: ts(), shift: closeShift.value,
+    range: {start: preview.start.toISOString(), end: preview.end.toISOString()},
+    sales: preview.sales, exp: preview.exp, hand: preview.hand,
+    expected: preview.expected, counted, diff, note, evidenceId: evId, user: userLabel()
+  });
+
+  addAudit("Cierre", `Turno ${closeShift.value} esperado $${preview.expected} contado $${counted} dif $${diff}${note?(" · "+note):""}`);
+
+  closeCounted.value=""; closeNote.value=""; closeEvidence.value="";
+  save();
+  alert("✅ Cierre guardado.");
+}
+
+/* =========================
+   MORE TABS
+========================= */
+function showMoreTab(tab){
+  cashSection.classList.add("hidden");
+  expensesSection.classList.add("hidden");
+  closingSection.classList.add("hidden");
+  evidenceSection.classList.add("hidden");
+  auditSection.classList.add("hidden");
+  settingsSection.classList.add("hidden");
+
+  if(tab==="cash") cashSection.classList.remove("hidden");
+  if(tab==="exp") expensesSection.classList.remove("hidden");
+  if(tab==="closing"){
+    const r = role();
+    if(!ROLES[r].can.closing){ alert("Este usuario no puede hacer cierres."); return; }
+    closingSection.classList.remove("hidden");
+    calcClosingPreview();
+  }
+  if(tab==="evidence"){ evidenceSection.classList.remove("hidden"); renderEvidence(); }
+  if(tab==="audit"){
+    const r = role();
+    if(!ROLES[r].can.audit){ alert("Solo Raúl puede ver auditoría."); return; }
+    auditSection.classList.remove("hidden"); renderAudit();
+  }
+  if(tab==="settings") settingsSection.classList.remove("hidden");
+}
+
+/* =========================
+   BOT OFFLINE + VOZ
+========================= */
+function addBotMessage(who,text){
+  botHistory.unshift({who,text,ts:ts()});
+  if(botHistory.length>200) botHistory.length=200;
+  saveBot();
+}
+function renderBotLog(){
+  if(!window.botLog) return;
+  if(botHistory.length===0){
+    botLog.innerHTML=`<div class="muted">Prueba: <b>venta pan 120</b> o escribe <b>ayuda</b>.</div>`;
+    return;
+  }
+  botLog.innerHTML = botHistory.slice(0,60).map(m=>{
+    const cls = m.who==="TÚ" ? "msg-user" : "msg-bot";
+    return `<div style="margin-bottom:10px">
+      <div class="${cls}">${m.who} <span class="muted" style="font-weight:900">· ${m.ts}</span></div>
+      <div>${escapeHtml(m.text)}</div>
+    </div>`;
+  }).join("");
+}
+function botHelp(){
+  addBotMessage("BOT",
+`Comandos:
+- venta <producto> <monto>
+- gasto <concepto> <monto>
+- inv <insumo> <+/-cant> [min <min>]
+- prod <producto> <cantidad>
+- estado
+- alertas
+- ayuda`);
+}
+function runBot(){
+  const raw=botInput.value.trim(); if(!raw) return;
+  addBotMessage("TÚ", raw);
+  const resp = executeCommand(raw);
+  addBotMessage("BOT", resp);
+  botInput.value="";
+  save();
+}
+function executeCommand(raw){
+  const parts=raw.trim().split(/\s+/);
+  const cmd=(parts[0]||"").toLowerCase();
+
+  try{
+    if(cmd==="ayuda"){ botHelp(); return "✅ Te dejé la ayuda arriba."; }
+
+    if(cmd==="venta"){
+      const amount=Number(parts[parts.length-1]);
+      const item=parts.slice(1,parts.length-1).join(" ").trim();
+      if(!item||!amount) return "Formato: venta <producto> <monto>. Ej: venta pan 120";
+      state.sales.unshift({ts:ts(), item, amount, user:userLabel()});
+      addAudit("Venta", `${item} $${amount} (bot)`);
+      return `✅ Venta registrada: ${item} por $${amount}.`;
+    }
+
+    if(cmd==="gasto"){
+      const amount=Number(parts[parts.length-1]);
+      const concept=parts.slice(1,parts.length-1).join(" ").trim();
+      if(!concept||!amount) return "Formato: gasto <concepto> <monto>. Ej: gasto harina 50";
+      state.expenses.unshift({ts:ts(), concept, amount, user:userLabel()});
+      addAudit("Gasto", `${concept} $${amount} (bot)`);
+      return `✅ Gasto registrado: ${concept} por $${amount}.`;
+    }
+
+    if(cmd==="inv"){
+      if(parts.length<3) return "Formato: inv <insumo> <+/-cantidad> [min <mínimo>]. Ej: inv azúcar +10 min 8";
+      const name=parts[1];
+      const qty=Number(parts[2]);
+      if(!name||!qty) return "Cantidad inválida. Ej: inv harina -3";
+
+      let min=0;
+      const i=parts.findIndex(p=>p.toLowerCase()==="min");
+      if(i!==-1 && parts[i+1]) min=Number(parts[i+1])||0;
+
+      if(!state.inventory[name]) state.inventory[name]={stock:0,min:0};
+      state.inventory[name].stock+=qty;
+      if(min>0) state.inventory[name].min=min;
+
+      addAudit("Inventario", `${name} ${qty>0?"+":""}${qty} (bot)`);
+      return `✅ Inventario: ${name} (${qty>0?"+":""}${qty}). Stock: ${state.inventory[name].stock}.` + (min>0?` Mínimo: ${min}.`:"");
+    }
+
+    if(cmd==="prod"){
+      const qty=Number(parts[parts.length-1]);
+      const item=parts.slice(1,parts.length-1).join(" ").trim();
+      if(!item||!qty) return "Formato: prod <producto> <cantidad>. Ej: prod galletas 60";
+      state.production.unshift({ts:ts(), item, qty, notes:"", user:userLabel()});
+      addAudit("Producción", `${item} x ${qty} (bot)`);
+      return `✅ Producción: ${item} x ${qty}.`;
+    }
+
+    if(cmd==="estado"){
+      const totalSales=state.sales.reduce((a,b)=>a+(Number(b.amount)||0),0);
+      const totalExp=state.expenses.reduce((a,b)=>a+(Number(b.amount)||0),0);
+      const net=cashNet();
+      const alerts=buildAlerts();
+      return `📊 Estado:
+- Ventas: $${money(totalSales)}
+- Gastos: $${money(totalExp)}
+- Caja estimada: $${money(net)}
+- Alertas: ${alerts.length}${alerts.length?("\n• "+alerts.join("\n• ")):""}`;
+    }
+
+    if(cmd==="alertas"){
+      const alerts=buildAlerts();
+      return alerts.length ? ("🚨 Alertas:\n• "+alerts.join("\n• ")) : "✅ Sin alertas críticas.";
+    }
+
+    return "No entendí el comando. Escribe: ayuda";
+  }catch(_){
+    return "Ocurrió un error procesando el comando. Escribe: ayuda";
+  }
+}
+
+/* Dictado */
+let rec=null;
+function startDictation(){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SpeechRecognition){ addBotMessage("BOT","Tu navegador no soporta dictado. Escribe el comando."); return; }
+  if(rec){ try{rec.stop();}catch(_){ } rec=null; addBotMessage("BOT","Dictado detenido."); return; }
+
+  rec = new SpeechRecognition();
+  rec.lang="es-ES";
+  rec.interimResults=false;
+  rec.maxAlternatives=1;
+  addBotMessage("BOT","🎙️ Dictando... habla ahora.");
+  rec.start();
+
+  rec.onresult=(e)=>{
+    const text=e.results[0][0].transcript;
+    botInput.value=text;
+    addBotMessage("TÚ", text);
+    addBotMessage("BOT", executeCommand(text));
+    save();
+  };
+  rec.onerror=()=>addBotMessage("BOT","No pude capturar la voz. Escribe el comando.");
+  rec.onend=()=>{ rec=null; };
+}
+
+/* =========================
+   KPIs + ALERTAS
+========================= */
+function sumToday(list, field){
+  const d = new Date();
+  return list.filter(x=>{
+    const dx = parseMaybeDate(x.ts);
+    return dx ? isSameDay(dx, d) : true;
+  }).reduce((a,b)=>a+(Number(b[field])||0),0);
+}
+
+function cashNet(){
+  const sales = state.sales.reduce((a,b)=>a+(Number(b.amount)||0),0);
+  const exp   = state.expenses.reduce((a,b)=>a+(Number(b.amount)||0),0);
+
+  let cashMoves = 0;
+  state.cash.forEach(m=>{
+    const amt = Number(m.amount)||0;
+    if(m.type==="INGRESO" || m.type==="RECEPCION") cashMoves += amt;
+    if(m.type==="EGRESO" || m.type==="ENTREGA" || m.type==="REEMBOLSO") cashMoves -= amt;
+  });
+  return (sales - exp) + cashMoves;
+}
+
+function buildAlerts(){
+  const alerts=[];
+  Object.entries(state.inventory).forEach(([name,obj])=>{
+    const min=Number(obj.min)||0, stock=Number(obj.stock)||0;
+    if(min>0 && stock<min) alerts.push(`⚠️ Inventario bajo: ${name} (stock ${stock}, mínimo ${min})`);
+  });
+  state.closings.slice(0,5).forEach(c=>{
+    if(Number(c.diff)!==0) alerts.push(`❗ Diferencia en cierre (${c.shift}) dif $${c.diff} · ${c.ts} · ${c.user}`);
+  });
+
+  const salesToday = sumToday(state.sales,"amount");
+  const handToday = sumToday(state.handovers,"amount");
+  if(salesToday > 0 && (salesToday - handToday) > 50){
+    alerts.push(`💵 Ventas hoy $${money(salesToday)} y entregas $${money(handToday)}. Falta registrar entrega o cierre.`);
+  }
+
+  const net = cashNet();
+  if(net < 0) alerts.push(`❗ Caja estimada negativa: $${money(net)}. Revisar egresos/entregas.`);
+  return alerts;
+}
+
+function renderAudit(){
+  if(!window.auditTable) return;
+  auditTable.innerHTML = state.audit.slice(0,200).map(a=>`
+    <tr><td>${escapeHtml(a.ts)}</td><td>${escapeHtml(a.user)}</td><td>${escapeHtml(a.action)}</td><td>${escapeHtml(a.detail)}</td></tr>
+  `).join("") || `<tr><td colspan="4" class="muted">Sin auditoría aún.</td></tr>`;
+}
+
+function refreshAll(){
+  const sToday = sumToday(state.sales,"amount");
+  const eToday = sumToday(state.expenses,"amount");
+  const net = cashNet();
+
+  kpiSales.textContent = money(sToday);
+  kpiExp.textContent = money(eToday);
+  kpiCash.textContent = money(net);
+
+  const alerts = buildAlerts();
+  kpiAlerts.textContent = alerts.length;
+
+  if(alerts.length===0){
+    alertsBox.className="ok-box";
+    alertsBox.textContent="✅ Sin alertas críticas.";
+  }else{
+    alertsBox.className="alert-box";
+    alertsBox.textContent = "🚨\n" + alerts.map(a=>"• "+a).join("\n");
+  }
+
+  invTable.innerHTML = Object.entries(state.inventory)
+    .sort((a,b)=>a[0].localeCompare(b[0]))
+    .map(([name,obj])=>{
+      const stock=Number(obj.stock)||0, min=Number(obj.min)||0;
+      let tag=`<span class="tag tag-ok">OK</span>`;
+      if(min>0 && stock<min) tag=`<span class="tag tag-bad">BAJO</span>`;
+      else if(min>0 && stock<(min*1.3)) tag=`<span class="tag tag-warn">VIGILAR</span>`;
+      return `<tr><td>${escapeHtml(name)}</td><td>${stock}</td><td>${min||"—"}</td><td>${tag}</td></tr>`;
+    }).join("") || `<tr><td colspan="4" class="muted">Sin inventario aún.</td></tr>`;
+
+  prodTable.innerHTML = (state.production.slice(0,30).map(p=>
+    `<tr><td>${escapeHtml(p.ts)}</td><td>${escapeHtml(p.item)}</td><td>${p.qty}</td><td>${escapeHtml(p.user)}</td></tr>`
+  ).join("")) || `<tr><td colspan="4" class="muted">Sin producción registrada.</td></tr>`;
+
+  salesTable.innerHTML = (state.sales.slice(0,30).map(s=>
+    `<tr><td>${escapeHtml(s.ts)}</td><td>${escapeHtml(s.item)}</td><td>$${money(s.amount)}</td><td>${escapeHtml(s.user)}</td></tr>`
+  ).join("")) || `<tr><td colspan="4" class="muted">Sin ventas registradas.</td></tr>`;
+
+  cashTable.innerHTML = (state.cash.slice(0,30).map(c=>
+    `<tr><td>${escapeHtml(c.ts)}</td><td>${escapeHtml(c.type)}</td><td>$${money(c.amount)}</td><td>${escapeHtml(c.user)}</td><td>${escapeHtml(c.note||"—")}</td></tr>`
+  ).join("")) || `<tr><td colspan="5" class="muted">Sin movimientos de caja.</td></tr>`;
+
+  expTable.innerHTML = (state.expenses.slice(0,30).map(e=>
+    `<tr><td>${escapeHtml(e.ts)}</td><td>${escapeHtml(e.concept)}</td><td>$${money(e.amount)}</td><td>${escapeHtml(e.user)}</td></tr>`
+  ).join("")) || `<tr><td colspan="4" class="muted">Sin gastos registrados.</td></tr>`;
+
+  closingTable.innerHTML = (state.closings.slice(0,25).map(c=>{
+    const diff = Number(c.diff)||0;
+    const tag = diff===0 ? `<span class="tag tag-ok">OK</span>` : `<span class="tag tag-bad">DIF</span>`;
+    return `<tr>
+      <td>${escapeHtml(c.ts)}</td>
+      <td>${escapeHtml(c.shift)}</td>
+      <td>$${money(c.expected)}</td>
+      <td>$${money(c.counted)}</td>
+      <td>${tag} $${money(diff)}</td>
+      <td>${escapeHtml(c.user)}</td>
+    </tr>`;
+  }).join("")) || `<tr><td colspan="6" class="muted">Sin cierres aún.</td></tr>`;
+
+  if(!closingSection.classList.contains("hidden")) calcClosingPreview();
+
+  renderEvidence();
+  renderAudit();
+  renderFlow();
+  renderBotLog();
+
+  updateCard.classList.toggle("hidden", !__updateAvailable);
+}
+
+/* =========================
+   EXPORT / RESET / DEMO
+========================= */
+function exportJSON(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="RAULI_respaldo.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function resetAll(){
+  const ok = confirm("¿Seguro? Esto borra TODO el negocio en este dispositivo.");
+  if(!ok) return;
+  localStorage.removeItem(KEY);
+  state={inventory:{},production:[],sales:[],cash:[],expenses:[],receipts:[],warehouseMoves:[],batches:[],handovers:[],closings:[],evidences:[],audit:[]};
+  save();
+}
+
+function quickDemo(){
+  state.inventory={"Harina":{stock:12,min:10},"Azúcar":{stock:3,min:8},"Levadura":{stock:2,min:4}};
+  state.production=[{ts:ts(),item:"Pan dulce",qty:120,notes:"OK",user:"Papito (Producción)"}];
+  state.sales=[{ts:ts(),item:"Pan",amount:85,user:"Papito (Producción)"},{ts:ts(),item:"Dulces",amount:40,user:"Lisi (Copropietaria)"}];
+  state.expenses=[{ts:ts(),concept:"Gas",amount:15,user:"Bety (Contadora)"}];
+  state.cash=[{ts:ts(),type:"RECEPCION",amount:120,note:"Recibido en caja",user:"Bety (Contadora)"}];
+  state.receipts=[]; state.warehouseMoves=[]; state.batches=[]; state.handovers=[]; state.closings=[]; state.evidences=[]; state.audit=[];
+  save();
+}
+
+/* =========================
+   SONIDO BONITO (CHIME)
+   - No necesita archivos externos
+========================= */
+function playChime(){
+  try{
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const ctx = new AudioCtx();
+
+    const now = ctx.currentTime;
+
+    function tone(freq, start, dur, gain=0.08){
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type="sine";
+      o.frequency.setValueAtTime(freq, start);
+      g.gain.setValueAtTime(0.0001, start);
+      g.gain.exponentialRampToValueAtTime(gain, start+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, start+dur);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(start);
+      o.stop(start+dur+0.02);
+    }
+
+    // Campanita suave (2 notas)
+    tone(880, now+0.02, 0.18, 0.08);
+    tone(1174.66, now+0.22, 0.22, 0.07);
+
+    // vibración suave (si hay)
+    if(navigator.vibrate) navigator.vibrate([40,30,40]);
+
+    setTimeout(()=>{ try{ctx.close();}catch(_){} }, 800);
+  }catch(_){}
+}
+
+/* =========================
+   ONLINE / OFFLINE (2 señales)
+========================= */
+function setSignalUI(isOnline){
+  if(isOnline){
+    sigOnline.style.display = "inline-block";
+    sigOffline.style.display = "none";
+    offlinePill.textContent = "✅ En línea (guardando local también)";
+  }else{
+    sigOnline.style.display = "none";
+    sigOffline.style.display = "inline-block";
+    offlinePill.textContent = "📴 Sin señal: trabajando offline";
+  }
+}
+
+async function checkRealConnectivity(){
+  if(!navigator.onLine){
+    setSignalUI(false);
+    return false;
+  }
+  try{
+    const base = location.href.split("?")[0];
+    const controller = new AbortController();
+    const t = setTimeout(()=>controller.abort(), 2500);
+    const res = await fetch(base + "?ping=" + Date.now(), { cache:"no-store", signal: controller.signal });
+    clearTimeout(t);
+    const ok = !!res && res.ok;
+    setSignalUI(ok);
+    return ok;
+  }catch(_){
+    setSignalUI(false);
+    return false;
+  }
+}
+
+window.addEventListener("online", ()=>checkRealConnectivity());
+window.addEventListener("offline", ()=>setSignalUI(false));
+setInterval(()=>checkRealConnectivity(), 15000);
+
+/* =========================
+   PWA / UPDATE
+========================= */
+let __rauliSwReg = null;
+let __updateAvailable = false;
+
+function showUpdateBanner(){
+  if(!__updateAvailable){
+    __updateAvailable = true;
+    updateCard.classList.remove("hidden");
+    playChime(); // 🔔 sonido cuando detecta nueva versión
+  }
+}
+function hideUpdateBanner(){
+  __updateAvailable = false;
+  updateCard.classList.add("hidden");
+}
+
+async function forceUpdate(){
+  await checkRealConnectivity();
+
+  try{
+    if(__rauliSwReg){
+      await __rauliSwReg.update();
+      if(__rauliSwReg.waiting){
+        __rauliSwReg.waiting.postMessage({ type: "SKIP_WAITING" });
+        playChime(); // 🔔 sonido cuando aplica actualización
+        setTimeout(()=>location.reload(), 350);
+        return;
+      }
+    }
+    // cache-bust del HTML para navegador normal
+    playChime();
+    const base = location.href.split("?")[0];
+    location.href = base + "?v=" + Date.now();
+  }catch(_){
+    playChime();
+    const base = location.href.split("?")[0];
+    location.href = base + "?v=" + Date.now();
+  }
+}
+
+async function clearSwAndReload(){
+  try{
+    if("serviceWorker" in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      for(const r of regs) await r.unregister();
+    }
+    if("caches" in window){
+      const keys=await caches.keys();
+      for(const k of keys) await caches.delete(k);
+    }
+  }catch(_){}
+  location.reload();
+}
+
+if(location.protocol!=="file:" && "serviceWorker" in navigator){
+  navigator.serviceWorker.register("./sw.js").then((reg)=>{
+    __rauliSwReg = reg;
+    if(reg.waiting) showUpdateBanner();
+
+    reg.addEventListener("updatefound", ()=>{
+      const nw = reg.installing;
+      if(!nw) return;
+      nw.addEventListener("statechange", ()=>{
+        if(nw.state==="installed" && navigator.serviceWorker.controller){
+          showUpdateBanner();
+        }
+      });
+    });
+  }).catch(()=>{});
+}
+
+/* =========================
+   PWA WIZARD (icon + manifest + sw)
+========================= */
+function openPwaWizard(){
+  const isFile = location.protocol==="file:";
+  const html = `
+  <div style="position:fixed;inset:0;background:rgba(11,18,32,.45);display:flex;align-items:flex-end;justify-content:center;padding:14px;z-index:80;" onclick="closePwaWizard(event)">
+    <div style="width:min(980px,100%);background:#fff;border-radius:18px;box-shadow:0 10px 24px rgba(11,18,32,.12);border:1px solid rgba(11,18,32,.12);padding:14px;" onclick="event.stopPropagation()">
+      <h3 style="margin:0 0 8px 0">📲 Instalar RAULI como App (PWA) + Ícono</h3>
+      <div class="muted">
+        Descarga 3 archivos y colócalos en <b>C:\\rauli-app\\</b>.
+        Luego abre RAULI por <b>http://localhost</b> para instalar.
+      </div>
+      <div class="grid grid-2" style="margin-top:12px">
+        <button class="btn-yellow" onclick="downloadIcon()">1) Descargar icon-512.png</button>
+        <button onclick="downloadManifest()">2) Descargar manifest.json</button>
+        <button onclick="downloadServiceWorker()">3) Descargar sw.js (update)</button>
+        <button class="btn-secondary" onclick="toggleServerSteps()">4) Ver pasos localhost</button>
+      </div>
+      <div id="serverSteps" class="hidden" style="margin-top:12px">
+        <div class="ok-box">✅ PASOS (Windows)</div>
+        <div class="muted" style="margin-top:8px">
+          1) Abre la carpeta <b>C:\\rauli-app\\</b><br>
+          2) En la barra de dirección escribe: <b>cmd</b> y Enter<br>
+          3) En la consola pega:
+        </div>
+        <div class="mono" style="margin-top:8px">python -m http.server 5500</div>
+        <div class="muted" style="margin-top:8px">
+          4) Abre Edge/Chrome y entra a:<br>
+          <b>http://localhost:5500/rauli.html</b><br>
+          5) Instala desde menú ⋮ → <b>Instalar RAULI</b>.
+        </div>
+      </div>
+      ${isFile?`<div class="alert-box" style="margin-top:12px">Estás en file://. Para instalar PWA usa localhost.</div>`:`<div class="ok-box" style="margin-top:12px">Perfecto: estás en ${location.origin}. Descarga, recarga (Ctrl+F5) e instala.</div>`}
+      <div class="grid grid-2" style="margin-top:12px">
+        <button class="btn-secondary" onclick="closePwaWizard()">Cerrar</button>
+        <button class="btn-danger" onclick="clearSwAndReload()">Limpiar SW y recargar</button>
+      </div>
+    </div>
+  </div>`;
+  pwaModal.innerHTML = html;
+  pwaModal.classList.remove("hidden");
+}
+function closePwaWizard(e){
+  if(e && e.target && e.target === e.currentTarget){
+    pwaModal.classList.add("hidden"); pwaModal.innerHTML=""; return;
+  }
+  pwaModal.classList.add("hidden"); pwaModal.innerHTML="";
+}
+function toggleServerSteps(){
+  const el=document.getElementById("serverSteps");
+  if(el) el.classList.toggle("hidden");
+}
+function downloadFile(filename, content, mime){
+  const blob=new Blob([content],{type:mime});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function roundRect(ctx,x,y,w,h,r){
+  const min=Math.min(w,h);
+  if(r>min/2) r=min/2;
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function downloadIcon(){
+  const size=512;
+  const canvas=document.createElement("canvas");
+  canvas.width=size; canvas.height=size;
+  const ctx=canvas.getContext("2d");
+
+  const g=ctx.createLinearGradient(0,0,size,size);
+  g.addColorStop(0,"#1f4fa3");
+  g.addColorStop(1,"#163b7c");
+  ctx.fillStyle=g;
+  roundRect(ctx,0,0,size,size,96);
+  ctx.fill();
+
+  ctx.fillStyle="#f2c94c";
+  ctx.beginPath(); ctx.arc(140,150,56,0,Math.PI*2); ctx.fill();
+
+  ctx.fillStyle="#ffffff";
+  ctx.font="900 220px Arial";
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.fillText("R", size/2, size/2 + 10);
+
+  ctx.fillStyle="#f2c94c";
+  ctx.font="900 62px Arial";
+  ctx.fillText("RAULI", size/2, size*0.78);
+
+  canvas.toBlob((blob)=>{
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="icon-512.png";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  },"image/png");
+}
+function downloadManifest(){
+  const manifest = {
+    name:"RAULI Panadería & Dulcería",
+    short_name:"RAULI",
+    start_url:"./rauli.html",
+    scope:"./",
+    display:"standalone",
+    background_color:"#f6f9ff",
+    theme_color:"#1f4fa3",
+    icons:[{src:"./icon-512.png",sizes:"512x512",type:"image/png"}]
+  };
+  downloadFile("manifest.json", JSON.stringify(manifest,null,2), "application/json");
+}
+function downloadServiceWorker(){
+  const sw =
+`const CACHE_NAME="rauli-cache-v3";
+const ASSETS=["./","./rauli.html","./manifest.json","./icon-512.png"];
+
+self.addEventListener("install",(e)=>{
+  e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)));
+  self.skipWaiting();
+});
+
+self.addEventListener("activate",(e)=>{
+  e.waitUntil(self.clients.claim());
+});
+
+self.addEventListener("message",(event)=>{
+  if(event.data && event.data.type==="SKIP_WAITING") self.skipWaiting();
+});
+
+self.addEventListener("fetch",(e)=>{
+  e.respondWith(
+    caches.match(e.request).then(r=>r || fetch(e.request).catch(()=>caches.match("./rauli.html")))
+  );
+});`;
+  downloadFile("sw.js", sw, "text/javascript");
+}
+
+/* =========================
+   BOOT
+========================= */
+(function boot(){
+  const r = role();
+  if(r) initUI();
+  refreshAll();
+  checkRealConnectivity();
+
+  if(window.closeShift) closeShift.addEventListener("change", ()=>calcClosingPreview());
+})();
+</script>
+
+</body>
+</html>
+
+
