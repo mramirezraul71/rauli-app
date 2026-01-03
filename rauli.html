@@ -1597,8 +1597,67 @@ self.addEventListener("fetch",(e)=>{
   if(window.closeShift) closeShift.addEventListener("change", ()=>calcClosingPreview());
 })();
 </script>
+<script type="module">
+  // ✅ Firebase para HTML + GitHub Pages (SIN npm)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import {
+    getFirestore,
+    enableIndexedDbPersistence,
+    collection,
+    addDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  // ✅ Tu firebaseConfig (CORREGIDO)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCGPDlRAIKsrI6EhE3Tb2-1sYJ1VDaH2jw",
+    authDomain: "rauli-e7fdb.firebaseapp.com",
+    projectId: "rauli-e7fdb",
+    storageBucket: "rauli-e7fdb.appspot.com",
+    messagingSenderId: "406292569158",
+    appId: "1:406292569158:web:c26f46de60d31827317e47"
+  };
+
+  // ✅ Init
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ✅ Offline-first (Firestore guarda local y sincroniza luego)
+  try { await enableIndexedDbPersistence(db); } catch (e) {}
+
+  // ✅ Test rápido (sin romper tu app):
+  // - Si hay sesión, registra un evento de prueba en Firestore al tocar el botón "Actualizar" (si existe)
+  // - Si no, solo deja Firebase listo
+  console.log("✅ Firebase OK:", firebaseConfig.projectId);
+
+  // Si existe un botón de actualizar en tu UI, lo usamos como prueba rápida.
+  const btn = document.getElementById("btnUpdate");
+  if (btn) {
+    btn.addEventListener("click", async () => {
+      try {
+        await addDoc(collection(db, "business", "rauli", "events"), {
+          type: "test",
+          desc: "Ping desde botón actualizar (Firebase conectado)",
+          clientTime: Date.now(),
+          createdAt: serverTimestamp()
+        });
+        console.log("✅ Firestore OK: documento creado");
+      } catch (e) {
+        console.log("❌ Firestore error:", e?.message || e);
+      }
+    });
+  }
+</script>
 
 </body>
 </html>
+
 
 
