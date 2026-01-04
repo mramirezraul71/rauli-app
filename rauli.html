@@ -12,24 +12,27 @@
 
   <style>
     :root{
-      --bg:#0b1220;
-      --card:#0f1c33;
-      --card2:#0d1730;
-      --text:#eef3ff;
-      --muted:#b7c4e6;
+      --bg:#0a1222;
 
+      /* colores marca (azul + amarillo) */
       --blue:#2f6cff;
       --blue2:#1f4fc9;
+      --blueDeep:#0b2f5b;
 
-      --yellow:#f1c40f;
+      --yellow:#ffd24a;       /* amarillo suave legible */
+      --yellowStrong:#ffc400; /* títulos */
       --yellow2:#d7a90b;
 
-      --line:rgba(255,255,255,.12);
-      --shadow: 0 18px 55px rgba(0,0,0,.42);
+      --text: var(--yellow);  /* texto general */
+      --muted:#c9d3f2;        /* ayudas */
+      --muted2:#aebae0;
+
+      --line:rgba(255,255,255,.14);
+      --shadow: 0 18px 55px rgba(0,0,0,.44);
       --radius: 22px;
 
-      /* Tipografía (Lisi) */
-      --fs-base: 17px;
+      /* Tipografía grande (Lisi) */
+      --fs-base: 18px;
       --fs-small: 14px;
       --fs-title: 20px;
       --fs-h1: 22px;
@@ -42,31 +45,30 @@
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       font-size: var(--fs-base);
+      color: var(--text);
       background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(47,108,255,.38), transparent 55%),
-        radial-gradient(1100px 700px at 95% 0%, rgba(241,196,15,.25), transparent 50%),
-        radial-gradient(900px 600px at 60% 110%, rgba(47,108,255,.20), transparent 55%),
+        radial-gradient(1200px 700px at 20% -10%, rgba(47,108,255,.36), transparent 55%),
+        radial-gradient(1100px 700px at 95% 0%, rgba(255,196,0,.22), transparent 50%),
+        radial-gradient(900px 600px at 60% 110%, rgba(47,108,255,.16), transparent 55%),
         var(--bg);
-      color:var(--text);
       min-height:100vh;
       overflow-x:hidden;
     }
 
-    /* Animaciones (más viva) */
     @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
-    @keyframes pulse{0%{transform:scale(1); opacity:.8}50%{transform:scale(1.12);opacity:1}100%{transform:scale(1);opacity:.85}}
+    @keyframes pulse{0%{transform:scale(1);opacity:.85}50%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:.85}}
     @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:100% 50%}}
 
     /* Top bar */
     .topbar{
       position: sticky; top:0; z-index:50;
       padding: 12px 12px 10px;
-      background: linear-gradient(180deg, rgba(11,18,32,.96), rgba(11,18,32,.60));
+      background: linear-gradient(180deg, rgba(10,18,34,.96), rgba(10,18,34,.58));
       backdrop-filter: blur(10px);
       border-bottom:1px solid var(--line);
     }
     .topbar-inner{
-      max-width: 1120px;
+      max-width: 1140px;
       margin: 0 auto;
       display:flex;
       gap:10px;
@@ -76,36 +78,33 @@
     }
     .brand{display:flex; gap:10px; align-items:center}
     .logo{
-      width:40px; height:40px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(47,108,255,.95), rgba(241,196,15,.90));
+      width:42px; height:42px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(47,108,255,.95), rgba(255,196,0,.88));
       box-shadow: 0 12px 24px rgba(0,0,0,.30);
       animation: floaty 3.2s ease-in-out infinite;
     }
     .title{display:flex; flex-direction:column; line-height:1.12}
-    .title b{letter-spacing:.4px; font-size:18px}
+    .title b{letter-spacing:.4px; font-size:18px; color: var(--yellowStrong)}
     .title span{color:var(--muted); font-size:var(--fs-small)}
     .chips{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-
     .chip{
       display:inline-flex; gap:8px; align-items:center;
       padding:9px 11px;
       border-radius:999px;
       border:1px solid var(--line);
       background: rgba(255,255,255,.07);
-      color: var(--text);
+      color: var(--yellow);
       font-size: var(--fs-small);
-      font-weight: 900;
+      font-weight: 950;
     }
-
     .dot{width:10px;height:10px;border-radius:50%}
     .dot.online{background:#2ecc71}
     .dot.offline{background:#e74c3c}
-
     .pulse{
       width:10px;height:10px;border-radius:50%;
       background:#2ecc71;
-      box-shadow: 0 0 0 0 rgba(46,204,113,.65);
       animation: pulse 1.4s ease-in-out infinite;
+      box-shadow: 0 0 0 0 rgba(46,204,113,.55);
     }
 
     /* Botones */
@@ -113,20 +112,20 @@
       border:0; cursor:pointer;
       font-weight: 950;
       letter-spacing:.2px;
-      padding:11px 13px;
+      padding:12px 14px;
       border-radius:16px;
-      color:#0b1220; /* amarillo con texto oscuro = alta legibilidad */
+      color:#0b1220; /* amarillo con texto oscuro -> legible */
       background: linear-gradient(135deg, var(--yellow), var(--yellow2));
       box-shadow: 0 12px 26px rgba(0,0,0,.28);
       display:inline-flex; gap:8px; align-items:center;
       font-size: var(--fs-small);
     }
     .btn.blue{
-      color:#ffe08a; /* texto amarillo en azul (tu pedido) */
+      color:#ffe08a; /* texto amarillo sobre azul */
       background: linear-gradient(135deg, var(--blue), var(--blue2));
     }
     .btn.ghost{
-      color:#fff;
+      color: var(--yellow);
       background: rgba(255,255,255,.08);
       border:1px solid var(--line);
       box-shadow:none;
@@ -137,7 +136,7 @@
     }
 
     /* Main */
-    .wrap{max-width:1120px;margin:0 auto;padding:16px 12px 120px}
+    .wrap{max-width:1140px;margin:0 auto;padding:16px 12px 132px}
     .hero{
       display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
       padding:16px 16px;
@@ -151,21 +150,50 @@
     .hero::before{
       content:"";
       position:absolute; inset:-2px;
-      background: linear-gradient(90deg, rgba(47,108,255,.25), rgba(241,196,15,.18), rgba(47,108,255,.25));
+      background: linear-gradient(90deg, rgba(47,108,255,.24), rgba(255,196,0,.18), rgba(47,108,255,.24));
       background-size: 200% 200%;
       animation: shimmer 7s ease-in-out infinite;
-      opacity:.5;
+      opacity:.55;
       pointer-events:none;
       mask: linear-gradient(#000, transparent 70%);
     }
-    .hero h1{margin:0;font-size:var(--fs-h1); position:relative}
-    .hero p{margin:8px 0 0;color:var(--muted);font-size:var(--fs-base);max-width:740px; position:relative}
+    .hero h1{margin:0;font-size:var(--fs-h1); color: var(--yellowStrong); position:relative}
+    .hero p{margin:8px 0 0;color:var(--muted);font-size:var(--fs-base);max-width:820px; position:relative}
     .hero-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap; position:relative}
 
+    /* Login card */
+    .login-wrap{
+      max-width: 760px;
+      margin: 14px auto 0;
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,28,51,.88), rgba(13,23,48,.78));
+      box-shadow: var(--shadow);
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .field{
+      display:flex; flex-direction:column; gap:8px;
+      flex: 1 1 260px;
+    }
+    label{color:var(--muted); font-weight:950; font-size: var(--fs-small)}
+    input, textarea{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--yellow);
+      outline:none;
+      font-size: var(--fs-base);
+    }
+    input:focus, textarea:focus{border-color: rgba(255,196,0,.48)}
+    .hint{color:var(--muted); font-size: var(--fs-small); margin-top:10px; line-height:1.45}
+
+    /* Dashboard cards */
     .grid{
       margin-top:14px;
       display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
+      grid-template-columns: repeat(3, minmax(0,1fr));
       gap:10px;
     }
     @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, minmax(0,1fr));} }
@@ -175,19 +203,20 @@
       padding:16px 16px 14px;
       border-radius: 20px;
       border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,28,51,.90), rgba(13,23,48,.86));
-      box-shadow: 0 14px 38px rgba(0,0,0,.26);
+      background: linear-gradient(180deg, rgba(15,28,51,.92), rgba(13,23,48,.88));
+      box-shadow: 0 14px 40px rgba(0,0,0,.28);
       min-height: 140px;
       display:flex; flex-direction:column; gap:10px;
       transform: translateY(0);
       transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+      cursor:pointer;
     }
     .card:hover{
       transform: translateY(-3px);
-      box-shadow: 0 18px 48px rgba(0,0,0,.34);
-      border-color: rgba(241,196,15,.35);
+      box-shadow: 0 18px 54px rgba(0,0,0,.36);
+      border-color: rgba(255,196,0,.36);
     }
-    .card b{font-size:var(--fs-card-title)}
+    .card b{font-size:var(--fs-card-title); color: var(--yellowStrong)}
     .card small{color:var(--muted);line-height:1.45; font-size: var(--fs-base)}
     .card .tag{
       margin-top:auto;
@@ -198,6 +227,57 @@
       border:1px solid var(--line);
       font-weight: 950;
       font-size: var(--fs-small);
+      color: var(--yellow);
+    }
+
+    /* Assistant */
+    .assistant{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    .assistant h2{margin:0; font-size: var(--fs-title); color: var(--yellowStrong)}
+    .assistant p{margin:8px 0 0; color:var(--muted)}
+    .assistant .box{
+      margin-top:10px;
+      padding: 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+    }
+    .chat{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height: 260px;
+      overflow:auto;
+      padding-right:6px;
+    }
+    .bubble{
+      max-width: 92%;
+      padding: 12px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.08);
+      color: var(--yellow);
+      font-size: var(--fs-base);
+      line-height:1.4;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+    .bubble.user{
+      align-self:flex-end;
+      background: rgba(47,108,255,.16);
+      border-color: rgba(47,108,255,.30);
+    }
+    .bubble.ai{
+      align-self:flex-start;
+      background: rgba(255,196,0,.10);
+      border-color: rgba(255,196,0,.26);
     }
 
     /* Bottom nav */
@@ -205,14 +285,14 @@
       position:fixed; left:0; right:0; bottom:0;
       z-index:60;
       padding: 10px 12px 12px;
-      background: linear-gradient(180deg, rgba(11,18,32,.00), rgba(11,18,32,.94));
+      background: linear-gradient(180deg, rgba(10,18,34,.00), rgba(10,18,34,.95));
       backdrop-filter: blur(10px);
     }
     .bottom-inner{
-      max-width:1120px;margin:0 auto;
+      max-width:1140px;margin:0 auto;
       border:1px solid var(--line);
       border-radius: 18px;
-      background: rgba(8,12,20,.62);
+      background: rgba(8,12,20,.68);
       display:flex;
       gap:8px;
       align-items:center;
@@ -227,7 +307,7 @@
       border-radius:16px;
       border:1px solid var(--line);
       background: rgba(255,255,255,.08);
-      color:#fff;
+      color: var(--yellow);
       font-weight: 950;
       cursor:pointer;
       display:inline-flex; gap:8px; align-items:center;
@@ -242,7 +322,7 @@
     /* Modal */
     .modal{
       position:fixed; inset:0; z-index:9999;
-      background: rgba(0,0,0,.58);
+      background: rgba(0,0,0,.60);
       backdrop-filter: blur(10px);
       display:none;
       align-items:flex-end;
@@ -250,13 +330,12 @@
       padding: 14px;
     }
     .modal.show{display:flex}
-
     .sheet{
-      width:min(920px,100%);
+      width:min(960px,100%);
       border-radius: 24px;
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(16,35,85,.96), rgba(10,14,22,.96));
-      box-shadow: 0 22px 80px rgba(0,0,0,.48);
+      box-shadow: 0 22px 80px rgba(0,0,0,.50);
       overflow:hidden;
     }
     .sheet-top{
@@ -268,7 +347,7 @@
       flex-wrap:wrap;
     }
     .sheet-top .who{display:flex; flex-direction:column; gap:3px}
-    .sheet-top .who b{letter-spacing:.2px; font-size: 17px}
+    .sheet-top .who b{letter-spacing:.2px; font-size: 17px; color: var(--yellowStrong)}
     .sheet-top .who span{color:var(--muted);font-size:var(--fs-small)}
     .sheet-body{padding:14px 16px}
     .module-grid{
@@ -277,7 +356,6 @@
       gap:10px;
     }
     @media (max-width: 720px){ .module-grid{grid-template-columns:1fr;} }
-
     .module{
       padding:14px;
       border-radius:18px;
@@ -286,100 +364,46 @@
       cursor:pointer;
       text-align:left;
       transition: transform .14s ease, border-color .14s ease;
+      color: var(--yellow);
     }
     .module:hover{
       transform: translateY(-2px);
-      border-color: rgba(241,196,15,.40);
+      border-color: rgba(255,196,0,.42);
     }
-    .module b{display:block; font-size: 16px}
+    .module b{display:block; font-size: 16px; color: var(--yellowStrong)}
     .module small{display:block;color:var(--muted);margin-top:6px;line-height:1.45; font-size: var(--fs-base)}
     .quick{margin-top:12px; display:flex; gap:10px; flex-wrap:wrap}
-
-    /* Login */
-    .login-wrap{
-      max-width: 680px;
-      margin: 18px auto 0;
-      padding: 16px;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,28,51,.85), rgba(13,23,48,.75));
-      box-shadow: var(--shadow);
-    }
-    .row{display:flex; gap:10px; flex-wrap:wrap}
-    .field{
-      display:flex; flex-direction:column; gap:8px;
-      flex: 1 1 240px;
-    }
-    label{color:var(--muted); font-weight:900; font-size: var(--fs-small)}
-    input{
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      color:#fff;
-      outline:none;
-      font-size: var(--fs-base);
-    }
-    input:focus{border-color: rgba(241,196,15,.45)}
-    .hint{color:var(--muted); font-size: var(--fs-small); margin-top:10px; line-height:1.45}
-
-    /* Asistente */
-    .assistant{
-      margin-top: 14px;
-      border-radius: var(--radius);
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      box-shadow: var(--shadow);
-      padding: 14px;
-    }
-    .assistant h2{margin:0; font-size: var(--fs-title)}
-    .assistant p{margin:8px 0 0; color:var(--muted)}
-    .assistant .box{
-      margin-top:10px;
-      padding: 12px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.16);
-    }
-    textarea{
-      width:100%;
-      min-height: 88px;
-      resize: vertical;
-      padding: 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      color:#fff;
-      font-size: var(--fs-base);
-      outline:none;
-    }
 
     /* Toast */
     .toast{
       position:fixed;
       left:50%;
       transform: translateX(-50%);
-      bottom: 92px;
+      bottom: 98px;
       z-index:99999;
       padding:12px 14px;
       border-radius: 14px;
-      color:#fff;
+      color:#ffe08a;
       font: 14px system-ui;
       box-shadow: 0 12px 34px rgba(0,0,0,.28);
-      background: rgba(24,90,255,.92);
+      background: rgba(11,47,91,.92);
       display:none;
-      max-width: min(560px, 92vw);
+      max-width: min(640px, 92vw);
+      border: 1px solid rgba(255,196,0,.22);
     }
     .toast.show{display:block}
-    .toast.bad{background: rgba(231,76,60,.92)}
+    .toast.bad{
+      background: rgba(139,0,0,.92);
+      border-color: rgba(255,255,255,.12);
+      color: #fff;
+    }
 
-    /* Footer / autor */
     .footer{
       margin-top: 14px;
       color: var(--muted);
       font-size: var(--fs-small);
       text-align:center;
-      opacity:.9;
+      opacity:.92;
     }
   </style>
 </head>
@@ -392,31 +416,34 @@
         <div class="logo"></div>
         <div class="title">
           <b>RAULI</b>
-          <span id="subTitle">Panadería & Dulcería · Offline-first + Nube</span>
+          <span id="subTitle">Panadería & Dulcería · Offline-first + IA</span>
         </div>
       </div>
 
       <div class="chips">
         <button class="btn" id="btnUpdate">🔔 Actualizar</button>
+
         <span class="chip" id="chipConn"><span class="dot offline"></span> Offline</span>
         <span class="chip" id="chipSync">🟥 Sin señal (guardando local)</span>
+
+        <span class="chip" id="chipQueue" style="display:none">🤖 IA pendiente: 0</span>
         <span class="chip" id="chipUser" style="display:none">👤 —</span>
       </div>
     </div>
   </div>
 
   <div class="wrap">
-
     <div class="hero">
       <div>
-        <h1>Panel operativo por roles (Paso 2)</h1>
+        <h1>RAULI Operativo (IA + Offline)</h1>
         <p>
-          Ahora la entrada es con <b>Login</b> (Firebase Auth) y la app te coloca automáticamente en tu rol.
-          El <b>Asistente</b> guarda mensajes offline y los envía cuando vuelve la señal.
+          La app guarda todo sin señal (offline-first). El asistente guarda mensajes en cola y cuando vuelve la señal, los envía
+          y solicita respuesta a la IA (Cloud Function <b>rauliAssistant</b>).
         </p>
       </div>
       <div class="hero-actions">
         <button class="btn blue" id="btnProbe">🚀 Probar Nube</button>
+        <button class="btn ghost" id="btnInstall">📲 Instalar App</button>
         <button class="btn ghost" id="btnAbout">ℹ️ Acerca de</button>
         <button class="btn danger" id="btnLogout" style="display:none">Salir</button>
       </div>
@@ -426,10 +453,9 @@
     <div class="login-wrap" id="loginBox">
       <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
         <div>
-          <b style="font-size:18px">🔐 Iniciar sesión</b>
-          <div class="hint">Usa el correo/clave del usuario creado en Firebase Authentication.</div>
+          <b style="font-size:18px;color:var(--yellowStrong)">🔐 Iniciar sesión</b>
+          <div class="hint">Usa el correo/clave creado en Firebase Authentication.</div>
         </div>
-        <button class="btn ghost" id="btnInstall">📲 Instalar App</button>
       </div>
 
       <div class="row" style="margin-top:12px">
@@ -445,44 +471,44 @@
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
         <button class="btn blue" id="btnLogin">Entrar</button>
-        <button class="btn ghost" id="btnQuickRole">Entrar demo (sin login)</button>
+        <button class="btn ghost" id="btnDemo">Entrar demo (sin login)</button>
       </div>
 
       <div class="hint">
-        <b>Nota:</b> Si haces “Entrar demo” es solo para ver pantallas. Para reglas seguras usamos Login real.
+        <b>Nota:</b> Demo es para ver pantallas. Para IA real y seguridad, usa login.
       </div>
     </div>
 
-    <!-- DASHBOARD (se muestra al loguear) -->
+    <!-- DASHBOARD -->
     <div id="dashBox" style="display:none">
       <div class="grid" id="roleCards"></div>
 
       <!-- Asistente -->
-      <div class="assistant">
-        <h2>🤖 Asistente RAULI (offline/online)</h2>
+      <div class="assistant" id="assistantSection">
+        <h2>🤖 Asistente RAULI (Offline → Online IA)</h2>
         <p>
-          Escribe o dicta. Si no hay señal, queda en cola. Cuando vuelve la conexión, se envía a la nube y queda registrado.
-          (Luego lo conectamos a IA real vía Firebase Functions).
+          Escribe o dicta. Si no hay señal, se guarda. Cuando vuelve internet, se envía y se consulta la IA.
         </p>
 
         <div class="box">
-          <textarea id="assistantInput" placeholder="Ej: 'Bety: hoy faltaron $10 en caja, revisar evidencias'"></textarea>
+          <textarea id="assistantInput" placeholder="Ej: 'Bety: cierre de caja, faltan $10, revisar evidencias'"></textarea>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-            <button class="btn blue" id="btnSendMsg">Enviar / Guardar</button>
+            <button class="btn blue" id="btnSendIA">Enviar / Guardar</button>
             <button class="btn ghost" id="btnVoice">🎙️ Dictar</button>
-            <button class="btn ghost" id="btnFlush">📡 Enviar cola</button>
+            <button class="btn ghost" id="btnFlushIA">📡 Enviar cola</button>
           </div>
 
-          <div class="hint" id="queueHint">Cola offline: 0</div>
+          <div class="hint" id="queueHint">🤖 IA pendiente: 0</div>
+
+          <div class="chat" id="chat"></div>
         </div>
       </div>
 
       <div class="footer">
-        Autor del prototipo: <b>ChatGPT (GPT-5.2 Thinking)</b> · RAULI v2 (Login + Asistente Offline/Online)
+        Sistema RAULI © 2026 · Prototipo asistido por <b>ChatGPT (GPT-5.2 Thinking)</b> · Autor del prototipo RAULI
       </div>
     </div>
-
   </div>
 
   <!-- Bottom -->
@@ -497,12 +523,12 @@
       </div>
 
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn ghost" id="btnBot">🤖 Asistente</button>
+        <button class="btn ghost" id="btnOpenPanel">🧭 Panel</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal -->
+  <!-- Modal Panel por Rol -->
   <div class="modal" id="modal">
     <div class="sheet">
       <div class="sheet-top">
@@ -527,13 +553,13 @@
     </div>
   </div>
 
-  <!-- About modal (simple) -->
+  <!-- About modal -->
   <div class="modal" id="aboutModal">
     <div class="sheet">
       <div class="sheet-top">
         <div class="who">
           <b>ℹ️ Acerca de RAULI</b>
-          <span>Prototipo operativo con Offline-first + Firebase + Asistente</span>
+          <span>Offline-first + Firestore + IA por Cloud Functions</span>
         </div>
         <button class="btn ghost" id="btnAboutClose">Cerrar</button>
       </div>
@@ -543,10 +569,9 @@
           <small>ChatGPT (GPT-5.2 Thinking) — Autor del prototipo RAULI.</small>
         </div>
         <div class="module" style="cursor:default;margin-top:10px">
-          <b>IA (siguiente nivel)</b>
+          <b>IA (modo profesional)</b>
           <small>
-            Recomendado: conectar el asistente a una <b>Cloud Function</b> (servidor seguro) que llame a IA y devuelva respuesta.
-            Offline: se encola y al volver internet se sincroniza automáticamente.
+            La app llama a la Cloud Function <b>rauliAssistant</b>. Offline: se guarda en cola local y se envía al recuperar señal.
           </small>
         </div>
       </div>
@@ -555,17 +580,18 @@
 
   <div class="toast" id="toast"></div>
 
+  <!-- UI Script (NO module) -->
   <script>
-    // Helpers UI
+    // Toast
     const toastEl = document.getElementById('toast');
     function toast(msg, ok=true){
       toastEl.textContent = msg;
       toastEl.classList.toggle('bad', !ok);
       toastEl.classList.add('show');
-      setTimeout(()=>toastEl.classList.remove('show'), 2600);
+      setTimeout(()=>toastEl.classList.remove('show'), 2800);
     }
 
-    // Campanita sin archivos (WebAudio)
+    // Campanita (WebAudio)
     function ding(){
       try{
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -583,7 +609,7 @@
       }catch(e){}
     }
 
-    // Online / Offline chips
+    // Online/Offline Chips
     const chipConn = document.getElementById('chipConn');
     const chipSync = document.getElementById('chipSync');
     function paintConn(){
@@ -593,11 +619,11 @@
         : `<span class="dot offline"></span> Offline`;
       chipSync.textContent = online ? "✅ En línea (guardando local también)" : "🟥 Sin señal (guardando local)";
     }
-    window.addEventListener('online', paintConn);
-    window.addEventListener('offline', paintConn);
+    window.addEventListener('online', ()=>{ paintConn(); toast("🟢 Conexión restablecida. Sincronizando…", true); });
+    window.addEventListener('offline', ()=>{ paintConn(); toast("🟡 Sin conexión. Guardando local.", true); });
     paintConn();
 
-    // PWA install prompt
+    // PWA install
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e)=>{
       e.preventDefault();
@@ -606,7 +632,7 @@
 
     document.getElementById('btnInstall').addEventListener('click', async ()=>{
       if(!deferredPrompt){
-        toast("iPhone: Safari → Compartir → 'Agregar a inicio'. Android/PC: Chrome te mostrará banner.", true);
+        toast("iPhone: Safari → Compartir → 'Agregar a inicio'. Android/PC: Chrome mostrará instalar si PWA está OK.", true);
         return;
       }
       deferredPrompt.prompt();
@@ -615,17 +641,23 @@
       toast(choice?.outcome === 'accepted' ? "✅ Instalación iniciada" : "Instalación cancelada", true);
     });
 
-    // Service worker register (si existe sw.js)
+    // SW register (si existe sw.js)
     (async ()=>{
       if('serviceWorker' in navigator){
-        try{ await navigator.serviceWorker.register('./sw.js', { scope:'./' }); }catch(e){}
+        try{ await navigator.serviceWorker.register('./sw.js', { scope:'./' }); }
+        catch(e){}
       }
     })();
 
     // Update
-    document.getElementById('btnUpdate').addEventListener('click', ()=>{
+    document.getElementById('btnUpdate').addEventListener('click', async ()=>{
       ding();
       toast("Actualizando versión…", true);
+      try{
+        // intenta pedir update a SW si existe
+        const reg = await navigator.serviceWorker?.getRegistration();
+        if(reg) await reg.update();
+      }catch(e){}
       setTimeout(()=>location.reload(true), 350);
     });
 
@@ -634,7 +666,7 @@
     document.getElementById('btnAbout').addEventListener('click', ()=>aboutModal.classList.add('show'));
     document.getElementById('btnAboutClose').addEventListener('click', ()=>aboutModal.classList.remove('show'));
 
-    // Bottom nav quick
+    // Bottom nav feedback
     const navBtns = ["navHome","navCaja","navInv","navProd","navVentas"].map(id=>document.getElementById(id));
     navBtns.forEach(b=>{
       b.addEventListener('click', ()=>{
@@ -644,14 +676,18 @@
       });
     });
 
-    // Bot button scroll
-    document.getElementById('btnBot').addEventListener('click', ()=>{
-      document.getElementById('assistantInput')?.scrollIntoView({behavior:'smooth', block:'center'});
-      toast("🤖 Asistente listo (escribe o dicta)", true);
-    });
+    // helpers chat UI
+    function chatAdd(text, who="user"){
+      const chat = document.getElementById("chat");
+      const div = document.createElement("div");
+      div.className = "bubble " + (who === "ai" ? "ai" : "user");
+      div.textContent = text;
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
   </script>
 
-  <!-- Firebase -->
+  <!-- Firebase + App Logic (module) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
@@ -663,6 +699,9 @@
     import {
       getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFunctions, httpsCallable
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js";
 
     // ===== Firebase config (tu proyecto) =====
     const firebaseConfig = {
@@ -678,104 +717,54 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
+    const functions = getFunctions(app);
 
     // Offline-first Firestore
     try { await enableIndexedDbPersistence(db); } catch(e) {}
 
     const $ = (id)=>document.getElementById(id);
-    function toast(msg, ok=true){
-      const t = $('toast');
-      t.textContent = msg;
-      t.classList.toggle('bad', !ok);
-      t.classList.add('show');
-      setTimeout(()=>t.classList.remove('show'), 2600);
-    }
-
     const RAULI_BIZ = "rauli";
     const bizDocRef = () => doc(db, "business", RAULI_BIZ);
-
-    // Perfiles (roles) en: business/rauli/users/{uid}
+    const subCol = (name) => collection(db, "business", RAULI_BIZ, name);
     const userProfileRef = (uid)=>doc(db, "business", RAULI_BIZ, "users", uid);
 
-    // Colecciones operativas
-    const subCol = (name) => collection(db, "business", RAULI_BIZ, name);
-
-    function nowISO(){
-      const d=new Date();
-      return d.toISOString().slice(0,10);
-    }
-
-    // ========= ROLES =========
+    // Roles (como acordamos)
     const ROLES = {
-      owner:   { name:"Raúl (Dueño)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría","Configuración"] },
-      coowner: { name:"Lisi (Co-propietaria)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría"] },
-      supervisor:{ name:"Orlandito (Supervisor)", modules:["Calidad","Inventario","Producción","Ventas","Auditoría"] },
-      admin_ops:{ name:"Papito (Producción)", modules:["Producción","Inventario","Ventas","Caja"] },
-      accountant:{ name:"Bety (Contadora)", modules:["Caja","Gastos","Cierres","Evidencias","Auditoría"] },
+      owner: { name:"Raúl (Dueño)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría","Configuración"] },
+      co_owner: { name:"Lisi (Co-propietaria)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría"] },
+      supervisor: { name:"Orlandito (Supervisor)", modules:["Calidad","Inventario","Producción","Ventas","Auditoría"] },
+      admin_produccion: { name:"Papito (Producción)", modules:["Producción","Inventario","Ventas","Caja"] },
+      contadora: { name:"Bety (Contadora)", modules:["Caja","Finanzas","Cierres","Evidencias","Auditoría"] }
     };
 
-    // ========= Estado de sesión =========
-    let current = {
-      uid:null,
-      displayName:null,
-      role:null,
-      email:null
-    };
+    // UI helpers from non-module script
+    const toast = window.toast;
+    const ding = window.ding;
+    const chatAdd = window.chatAdd;
+
+    // Session
+    let current = { uid:null, email:null, role:null, displayName:null };
 
     function showLogin(){
-      $('loginBox').style.display = "block";
-      $('dashBox').style.display = "none";
-      $('btnLogout').style.display = "none";
-      $('chipUser').style.display = "none";
+      $("loginBox").style.display = "block";
+      $("dashBox").style.display = "none";
+      $("btnLogout").style.display = "none";
+      $("chipUser").style.display = "none";
+      $("chipQueue").style.display = "none";
     }
-
     function showDash(){
-      $('loginBox').style.display = "none";
-      $('dashBox').style.display = "block";
-      $('btnLogout').style.display = "inline-flex";
-      $('chipUser').style.display = "inline-flex";
-      $('chipUser').textContent = `👤 ${current.displayName || current.email || 'Usuario'} · ${current.role || 'rol'}`;
+      $("loginBox").style.display = "none";
+      $("dashBox").style.display = "block";
+      $("btnLogout").style.display = "inline-flex";
+      $("chipUser").style.display = "inline-flex";
+      $("chipUser").textContent = `👤 ${current.displayName || current.email || 'Usuario'} · ${current.role || 'rol'}`;
+      $("chipQueue").style.display = "inline-flex";
+      updateQueueUI();
     }
 
-    // ========= UI: modal por rol =========
-    function openRole(roleKey){
-      const modal = $('modal');
-      const r = ROLES[roleKey] || ROLES.owner;
+    // ---- Base init (solo dueño) ----
+    function nowISO(){ return new Date().toISOString().slice(0,10); }
 
-      $('whoName').textContent = current.displayName ? `${current.displayName}` : r.name;
-      $('whoMeta').textContent = `Rol: ${roleKey} · Módulos: ${r.modules.length}`;
-
-      const grid = $('moduleGrid');
-      grid.innerHTML = "";
-      r.modules.forEach(m=>{
-        const b = document.createElement("button");
-        b.className = "module";
-        b.innerHTML = `<b>${m}</b><small>Abrir módulo ${m.toLowerCase()} y registrar evidencias.</small>`;
-        b.onclick = async ()=>{
-          try{
-            await addDoc(subCol("auditoria"), {
-              type:"open_module",
-              module:m,
-              role:roleKey,
-              uid: current.uid || null,
-              at: serverTimestamp()
-            });
-          }catch(e){}
-          toast("Abriendo: " + m, true);
-        };
-        grid.appendChild(b);
-      });
-
-      // Solo dueño ve Inicializar Base
-      $('btnInitBase').style.display = (roleKey === "owner") ? "inline-flex" : "none";
-      modal.classList.add("show");
-    }
-
-    function closeRole(){ $('modal').classList.remove("show"); }
-    $('btnClose').addEventListener('click', closeRole);
-    $('btnBack').addEventListener('click', closeRole);
-
-    // ========= Inicializar base (solo owner) =========
     async function ensureBizMeta(){
       const ref = bizDocRef();
       const snap = await getDoc(ref);
@@ -783,12 +772,11 @@
         await setDoc(ref, {
           name:"Panadería & Dulcería RAULI",
           createdAt: serverTimestamp(),
-          version:"v2",
+          version:"v3-ia",
           status:"active"
         });
       }
     }
-
     async function ensureConfig(){
       const ref = doc(db, "business", RAULI_BIZ, "config", "general");
       const snap = await getDoc(ref);
@@ -801,46 +789,65 @@
         });
       }
     }
-
-    async function seedBaseCollections(){
+    async function seedBase(){
       const marker = { createdAt: serverTimestamp(), seed:true };
-
-      await addDoc(subCol("inventario"), {
-        ...marker, type:"insumo", sku:"HARINA-0001", name:"Harina (demo)",
-        unit:"lb", qty:50, min:10, costUnit:0
-      });
-
-      await addDoc(subCol("produccion"), {
-        ...marker, type:"lote", product:"Pan (demo)", qty:20, status:"en_proceso", date: nowISO()
-      });
-
-      await addDoc(subCol("ventas"), {
-        ...marker, type:"venta", date: nowISO(), total:0, method:"efectivo", note:"Venta demo"
-      });
-
-      await addDoc(subCol("caja"), {
-        ...marker, type:"apertura", date: nowISO(), amount:0, note:"Caja demo"
-      });
-
-      await addDoc(subCol("auditoria"), {
-        ...marker, type:"seed", msg:"Base inicial creada desde RAULI", at: serverTimestamp()
-      });
+      await addDoc(subCol("inventario"), { ...marker, type:"insumo", sku:"HARINA-0001", name:"Harina (demo)", unit:"lb", qty:50, min:10 });
+      await addDoc(subCol("produccion"), { ...marker, type:"lote", product:"Pan (demo)", qty:20, status:"en_proceso", date: nowISO() });
+      await addDoc(subCol("ventas"), { ...marker, type:"venta", date: nowISO(), total:0, method:"efectivo", note:"Venta demo" });
+      await addDoc(subCol("caja"), { ...marker, type:"apertura", date: nowISO(), amount:0, note:"Caja demo" });
+      await addDoc(subCol("auditoria"), { ...marker, type:"seed", msg:"Base inicial creada desde RAULI", at: serverTimestamp() });
     }
-
     async function initBase(){
       try{
         await ensureBizMeta();
         await ensureConfig();
-        await seedBaseCollections();
+        await seedBase();
         toast("✅ Base RAULI inicializada", true);
       }catch(e){
         toast("❌ Error inicializando base: " + (e?.message || e), false);
       }
     }
-    $('btnInitBase').addEventListener('click', initBase);
 
-    // ========= Acciones rápidas =========
-    async function openCashToday(){
+    // ---- Panel por rol (modal) ----
+    function openPanel(){
+      const modal = $("modal");
+      const r = ROLES[current.role] || ROLES.owner;
+      $("whoName").textContent = current.displayName || r.name;
+      $("whoMeta").textContent = `Rol: ${current.role} · Módulos: ${r.modules.length}`;
+      $("btnInitBase").style.display = (current.role === "owner") ? "inline-flex" : "none";
+
+      const grid = $("moduleGrid");
+      grid.innerHTML = "";
+      r.modules.forEach(m=>{
+        const b = document.createElement("button");
+        b.className = "module";
+        b.innerHTML = `<b>${m}</b><small>Entrar a ${m.toLowerCase()} y registrar evidencias.</small>`;
+        b.onclick = async ()=>{
+          try{
+            await addDoc(subCol("auditoria"), {
+              type:"open_module",
+              module:m,
+              role: current.role,
+              uid: current.uid || null,
+              at: serverTimestamp()
+            });
+          }catch(e){}
+          toast("Abriendo: " + m, true);
+        };
+        grid.appendChild(b);
+      });
+
+      modal.classList.add("show");
+    }
+    function closePanel(){ $("modal").classList.remove("show"); }
+
+    $("btnClose").addEventListener("click", closePanel);
+    $("btnBack").addEventListener("click", closePanel);
+    $("btnOpenPanel").addEventListener("click", openPanel);
+    $("btnInitBase").addEventListener("click", initBase);
+
+    // Quick actions
+    $("btnOpenCash").addEventListener("click", async ()=>{
       try{
         await addDoc(subCol("caja"), {
           type:"apertura",
@@ -855,10 +862,9 @@
       }catch(e){
         toast("❌ Error caja: " + (e?.message || e), false);
       }
-    }
-    $('btnOpenCash').addEventListener('click', openCashToday);
+    });
 
-    async function quickInsumo(){
+    $("btnQuickInsumo").addEventListener("click", async ()=>{
       try{
         await addDoc(subCol("inventario"), {
           type:"insumo",
@@ -875,15 +881,14 @@
       }catch(e){
         toast("❌ Error inventario: " + (e?.message || e), false);
       }
-    }
-    $('btnQuickInsumo').addEventListener('click', quickInsumo);
+    });
 
-    // ========= PROBAR NUBE =========
-    async function probeCloud(){
+    // ---- Probar nube ----
+    $("btnProbe").addEventListener("click", async ()=>{
       try{
         await addDoc(collection(db, "business", RAULI_BIZ, "events"), {
           type:"test",
-          desc:"Prueba Firestore OK (RAULI v2)",
+          desc:"Prueba Firestore OK (RAULI v3 IA)",
           uid: current.uid || null,
           role: current.role || null,
           clientTime: Date.now(),
@@ -893,132 +898,174 @@
       }catch(e){
         toast("❌ Error Firestore: " + (e?.message || e), false);
       }
-    }
-    $('btnProbe').addEventListener('click', probeCloud);
+    });
 
-    // ========= Dashboard cards dinámicas =========
-    function renderRoleCards(roleKey){
-      const holder = $('roleCards');
+    // ---- Render dashboard (una tarjeta por tu rol) ----
+    function renderDashboard(){
+      const holder = $("roleCards");
       holder.innerHTML = "";
-      const r = ROLES[roleKey] || ROLES.owner;
+      const r = ROLES[current.role] || ROLES.owner;
 
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
+      const c = document.createElement("div");
+      c.className = "card";
+      c.innerHTML = `
         <b>${r.name}</b>
-        <small>Tu panel está listo. Entra a tus módulos y registra evidencias.</small>
-        <span class="tag">Entrar</span>
+        <small>Tu panel está listo. Entra a tus módulos y registra evidencias. La IA te ayuda y guarda offline.</small>
+        <span class="tag">Abrir panel</span>
       `;
-      card.addEventListener('click', ()=>openRole(roleKey));
-      holder.appendChild(card);
+      c.addEventListener("click", openPanel);
+      holder.appendChild(c);
     }
 
-    // ========= ASISTENTE: cola offline + voz + sync =========
-    const QUEUE_KEY = "rauli_assistant_queue_v1";
-
+    // ---- IA OFFLINE-FIRST + ONLINE Function ----
+    const IA_QUEUE_KEY = "rauli_ia_queue_v2";
     function getQueue(){
-      try{ return JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]"); }
-      catch(e){ return []; }
+      try{ return JSON.parse(localStorage.getItem(IA_QUEUE_KEY) || "[]"); }catch(e){ return []; }
     }
-    function setQueue(arr){
-      localStorage.setItem(QUEUE_KEY, JSON.stringify(arr));
-      $('queueHint').textContent = `Cola offline: ${arr.length}`;
+    function setQueue(q){
+      localStorage.setItem(IA_QUEUE_KEY, JSON.stringify(q));
+      updateQueueUI();
     }
-    setQueue(getQueue());
+    function updateQueueUI(){
+      const q = getQueue();
+      $("queueHint").textContent = `🤖 IA pendiente: ${q.length}`;
+      $("chipQueue").textContent = `🤖 IA pendiente: ${q.length}`;
+    }
+    updateQueueUI();
 
-    async function saveAssistantMessage(payload){
-      // Guarda SIEMPRE en Firestore (si hay internet, se sube; si no, queda en cache de Firestore + cola local)
-      await addDoc(subCol("assistantMessages"), {
-        ...payload,
-        uid: current.uid || null,
-        role: current.role || null,
-        createdAt: serverTimestamp()
-      });
+    async function saveAssistantMessage(type, text, extra={}){
+      // Guardamos en Firestore (offline persistence se encarga si no hay internet)
+      try{
+        await addDoc(subCol("assistantMessages"), {
+          type, text,
+          uid: current.uid || null,
+          role: current.role || null,
+          email: current.email || null,
+          clientTime: Date.now(),
+          createdAt: serverTimestamp(),
+          ...extra
+        });
+      }catch(e){
+        // si falla por reglas o algo, no bloqueamos el flujo
+      }
     }
 
-    // Aquí conectaremos IA real luego:
-    // Recomendado: Cloud Function (segura) que llama a IA.
-    async function callAIOnline(text){
-      // Placeholder: por ahora devuelve respuesta "operativa"
-      // Luego lo cambiamos a fetch("https://TU-FUNCTION-URL/ai", {method:"POST", body:...})
-      return `✅ Recibido. Quedó registrado. (Siguiente paso: IA analizará esto y generará reporte/acción.)`;
+    async function callFunctionAI(text){
+      // Llama Cloud Function: rauliAssistant
+      // Si no está desplegada aún, fallará y caemos a respuesta local.
+      const fn = httpsCallable(functions, "rauliAssistant");
+      const res = await fn({ text, role: current.role || "operacion" });
+      return res?.data?.answer || "No hubo respuesta de IA.";
     }
 
-    async function enqueueOrSend(text, source="texto"){
-      const item = {
-        id: "m_" + Math.random().toString(16).slice(2),
-        text,
-        source,
-        ts: Date.now(),
-        status: navigator.onLine ? "sending" : "queued"
-      };
+    function localFallbackAI(text){
+      // Respuesta local útil cuando no hay function
+      const t = text.toLowerCase();
+      if(t.includes("caja") || t.includes("falt") || t.includes("efectivo")){
+        return "🔎 Revisión rápida: registra evidencia, verifica movimientos de caja y confirma cierre. Si falta efectivo, deja nota + responsable + foto.";
+      }
+      if(t.includes("inventario") || t.includes("insumo") || t.includes("harina")){
+        return "📦 Inventario: registra entrada/salida del insumo, valida mínimo, y crea alerta si baja de umbral. Adjunta evidencia (factura/foto).";
+      }
+      if(t.includes("venta") || t.includes("ventas")){
+        return "🧾 Ventas: registra el total, método de pago y evidencia. Si es reembolso, anota motivo y firma/responsable.";
+      }
+      return "✅ Recibido. Quedó registrado. (IA completa se activará al conectar la Cloud Function).";
+    }
 
-      if(!navigator.onLine){
-        const q = getQueue();
-        q.push(item);
-        setQueue(q);
-        toast("🟥 Sin señal: guardado en cola offline", true);
+    async function askIA(text, source="texto"){
+      if(!text || !text.trim()){
+        toast("Escribe un mensaje para el asistente", false);
         return;
       }
 
-      // Online: guarda + pide respuesta AI (placeholder) + guarda respuesta
-      try{
-        await saveAssistantMessage({ type:"user", text, source, clientTime: item.ts });
-        const ai = await callAIOnline(text);
-        await saveAssistantMessage({ type:"ai", text: ai, source:"ai", clientTime: Date.now() });
-        toast("✅ Enviado y registrado (con respuesta)", true);
-      }catch(e){
-        // Si falla, a cola
+      // Mostrar burbuja del usuario
+      chatAdd(text, "user");
+      await saveAssistantMessage("user", text, { source });
+
+      // OFFLINE -> cola
+      if(!navigator.onLine){
         const q = getQueue();
-        item.status = "queued";
-        q.push(item);
+        q.push({ id: crypto.randomUUID(), text, source, ts: Date.now(), role: current.role || "operacion" });
         setQueue(q);
-        toast("⚠️ Falló envío: guardado en cola", false);
+        toast("🟥 Sin conexión: guardado en cola IA", true);
+        chatAdd("🟥 Sin conexión: guardé tu mensaje. Se enviará cuando vuelva la señal.", "ai");
+        return;
       }
+
+      // ONLINE -> intenta function, si falla usa fallback
+      toast("🤖 Consultando IA…", true);
+      let answer = "";
+      try{
+        answer = await callFunctionAI(text);
+        ding();
+      }catch(e){
+        answer = localFallbackAI(text);
+      }
+      chatAdd(answer, "ai");
+      await saveAssistantMessage("ai", answer, { inResponseTo: text, source:"ai" });
     }
 
     async function flushQueue(){
       const q = getQueue();
-      if(q.length === 0){
-        toast("Cola vacía ✅", true);
+      if(!q.length){
+        toast("Cola IA vacía ✅", true);
         return;
       }
       if(!navigator.onLine){
-        toast("Sin señal: no se puede enviar cola", false);
+        toast("Sin señal: no puedo enviar la cola", false);
         return;
       }
 
-      toast("📡 Enviando cola…", true);
-      const rest = [];
+      toast(`📡 Enviando cola IA (${q.length})…`, true);
+
+      const remaining = [];
       for(const item of q){
         try{
-          await saveAssistantMessage({ type:"user", text:item.text, source:item.source, clientTime:item.ts, fromQueue:true });
-          const ai = await callAIOnline(item.text);
-          await saveAssistantMessage({ type:"ai", text: ai, source:"ai", clientTime: Date.now(), inResponseTo:item.id });
+          // re-procesar con IA
+          let answer = "";
+          try{
+            answer = await callFunctionAI(item.text);
+            ding();
+          }catch(e){
+            answer = localFallbackAI(item.text);
+          }
+          // registrar
+          await saveAssistantMessage("user", item.text, { fromQueue:true, source:item.source, ts:item.ts });
+          await saveAssistantMessage("ai", answer, { fromQueue:true, source:"ai", inResponseTo:item.id });
+
+          chatAdd(`(Desde cola) ${item.text}`, "user");
+          chatAdd(answer, "ai");
         }catch(e){
-          rest.push(item);
+          remaining.push(item);
         }
       }
-      setQueue(rest);
-      toast(rest.length ? `⚠️ Quedaron ${rest.length} en cola` : "✅ Cola enviada completa", !rest.length);
+      setQueue(remaining);
+      toast(remaining.length ? `⚠️ Quedaron ${remaining.length} en cola` : "✅ Cola IA enviada completa", !remaining.length);
     }
 
-    $('btnSendMsg').addEventListener('click', async ()=>{
-      const text = $('assistantInput').value.trim();
-      if(!text){ toast("Escribe un mensaje primero", false); return; }
-      $('assistantInput').value = "";
-      await enqueueOrSend(text, "texto");
+    $("btnSendIA").addEventListener("click", async ()=>{
+      const text = $("assistantInput").value.trim();
+      if(!text) return toast("Escribe un mensaje", false);
+      $("assistantInput").value = "";
+      await askIA(text, "texto");
+      updateQueueUI();
     });
 
-    $('btnFlush').addEventListener('click', flushQueue);
+    $("btnFlushIA").addEventListener("click", async ()=>{
+      await flushQueue();
+      updateQueueUI();
+    });
 
-    // Al volver internet: enviar cola automáticamente
-    window.addEventListener('online', ()=>{ flushQueue().catch(()=>{}); });
+    // Auto-flush cuando vuelva señal
+    window.addEventListener("online", async ()=>{
+      await flushQueue().catch(()=>{});
+      updateQueueUI();
+    });
 
-    // Voz (Web Speech API)
+    // Voz (dictado)
     let recognizing = false;
     let recog = null;
-
     function setupVoice(){
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if(!SR) return null;
@@ -1030,17 +1077,14 @@
     }
     recog = setupVoice();
 
-    $('btnVoice').addEventListener('click', ()=>{
+    $("btnVoice").addEventListener("click", ()=>{
       if(!recog){
-        toast("Tu navegador no soporta dictado aquí. (Safari iPhone sí suele soportar, pero varía).", false);
+        toast("Dictado no disponible en este navegador.", false);
         return;
       }
-      if(recognizing){
-        recog.stop();
-        return;
-      }
+      if(recognizing){ recog.stop(); return; }
       recognizing = true;
-      toast("🎙️ Dictando… habla ahora", true);
+      toast("🎙️ Dictando…", true);
 
       let finalText = "";
       recog.onresult = (ev)=>{
@@ -1050,27 +1094,18 @@
           if(ev.results[i].isFinal) finalText += tr + " ";
           else interim += tr;
         }
-        $('assistantInput').value = (finalText + interim).trim();
+        $("assistantInput").value = (finalText + interim).trim();
       };
-      recog.onerror = ()=>{ recognizing=false; toast("Error de voz. Intenta de nuevo.", false); };
-      recog.onend = async ()=>{
-        recognizing=false;
-        const text = $('assistantInput').value.trim();
-        if(text){
-          toast("✅ Dictado listo. Presiona Enviar o edita.", true);
-        }else{
-          toast("Dictado vacío.", false);
-        }
-      };
+      recog.onerror = ()=>{ recognizing=false; toast("Error de voz. Intenta otra vez.", false); };
+      recog.onend = ()=>{ recognizing=false; toast("✅ Dictado listo. Puedes enviar.", true); };
       recog.start();
     });
 
-    // ========= LOGIN =========
-    $('btnLogin').addEventListener('click', async ()=>{
-      const email = $('email').value.trim();
-      const pass = $('pass').value;
-      if(!email || !pass){ toast("Completa correo y clave", false); return; }
-
+    // ---- Login ----
+    $("btnLogin").addEventListener("click", async ()=>{
+      const email = $("email").value.trim();
+      const pass = $("pass").value;
+      if(!email || !pass) return toast("Completa correo y clave", false);
       try{
         await signInWithEmailAndPassword(auth, email, pass);
         toast("✅ Sesión iniciada", true);
@@ -1079,7 +1114,7 @@
       }
     });
 
-    $('btnLogout').addEventListener('click', async ()=>{
+    $("btnLogout").addEventListener("click", async ()=>{
       try{
         await signOut(auth);
         toast("Sesión cerrada", true);
@@ -1088,18 +1123,18 @@
       }
     });
 
-    // Demo sin login
-    $('btnQuickRole').addEventListener('click', ()=>{
-      current = { uid:null, displayName:"Demo", role:"owner", email:"demo@rauli" };
+    // Demo
+    $("btnDemo").addEventListener("click", ()=>{
+      current = { uid:null, email:"demo@rauli", role:"owner", displayName:"Demo (Dueño)" };
       showDash();
-      renderRoleCards(current.role);
-      toast("Entraste en modo demo", true);
+      renderDashboard();
+      toast("Modo demo activado", true);
     });
 
-    // ========= Al iniciar / cambio de estado =========
+    // Auth state
     onAuthStateChanged(auth, async (user)=>{
       if(!user){
-        current = {uid:null, displayName:null, role:null, email:null};
+        current = { uid:null, email:null, role:null, displayName:null };
         showLogin();
         return;
       }
@@ -1107,16 +1142,15 @@
       current.uid = user.uid;
       current.email = user.email || null;
 
-      // Cargar perfil del usuario (rol)
-      // Si no existe, cae por defecto a owner (para que no te bloquee)
+      // Cargar perfil (role/name) desde Firestore: business/rauli/users/{uid}
       try{
-        const ref = userProfileRef(user.uid);
-        const snap = await getDoc(ref);
+        const snap = await getDoc(userProfileRef(user.uid));
         if(snap.exists()){
           const data = snap.data();
           current.role = data.role || "owner";
-          current.displayName = data.name || (user.email || "Usuario");
+          current.displayName = data.name || user.email || "Usuario";
         }else{
+          // fallback (no bloquea)
           current.role = "owner";
           current.displayName = user.email || "Usuario";
         }
@@ -1126,23 +1160,24 @@
       }
 
       showDash();
-      renderRoleCards(current.role);
+      renderDashboard();
 
-      // Registrar auditoría de login
+      // Auditoría login
       try{
         await addDoc(subCol("auditoria"), {
           type:"login",
           uid: current.uid,
-          role: current.role,
           email: current.email,
+          role: current.role,
           at: serverTimestamp()
         });
       }catch(e){}
 
-      toast(`✅ Bienvenido: ${current.displayName} (${current.role})`, true);
+      toast(`✅ Bienvenido: ${current.displayName}`, true);
 
-      // al entrar, intenta enviar cola si hay internet
+      // si hay señal, intenta enviar cola IA
       if(navigator.onLine) flushQueue().catch(()=>{});
+      updateQueueUI();
     });
 
   </script>
