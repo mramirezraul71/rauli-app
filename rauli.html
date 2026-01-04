@@ -15,39 +15,58 @@
       --bg:#0b1220;
       --card:#0f1c33;
       --card2:#0d1730;
-      --text:#e9eefb;
-      --muted:#a9b6d6;
+      --text:#eef3ff;
+      --muted:#b7c4e6;
+
       --blue:#2f6cff;
       --blue2:#1f4fc9;
+
       --yellow:#f1c40f;
       --yellow2:#d7a90b;
+
       --line:rgba(255,255,255,.12);
-      --shadow: 0 18px 50px rgba(0,0,0,.35);
-      --radius: 20px;
+      --shadow: 0 18px 55px rgba(0,0,0,.42);
+      --radius: 22px;
+
+      /* Tipografía (Lisi) */
+      --fs-base: 17px;
+      --fs-small: 14px;
+      --fs-title: 20px;
+      --fs-h1: 22px;
+      --fs-card-title: 16px;
     }
+
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 700px at 20% -10%, rgba(47,108,255,.35), transparent 55%),
-                  radial-gradient(1100px 700px at 95% 0%, rgba(241,196,15,.25), transparent 50%),
-                  var(--bg);
+      font-size: var(--fs-base);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(47,108,255,.38), transparent 55%),
+        radial-gradient(1100px 700px at 95% 0%, rgba(241,196,15,.25), transparent 50%),
+        radial-gradient(900px 600px at 60% 110%, rgba(47,108,255,.20), transparent 55%),
+        var(--bg);
       color:var(--text);
       min-height:100vh;
+      overflow-x:hidden;
     }
+
+    /* Animaciones (más viva) */
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+    @keyframes pulse{0%{transform:scale(1); opacity:.8}50%{transform:scale(1.12);opacity:1}100%{transform:scale(1);opacity:.85}}
+    @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:100% 50%}}
 
     /* Top bar */
     .topbar{
-      position: sticky;
-      top:0;
-      z-index:50;
+      position: sticky; top:0; z-index:50;
       padding: 12px 12px 10px;
-      background: linear-gradient(180deg, rgba(11,18,32,.95), rgba(11,18,32,.55));
+      background: linear-gradient(180deg, rgba(11,18,32,.96), rgba(11,18,32,.60));
       backdrop-filter: blur(10px);
       border-bottom:1px solid var(--line);
     }
     .topbar-inner{
-      max-width: 1080px;
+      max-width: 1120px;
       margin: 0 auto;
       display:flex;
       gap:10px;
@@ -55,69 +74,93 @@
       justify-content:space-between;
       flex-wrap:wrap;
     }
-    .brand{
-      display:flex; gap:10px; align-items:center;
-    }
+    .brand{display:flex; gap:10px; align-items:center}
     .logo{
-      width:36px; height:36px; border-radius:12px;
-      background: linear-gradient(135deg, rgba(47,108,255,.9), rgba(241,196,15,.85));
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      width:40px; height:40px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(47,108,255,.95), rgba(241,196,15,.90));
+      box-shadow: 0 12px 24px rgba(0,0,0,.30);
+      animation: floaty 3.2s ease-in-out infinite;
     }
-    .title{
-      display:flex; flex-direction:column; line-height:1.1;
-    }
-    .title b{letter-spacing:.3px}
-    .title span{color:var(--muted); font-size:12px}
+    .title{display:flex; flex-direction:column; line-height:1.12}
+    .title b{letter-spacing:.4px; font-size:18px}
+    .title span{color:var(--muted); font-size:var(--fs-small)}
     .chips{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+
     .chip{
       display:inline-flex; gap:8px; align-items:center;
-      padding:8px 10px;
+      padding:9px 11px;
       border-radius:999px;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.07);
       color: var(--text);
-      font-size:12px;
-      font-weight:800;
+      font-size: var(--fs-small);
+      font-weight: 900;
     }
+
     .dot{width:10px;height:10px;border-radius:50%}
     .dot.online{background:#2ecc71}
     .dot.offline{background:#e74c3c}
+
+    .pulse{
+      width:10px;height:10px;border-radius:50%;
+      background:#2ecc71;
+      box-shadow: 0 0 0 0 rgba(46,204,113,.65);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    /* Botones */
     .btn{
-      border:0;
-      cursor:pointer;
-      font-weight:900;
+      border:0; cursor:pointer;
+      font-weight: 950;
       letter-spacing:.2px;
-      padding:10px 12px;
-      border-radius:14px;
-      color:#0b1220;
+      padding:11px 13px;
+      border-radius:16px;
+      color:#0b1220; /* amarillo con texto oscuro = alta legibilidad */
       background: linear-gradient(135deg, var(--yellow), var(--yellow2));
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      box-shadow: 0 12px 26px rgba(0,0,0,.28);
       display:inline-flex; gap:8px; align-items:center;
+      font-size: var(--fs-small);
     }
     .btn.blue{
-      color:#fff;
+      color:#ffe08a; /* texto amarillo en azul (tu pedido) */
       background: linear-gradient(135deg, var(--blue), var(--blue2));
     }
     .btn.ghost{
       color:#fff;
-      background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.08);
       border:1px solid var(--line);
       box-shadow:none;
     }
+    .btn.danger{
+      color:#fff;
+      background: linear-gradient(135deg, #e74c3c, #b3392f);
+    }
 
     /* Main */
-    .wrap{max-width:1080px;margin:0 auto;padding:16px 12px 110px}
+    .wrap{max-width:1120px;margin:0 auto;padding:16px 12px 120px}
     .hero{
       display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
-      padding:14px 14px;
+      padding:16px 16px;
       border:1px solid var(--line);
       border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
       box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
-    .hero h1{margin:0;font-size:18px}
-    .hero p{margin:6px 0 0;color:var(--muted);font-size:13px;max-width:680px}
-    .hero-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: linear-gradient(90deg, rgba(47,108,255,.25), rgba(241,196,15,.18), rgba(47,108,255,.25));
+      background-size: 200% 200%;
+      animation: shimmer 7s ease-in-out infinite;
+      opacity:.5;
+      pointer-events:none;
+      mask: linear-gradient(#000, transparent 70%);
+    }
+    .hero h1{margin:0;font-size:var(--fs-h1); position:relative}
+    .hero p{margin:8px 0 0;color:var(--muted);font-size:var(--fs-base);max-width:740px; position:relative}
+    .hero-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap; position:relative}
 
     .grid{
       margin-top:14px;
@@ -126,43 +169,50 @@
       gap:10px;
     }
     @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, minmax(0,1fr));} }
+    @media (max-width: 520px){ .grid{grid-template-columns: 1fr;} }
+
     .card{
-      padding:14px 14px 12px;
-      border-radius: 18px;
+      padding:16px 16px 14px;
+      border-radius: 20px;
       border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,28,51,.85), rgba(13,23,48,.85));
-      box-shadow: 0 14px 35px rgba(0,0,0,.25);
-      min-height: 130px;
-      display:flex; flex-direction:column; gap:8px;
+      background: linear-gradient(180deg, rgba(15,28,51,.90), rgba(13,23,48,.86));
+      box-shadow: 0 14px 38px rgba(0,0,0,.26);
+      min-height: 140px;
+      display:flex; flex-direction:column; gap:10px;
+      transform: translateY(0);
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     }
-    .card b{font-size:15px}
-    .card small{color:var(--muted);line-height:1.35}
+    .card:hover{
+      transform: translateY(-3px);
+      box-shadow: 0 18px 48px rgba(0,0,0,.34);
+      border-color: rgba(241,196,15,.35);
+    }
+    .card b{font-size:var(--fs-card-title)}
+    .card small{color:var(--muted);line-height:1.45; font-size: var(--fs-base)}
     .card .tag{
       margin-top:auto;
-      display:inline-flex;
-      align-self:flex-start;
-      padding:7px 10px;
+      display:inline-flex; align-self:flex-start;
+      padding:8px 11px;
       border-radius:999px;
-      background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.08);
       border:1px solid var(--line);
-      font-weight:900;
-      font-size:12px;
+      font-weight: 950;
+      font-size: var(--fs-small);
     }
 
     /* Bottom nav */
     .bottom{
-      position:fixed;
-      left:0; right:0; bottom:0;
+      position:fixed; left:0; right:0; bottom:0;
       z-index:60;
       padding: 10px 12px 12px;
-      background: linear-gradient(180deg, rgba(11,18,32,.0), rgba(11,18,32,.92));
+      background: linear-gradient(180deg, rgba(11,18,32,.00), rgba(11,18,32,.94));
       backdrop-filter: blur(10px);
     }
     .bottom-inner{
-      max-width:1080px;margin:0 auto;
+      max-width:1120px;margin:0 auto;
       border:1px solid var(--line);
       border-radius: 18px;
-      background: rgba(8,12,20,.55);
+      background: rgba(8,12,20,.62);
       display:flex;
       gap:8px;
       align-items:center;
@@ -171,20 +221,20 @@
       box-shadow: var(--shadow);
       flex-wrap:wrap;
     }
-    .nav{
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
+    .nav{display:flex; gap:8px; flex-wrap:wrap}
     .nav button{
-      padding:10px 12px;
-      border-radius:14px;
+      padding:11px 12px;
+      border-radius:16px;
       border:1px solid var(--line);
-      background: rgba(255,255,255,.06);
+      background: rgba(255,255,255,.08);
       color:#fff;
-      font-weight:900;
+      font-weight: 950;
       cursor:pointer;
       display:inline-flex; gap:8px; align-items:center;
+      font-size: var(--fs-small);
     }
     .nav button.active{
+      color:#ffe08a;
       background: linear-gradient(135deg, var(--blue), var(--blue2));
       border:0;
     }
@@ -192,7 +242,7 @@
     /* Modal */
     .modal{
       position:fixed; inset:0; z-index:9999;
-      background: rgba(0,0,0,.55);
+      background: rgba(0,0,0,.58);
       backdrop-filter: blur(10px);
       display:none;
       align-items:flex-end;
@@ -200,12 +250,13 @@
       padding: 14px;
     }
     .modal.show{display:flex}
+
     .sheet{
-      width:min(860px,100%);
-      border-radius: 22px;
+      width:min(920px,100%);
+      border-radius: 24px;
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(16,35,85,.96), rgba(10,14,22,.96));
-      box-shadow: 0 20px 70px rgba(0,0,0,.45);
+      box-shadow: 0 22px 80px rgba(0,0,0,.48);
       overflow:hidden;
     }
     .sheet-top{
@@ -214,12 +265,11 @@
       align-items:center;
       justify-content:space-between;
       border-bottom:1px solid rgba(255,255,255,.10);
+      flex-wrap:wrap;
     }
-    .sheet-top .who{
-      display:flex; flex-direction:column; gap:2px;
-    }
-    .sheet-top .who b{letter-spacing:.2px}
-    .sheet-top .who span{color:var(--muted);font-size:12px}
+    .sheet-top .who{display:flex; flex-direction:column; gap:3px}
+    .sheet-top .who b{letter-spacing:.2px; font-size: 17px}
+    .sheet-top .who span{color:var(--muted);font-size:var(--fs-small)}
     .sheet-body{padding:14px 16px}
     .module-grid{
       display:grid;
@@ -227,19 +277,81 @@
       gap:10px;
     }
     @media (max-width: 720px){ .module-grid{grid-template-columns:1fr;} }
+
     .module{
       padding:14px;
       border-radius:18px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
       cursor:pointer;
       text-align:left;
+      transition: transform .14s ease, border-color .14s ease;
     }
-    .module b{display:block}
-    .module small{display:block;color:var(--muted);margin-top:6px;line-height:1.35}
-    .quick{
-      margin-top:12px;
-      display:flex; gap:10px; flex-wrap:wrap;
+    .module:hover{
+      transform: translateY(-2px);
+      border-color: rgba(241,196,15,.40);
+    }
+    .module b{display:block; font-size: 16px}
+    .module small{display:block;color:var(--muted);margin-top:6px;line-height:1.45; font-size: var(--fs-base)}
+    .quick{margin-top:12px; display:flex; gap:10px; flex-wrap:wrap}
+
+    /* Login */
+    .login-wrap{
+      max-width: 680px;
+      margin: 18px auto 0;
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,28,51,.85), rgba(13,23,48,.75));
+      box-shadow: var(--shadow);
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    .field{
+      display:flex; flex-direction:column; gap:8px;
+      flex: 1 1 240px;
+    }
+    label{color:var(--muted); font-weight:900; font-size: var(--fs-small)}
+    input{
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color:#fff;
+      outline:none;
+      font-size: var(--fs-base);
+    }
+    input:focus{border-color: rgba(241,196,15,.45)}
+    .hint{color:var(--muted); font-size: var(--fs-small); margin-top:10px; line-height:1.45}
+
+    /* Asistente */
+    .assistant{
+      margin-top: 14px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+    .assistant h2{margin:0; font-size: var(--fs-title)}
+    .assistant p{margin:8px 0 0; color:var(--muted)}
+    .assistant .box{
+      margin-top:10px;
+      padding: 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.16);
+    }
+    textarea{
+      width:100%;
+      min-height: 88px;
+      resize: vertical;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      color:#fff;
+      font-size: var(--fs-base);
+      outline:none;
     }
 
     /* Toast */
@@ -247,19 +359,28 @@
       position:fixed;
       left:50%;
       transform: translateX(-50%);
-      bottom: 88px;
+      bottom: 92px;
       z-index:99999;
       padding:12px 14px;
       border-radius: 14px;
       color:#fff;
-      font: 13px system-ui;
-      box-shadow: 0 12px 30px rgba(0,0,0,.25);
+      font: 14px system-ui;
+      box-shadow: 0 12px 34px rgba(0,0,0,.28);
       background: rgba(24,90,255,.92);
       display:none;
-      max-width: min(520px, 92vw);
+      max-width: min(560px, 92vw);
     }
     .toast.show{display:block}
     .toast.bad{background: rgba(231,76,60,.92)}
+
+    /* Footer / autor */
+    .footer{
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: var(--fs-small);
+      text-align:center;
+      opacity:.9;
+    }
   </style>
 </head>
 
@@ -271,60 +392,97 @@
         <div class="logo"></div>
         <div class="title">
           <b>RAULI</b>
-          <span>Panadería & Dulcería · Offline-first + Nube</span>
+          <span id="subTitle">Panadería & Dulcería · Offline-first + Nube</span>
         </div>
       </div>
 
       <div class="chips">
         <button class="btn" id="btnUpdate">🔔 Actualizar</button>
         <span class="chip" id="chipConn"><span class="dot offline"></span> Offline</span>
-        <span class="chip" id="chipSync">⬤ En línea (guardando local también)</span>
+        <span class="chip" id="chipSync">🟥 Sin señal (guardando local)</span>
+        <span class="chip" id="chipUser" style="display:none">👤 —</span>
       </div>
     </div>
   </div>
 
   <div class="wrap">
+
     <div class="hero">
       <div>
-        <h1>Panel de Roles</h1>
+        <h1>Panel operativo por roles (Paso 2)</h1>
         <p>
-          Cada miembro entra con su rol y registra su trabajo. La app guarda local cuando no hay señal y sincroniza cuando vuelve.
-          Hoy activamos: Base de datos + Auditoría + Caja/Inventario rápido.
+          Ahora la entrada es con <b>Login</b> (Firebase Auth) y la app te coloca automáticamente en tu rol.
+          El <b>Asistente</b> guarda mensajes offline y los envía cuando vuelve la señal.
         </p>
       </div>
       <div class="hero-actions">
         <button class="btn blue" id="btnProbe">🚀 Probar Nube</button>
-        <button class="btn ghost" id="btnDemo">Cargar demo</button>
+        <button class="btn ghost" id="btnAbout">ℹ️ Acerca de</button>
+        <button class="btn danger" id="btnLogout" style="display:none">Salir</button>
       </div>
     </div>
 
-    <div class="grid" id="roleCards">
-      <div class="card" data-role="owner">
-        <b>Raúl (Dueño)</b>
-        <small>Control absoluto de todos los subsistemas y auditoría completa.</small>
-        <span class="tag">Entrar</span>
+    <!-- LOGIN -->
+    <div class="login-wrap" id="loginBox">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <b style="font-size:18px">🔐 Iniciar sesión</b>
+          <div class="hint">Usa el correo/clave del usuario creado en Firebase Authentication.</div>
+        </div>
+        <button class="btn ghost" id="btnInstall">📲 Instalar App</button>
       </div>
-      <div class="card" data-role="coowner">
-        <b>Lisi (Co-propietaria)</b>
-        <small>Control absoluto excepto amortización de inversión (se habilita luego).</small>
-        <span class="tag">Entrar</span>
+
+      <div class="row" style="margin-top:12px">
+        <div class="field">
+          <label>Correo</label>
+          <input id="email" type="email" placeholder="ej: bety@rauli.com" autocomplete="username">
+        </div>
+        <div class="field">
+          <label>Clave</label>
+          <input id="pass" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
       </div>
-      <div class="card" data-role="supervisor">
-        <b>Orlandito (Supervisor)</b>
-        <small>Calidad + insumos + autorizaciones operativas + extracción de efectivo (con evidencias).</small>
-        <span class="tag">Entrar</span>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn blue" id="btnLogin">Entrar</button>
+        <button class="btn ghost" id="btnQuickRole">Entrar demo (sin login)</button>
       </div>
-      <div class="card" data-role="admin_ops">
-        <b>Papito (Producción)</b>
-        <small>Producción + salidas de insumos + control de operarios + ventas.</small>
-        <span class="tag">Entrar</span>
-      </div>
-      <div class="card" data-role="accountant">
-        <b>Bety (Contadora)</b>
-        <small>Caja + gastos + cierres + evidencias + custodia efectivo.</small>
-        <span class="tag">Entrar</span>
+
+      <div class="hint">
+        <b>Nota:</b> Si haces “Entrar demo” es solo para ver pantallas. Para reglas seguras usamos Login real.
       </div>
     </div>
+
+    <!-- DASHBOARD (se muestra al loguear) -->
+    <div id="dashBox" style="display:none">
+      <div class="grid" id="roleCards"></div>
+
+      <!-- Asistente -->
+      <div class="assistant">
+        <h2>🤖 Asistente RAULI (offline/online)</h2>
+        <p>
+          Escribe o dicta. Si no hay señal, queda en cola. Cuando vuelve la conexión, se envía a la nube y queda registrado.
+          (Luego lo conectamos a IA real vía Firebase Functions).
+        </p>
+
+        <div class="box">
+          <textarea id="assistantInput" placeholder="Ej: 'Bety: hoy faltaron $10 en caja, revisar evidencias'"></textarea>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+            <button class="btn blue" id="btnSendMsg">Enviar / Guardar</button>
+            <button class="btn ghost" id="btnVoice">🎙️ Dictar</button>
+            <button class="btn ghost" id="btnFlush">📡 Enviar cola</button>
+          </div>
+
+          <div class="hint" id="queueHint">Cola offline: 0</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        Autor del prototipo: <b>ChatGPT (GPT-5.2 Thinking)</b> · RAULI v2 (Login + Asistente Offline/Online)
+      </div>
+    </div>
+
   </div>
 
   <!-- Bottom -->
@@ -339,8 +497,7 @@
       </div>
 
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn ghost" id="btnInstall">📲 Instalar App</button>
-        <button class="btn blue" id="btnBot">🤖 Asistente</button>
+        <button class="btn ghost" id="btnBot">🤖 Asistente</button>
       </div>
     </div>
   </div>
@@ -370,10 +527,36 @@
     </div>
   </div>
 
+  <!-- About modal (simple) -->
+  <div class="modal" id="aboutModal">
+    <div class="sheet">
+      <div class="sheet-top">
+        <div class="who">
+          <b>ℹ️ Acerca de RAULI</b>
+          <span>Prototipo operativo con Offline-first + Firebase + Asistente</span>
+        </div>
+        <button class="btn ghost" id="btnAboutClose">Cerrar</button>
+      </div>
+      <div class="sheet-body">
+        <div class="module" style="cursor:default">
+          <b>Autor</b>
+          <small>ChatGPT (GPT-5.2 Thinking) — Autor del prototipo RAULI.</small>
+        </div>
+        <div class="module" style="cursor:default;margin-top:10px">
+          <b>IA (siguiente nivel)</b>
+          <small>
+            Recomendado: conectar el asistente a una <b>Cloud Function</b> (servidor seguro) que llame a IA y devuelva respuesta.
+            Offline: se encola y al volver internet se sincroniza automáticamente.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
-    // --- UI helpers (no Firebase aquí) ---
+    // Helpers UI
     const toastEl = document.getElementById('toast');
     function toast(msg, ok=true){
       toastEl.textContent = msg;
@@ -405,7 +588,9 @@
     const chipSync = document.getElementById('chipSync');
     function paintConn(){
       const online = navigator.onLine;
-      chipConn.innerHTML = `<span class="dot ${online?'online':'offline'}"></span> ${online?'Online':'Offline'}`;
+      chipConn.innerHTML = online
+        ? `<span class="dot online"></span> Online`
+        : `<span class="dot offline"></span> Offline`;
       chipSync.textContent = online ? "✅ En línea (guardando local también)" : "🟥 Sin señal (guardando local)";
     }
     window.addEventListener('online', paintConn);
@@ -417,12 +602,11 @@
     window.addEventListener('beforeinstallprompt', (e)=>{
       e.preventDefault();
       deferredPrompt = e;
-      // no spameamos, solo habilitamos botón
     });
 
     document.getElementById('btnInstall').addEventListener('click', async ()=>{
       if(!deferredPrompt){
-        toast("En iPhone: Safari → Compartir → 'Agregar a inicio'. En Android/PC: espera el banner o usa Chrome.", true);
+        toast("iPhone: Safari → Compartir → 'Agregar a inicio'. Android/PC: Chrome te mostrará banner.", true);
         return;
       }
       deferredPrompt.prompt();
@@ -434,25 +618,23 @@
     // Service worker register (si existe sw.js)
     (async ()=>{
       if('serviceWorker' in navigator){
-        try{
-          await navigator.serviceWorker.register('./sw.js', { scope:'./' });
-        }catch(e){}
+        try{ await navigator.serviceWorker.register('./sw.js', { scope:'./' }); }catch(e){}
       }
     })();
 
-    // Bot modal
-    document.getElementById('btnBot').addEventListener('click', ()=>{
-      toast("🤖 Asistente: (Siguiente paso) chat/voz dentro de la app. Hoy dejamos la base lista.", true);
-    });
-
-    // Update button (recarga con sonido)
+    // Update
     document.getElementById('btnUpdate').addEventListener('click', ()=>{
       ding();
       toast("Actualizando versión…", true);
       setTimeout(()=>location.reload(true), 350);
     });
 
-    // Bottom nav quick toasts
+    // About
+    const aboutModal = document.getElementById('aboutModal');
+    document.getElementById('btnAbout').addEventListener('click', ()=>aboutModal.classList.add('show'));
+    document.getElementById('btnAboutClose').addEventListener('click', ()=>aboutModal.classList.remove('show'));
+
+    // Bottom nav quick
     const navBtns = ["navHome","navCaja","navInv","navProd","navVentas"].map(id=>document.getElementById(id));
     navBtns.forEach(b=>{
       b.addEventListener('click', ()=>{
@@ -461,17 +643,26 @@
         toast("Módulo: " + b.textContent.replace(/\s+/g,' ').trim(), true);
       });
     });
+
+    // Bot button scroll
+    document.getElementById('btnBot').addEventListener('click', ()=>{
+      document.getElementById('assistantInput')?.scrollIntoView({behavior:'smooth', block:'center'});
+      toast("🤖 Asistente listo (escribe o dicta)", true);
+    });
   </script>
 
-  <!-- Firebase (TODO dentro de ESTE módulo) -->
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
       getFirestore, enableIndexedDbPersistence,
-      doc, getDoc, setDoc, updateDoc,
+      doc, getDoc, setDoc,
       collection, addDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    import {
+      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
     // ===== Firebase config (tu proyecto) =====
     const firebaseConfig = {
@@ -484,57 +675,107 @@
       measurementId: "G-PVC6X0TTTL"
     };
 
-    // ===== init =====
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    // Offline-first Firestore (si falla, igual funciona online)
+    // Offline-first Firestore
     try { await enableIndexedDbPersistence(db); } catch(e) {}
 
-    // Helpers
-    const RAULI_BIZ = "rauli";
-    const subCol = (name) => collection(db, "business", RAULI_BIZ, name);
-    const bizDocRef = () => doc(db, "business", RAULI_BIZ);
-
-    const ROLES = {
-      owner:   { name:"Raúl (Dueño)",        modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría","Configuración"] },
-      coowner: { name:"Lisi (Co-propietaria)",modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría"] },
-      supervisor:{name:"Orlandito (Supervisor)",modules:["Calidad","Inventario","Producción","Ventas","Auditoría"] },
-      admin_ops:{name:"Papito (Producción)", modules:["Producción","Inventario","Ventas","Caja"] },
-      accountant:{name:"Bety (Contadora)",   modules:["Caja","Gastos","Cierres","Evidencias","Auditoría"] },
-    };
-
     const $ = (id)=>document.getElementById(id);
-
-    function nowISO(){
-      const d=new Date();
-      return d.toISOString().slice(0,10);
-    }
-
     function toast(msg, ok=true){
-      const t = document.getElementById('toast');
+      const t = $('toast');
       t.textContent = msg;
       t.classList.toggle('bad', !ok);
       t.classList.add('show');
       setTimeout(()=>t.classList.remove('show'), 2600);
     }
 
-    // ===== PROBAR NUBE (crea documento) =====
-    async function probeCloud(){
-      try{
-        await addDoc(collection(db, "business", RAULI_BIZ, "events"), {
-          type:"test",
-          desc:"Prueba Firestore OK (RAULI)",
-          clientTime: Date.now(),
-          createdAt: serverTimestamp()
-        });
-        toast("✅ ¡Listo! Firestore escribió. Ve a Firebase > Datos.", true);
-      }catch(e){
-        toast("❌ Error Firestore: " + (e?.message || e), false);
-      }
+    const RAULI_BIZ = "rauli";
+    const bizDocRef = () => doc(db, "business", RAULI_BIZ);
+
+    // Perfiles (roles) en: business/rauli/users/{uid}
+    const userProfileRef = (uid)=>doc(db, "business", RAULI_BIZ, "users", uid);
+
+    // Colecciones operativas
+    const subCol = (name) => collection(db, "business", RAULI_BIZ, name);
+
+    function nowISO(){
+      const d=new Date();
+      return d.toISOString().slice(0,10);
     }
 
-    // ===== Inicializar base real (solo owner) =====
+    // ========= ROLES =========
+    const ROLES = {
+      owner:   { name:"Raúl (Dueño)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría","Configuración"] },
+      coowner: { name:"Lisi (Co-propietaria)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría"] },
+      supervisor:{ name:"Orlandito (Supervisor)", modules:["Calidad","Inventario","Producción","Ventas","Auditoría"] },
+      admin_ops:{ name:"Papito (Producción)", modules:["Producción","Inventario","Ventas","Caja"] },
+      accountant:{ name:"Bety (Contadora)", modules:["Caja","Gastos","Cierres","Evidencias","Auditoría"] },
+    };
+
+    // ========= Estado de sesión =========
+    let current = {
+      uid:null,
+      displayName:null,
+      role:null,
+      email:null
+    };
+
+    function showLogin(){
+      $('loginBox').style.display = "block";
+      $('dashBox').style.display = "none";
+      $('btnLogout').style.display = "none";
+      $('chipUser').style.display = "none";
+    }
+
+    function showDash(){
+      $('loginBox').style.display = "none";
+      $('dashBox').style.display = "block";
+      $('btnLogout').style.display = "inline-flex";
+      $('chipUser').style.display = "inline-flex";
+      $('chipUser').textContent = `👤 ${current.displayName || current.email || 'Usuario'} · ${current.role || 'rol'}`;
+    }
+
+    // ========= UI: modal por rol =========
+    function openRole(roleKey){
+      const modal = $('modal');
+      const r = ROLES[roleKey] || ROLES.owner;
+
+      $('whoName').textContent = current.displayName ? `${current.displayName}` : r.name;
+      $('whoMeta').textContent = `Rol: ${roleKey} · Módulos: ${r.modules.length}`;
+
+      const grid = $('moduleGrid');
+      grid.innerHTML = "";
+      r.modules.forEach(m=>{
+        const b = document.createElement("button");
+        b.className = "module";
+        b.innerHTML = `<b>${m}</b><small>Abrir módulo ${m.toLowerCase()} y registrar evidencias.</small>`;
+        b.onclick = async ()=>{
+          try{
+            await addDoc(subCol("auditoria"), {
+              type:"open_module",
+              module:m,
+              role:roleKey,
+              uid: current.uid || null,
+              at: serverTimestamp()
+            });
+          }catch(e){}
+          toast("Abriendo: " + m, true);
+        };
+        grid.appendChild(b);
+      });
+
+      // Solo dueño ve Inicializar Base
+      $('btnInitBase').style.display = (roleKey === "owner") ? "inline-flex" : "none";
+      modal.classList.add("show");
+    }
+
+    function closeRole(){ $('modal').classList.remove("show"); }
+    $('btnClose').addEventListener('click', closeRole);
+    $('btnBack').addEventListener('click', closeRole);
+
+    // ========= Inicializar base (solo owner) =========
     async function ensureBizMeta(){
       const ref = bizDocRef();
       const snap = await getDoc(ref);
@@ -542,7 +783,7 @@
         await setDoc(ref, {
           name:"Panadería & Dulcería RAULI",
           createdAt: serverTimestamp(),
-          version:"v1",
+          version:"v2",
           status:"active"
         });
       }
@@ -591,60 +832,22 @@
         await ensureBizMeta();
         await ensureConfig();
         await seedBaseCollections();
-        toast("✅ Base RAULI inicializada (inventario/producción/ventas/caja/auditoría)", true);
+        toast("✅ Base RAULI inicializada", true);
       }catch(e){
         toast("❌ Error inicializando base: " + (e?.message || e), false);
       }
     }
+    $('btnInitBase').addEventListener('click', initBase);
 
-    // ===== Modal por rol =====
-    let currentRole = "owner";
-
-    function openRole(roleKey){
-      currentRole = roleKey;
-      const r = ROLES[roleKey] || ROLES.owner;
-
-      $("whoName").textContent = r.name;
-      $("whoMeta").textContent = `Rol: ${roleKey} · Módulos: ${r.modules.length}`;
-
-      const grid = $("moduleGrid");
-      grid.innerHTML = "";
-      r.modules.forEach(m=>{
-        const b = document.createElement("button");
-        b.className = "module";
-        b.innerHTML = `<b>${m}</b><small>Abrir módulo ${m.toLowerCase()}.</small>`;
-        b.onclick = async ()=>{
-          try{
-            await addDoc(subCol("auditoria"), {
-              type:"open_module",
-              module:m,
-              role:roleKey,
-              at: serverTimestamp()
-            });
-          }catch(e){}
-          toast("Abriendo: " + m, true);
-        };
-        grid.appendChild(b);
-      });
-
-      // Solo dueño ve Inicializar Base
-      $("btnInitBase").style.display = (roleKey === "owner") ? "inline-flex" : "none";
-
-      $("modal").classList.add("show");
-    }
-
-    function closeRole(){
-      $("modal").classList.remove("show");
-    }
-
-    // ===== Acciones rápidas (caja/inventario) =====
+    // ========= Acciones rápidas =========
     async function openCashToday(){
       try{
         await addDoc(subCol("caja"), {
           type:"apertura",
           date: nowISO(),
           amount: 0,
-          byRole: currentRole,
+          byRole: current.role,
+          uid: current.uid,
           at: serverTimestamp(),
           note: "Apertura creada desde RAULI"
         });
@@ -653,6 +856,7 @@
         toast("❌ Error caja: " + (e?.message || e), false);
       }
     }
+    $('btnOpenCash').addEventListener('click', openCashToday);
 
     async function quickInsumo(){
       try{
@@ -663,7 +867,8 @@
           unit:"unidad",
           qty: 1,
           min: 1,
-          byRole: currentRole,
+          byRole: current.role,
+          uid: current.uid,
           at: serverTimestamp()
         });
         toast("✅ Insumo registrado (demo)", true);
@@ -671,30 +876,275 @@
         toast("❌ Error inventario: " + (e?.message || e), false);
       }
     }
+    $('btnQuickInsumo').addEventListener('click', quickInsumo);
 
-    // ===== Hooks UI =====
-    document.getElementById("btnProbe").addEventListener("click", probeCloud);
-    document.getElementById("btnInitBase").addEventListener("click", initBase);
+    // ========= PROBAR NUBE =========
+    async function probeCloud(){
+      try{
+        await addDoc(collection(db, "business", RAULI_BIZ, "events"), {
+          type:"test",
+          desc:"Prueba Firestore OK (RAULI v2)",
+          uid: current.uid || null,
+          role: current.role || null,
+          clientTime: Date.now(),
+          createdAt: serverTimestamp()
+        });
+        toast("✅ ¡Listo! Firestore escribió. Ve a Firebase > Datos.", true);
+      }catch(e){
+        toast("❌ Error Firestore: " + (e?.message || e), false);
+      }
+    }
+    $('btnProbe').addEventListener('click', probeCloud);
 
-    document.getElementById("btnClose").addEventListener("click", closeRole);
-    document.getElementById("btnBack").addEventListener("click", closeRole);
+    // ========= Dashboard cards dinámicas =========
+    function renderRoleCards(roleKey){
+      const holder = $('roleCards');
+      holder.innerHTML = "";
+      const r = ROLES[roleKey] || ROLES.owner;
 
-    document.getElementById("btnOpenCash").addEventListener("click", openCashToday);
-    document.getElementById("btnQuickInsumo").addEventListener("click", quickInsumo);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <b>${r.name}</b>
+        <small>Tu panel está listo. Entra a tus módulos y registra evidencias.</small>
+        <span class="tag">Entrar</span>
+      `;
+      card.addEventListener('click', ()=>openRole(roleKey));
+      holder.appendChild(card);
+    }
 
-    // Cargar demo abre como dueño
-    document.getElementById("btnDemo").addEventListener("click", ()=>openRole("owner"));
+    // ========= ASISTENTE: cola offline + voz + sync =========
+    const QUEUE_KEY = "rauli_assistant_queue_v1";
 
-    // Cards por rol
-    document.querySelectorAll("#roleCards .card").forEach(card=>{
-      card.addEventListener("click", ()=>{
-        const role = card.getAttribute("data-role") || "owner";
-        openRole(role);
+    function getQueue(){
+      try{ return JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]"); }
+      catch(e){ return []; }
+    }
+    function setQueue(arr){
+      localStorage.setItem(QUEUE_KEY, JSON.stringify(arr));
+      $('queueHint').textContent = `Cola offline: ${arr.length}`;
+    }
+    setQueue(getQueue());
+
+    async function saveAssistantMessage(payload){
+      // Guarda SIEMPRE en Firestore (si hay internet, se sube; si no, queda en cache de Firestore + cola local)
+      await addDoc(subCol("assistantMessages"), {
+        ...payload,
+        uid: current.uid || null,
+        role: current.role || null,
+        createdAt: serverTimestamp()
       });
+    }
+
+    // Aquí conectaremos IA real luego:
+    // Recomendado: Cloud Function (segura) que llama a IA.
+    async function callAIOnline(text){
+      // Placeholder: por ahora devuelve respuesta "operativa"
+      // Luego lo cambiamos a fetch("https://TU-FUNCTION-URL/ai", {method:"POST", body:...})
+      return `✅ Recibido. Quedó registrado. (Siguiente paso: IA analizará esto y generará reporte/acción.)`;
+    }
+
+    async function enqueueOrSend(text, source="texto"){
+      const item = {
+        id: "m_" + Math.random().toString(16).slice(2),
+        text,
+        source,
+        ts: Date.now(),
+        status: navigator.onLine ? "sending" : "queued"
+      };
+
+      if(!navigator.onLine){
+        const q = getQueue();
+        q.push(item);
+        setQueue(q);
+        toast("🟥 Sin señal: guardado en cola offline", true);
+        return;
+      }
+
+      // Online: guarda + pide respuesta AI (placeholder) + guarda respuesta
+      try{
+        await saveAssistantMessage({ type:"user", text, source, clientTime: item.ts });
+        const ai = await callAIOnline(text);
+        await saveAssistantMessage({ type:"ai", text: ai, source:"ai", clientTime: Date.now() });
+        toast("✅ Enviado y registrado (con respuesta)", true);
+      }catch(e){
+        // Si falla, a cola
+        const q = getQueue();
+        item.status = "queued";
+        q.push(item);
+        setQueue(q);
+        toast("⚠️ Falló envío: guardado en cola", false);
+      }
+    }
+
+    async function flushQueue(){
+      const q = getQueue();
+      if(q.length === 0){
+        toast("Cola vacía ✅", true);
+        return;
+      }
+      if(!navigator.onLine){
+        toast("Sin señal: no se puede enviar cola", false);
+        return;
+      }
+
+      toast("📡 Enviando cola…", true);
+      const rest = [];
+      for(const item of q){
+        try{
+          await saveAssistantMessage({ type:"user", text:item.text, source:item.source, clientTime:item.ts, fromQueue:true });
+          const ai = await callAIOnline(item.text);
+          await saveAssistantMessage({ type:"ai", text: ai, source:"ai", clientTime: Date.now(), inResponseTo:item.id });
+        }catch(e){
+          rest.push(item);
+        }
+      }
+      setQueue(rest);
+      toast(rest.length ? `⚠️ Quedaron ${rest.length} en cola` : "✅ Cola enviada completa", !rest.length);
+    }
+
+    $('btnSendMsg').addEventListener('click', async ()=>{
+      const text = $('assistantInput').value.trim();
+      if(!text){ toast("Escribe un mensaje primero", false); return; }
+      $('assistantInput').value = "";
+      await enqueueOrSend(text, "texto");
     });
 
-    // Mensaje de arranque
-    toast("✅ RAULI listo. Usa 'Probar Nube' o entra por rol.", true);
+    $('btnFlush').addEventListener('click', flushQueue);
+
+    // Al volver internet: enviar cola automáticamente
+    window.addEventListener('online', ()=>{ flushQueue().catch(()=>{}); });
+
+    // Voz (Web Speech API)
+    let recognizing = false;
+    let recog = null;
+
+    function setupVoice(){
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if(!SR) return null;
+      const r = new SR();
+      r.lang = "es-ES";
+      r.interimResults = true;
+      r.continuous = false;
+      return r;
+    }
+    recog = setupVoice();
+
+    $('btnVoice').addEventListener('click', ()=>{
+      if(!recog){
+        toast("Tu navegador no soporta dictado aquí. (Safari iPhone sí suele soportar, pero varía).", false);
+        return;
+      }
+      if(recognizing){
+        recog.stop();
+        return;
+      }
+      recognizing = true;
+      toast("🎙️ Dictando… habla ahora", true);
+
+      let finalText = "";
+      recog.onresult = (ev)=>{
+        let interim = "";
+        for (let i = ev.resultIndex; i < ev.results.length; i++){
+          const tr = ev.results[i][0].transcript;
+          if(ev.results[i].isFinal) finalText += tr + " ";
+          else interim += tr;
+        }
+        $('assistantInput').value = (finalText + interim).trim();
+      };
+      recog.onerror = ()=>{ recognizing=false; toast("Error de voz. Intenta de nuevo.", false); };
+      recog.onend = async ()=>{
+        recognizing=false;
+        const text = $('assistantInput').value.trim();
+        if(text){
+          toast("✅ Dictado listo. Presiona Enviar o edita.", true);
+        }else{
+          toast("Dictado vacío.", false);
+        }
+      };
+      recog.start();
+    });
+
+    // ========= LOGIN =========
+    $('btnLogin').addEventListener('click', async ()=>{
+      const email = $('email').value.trim();
+      const pass = $('pass').value;
+      if(!email || !pass){ toast("Completa correo y clave", false); return; }
+
+      try{
+        await signInWithEmailAndPassword(auth, email, pass);
+        toast("✅ Sesión iniciada", true);
+      }catch(e){
+        toast("❌ Login error: " + (e?.message || e), false);
+      }
+    });
+
+    $('btnLogout').addEventListener('click', async ()=>{
+      try{
+        await signOut(auth);
+        toast("Sesión cerrada", true);
+      }catch(e){
+        toast("Error al salir", false);
+      }
+    });
+
+    // Demo sin login
+    $('btnQuickRole').addEventListener('click', ()=>{
+      current = { uid:null, displayName:"Demo", role:"owner", email:"demo@rauli" };
+      showDash();
+      renderRoleCards(current.role);
+      toast("Entraste en modo demo", true);
+    });
+
+    // ========= Al iniciar / cambio de estado =========
+    onAuthStateChanged(auth, async (user)=>{
+      if(!user){
+        current = {uid:null, displayName:null, role:null, email:null};
+        showLogin();
+        return;
+      }
+
+      current.uid = user.uid;
+      current.email = user.email || null;
+
+      // Cargar perfil del usuario (rol)
+      // Si no existe, cae por defecto a owner (para que no te bloquee)
+      try{
+        const ref = userProfileRef(user.uid);
+        const snap = await getDoc(ref);
+        if(snap.exists()){
+          const data = snap.data();
+          current.role = data.role || "owner";
+          current.displayName = data.name || (user.email || "Usuario");
+        }else{
+          current.role = "owner";
+          current.displayName = user.email || "Usuario";
+        }
+      }catch(e){
+        current.role = "owner";
+        current.displayName = user.email || "Usuario";
+      }
+
+      showDash();
+      renderRoleCards(current.role);
+
+      // Registrar auditoría de login
+      try{
+        await addDoc(subCol("auditoria"), {
+          type:"login",
+          uid: current.uid,
+          role: current.role,
+          email: current.email,
+          at: serverTimestamp()
+        });
+      }catch(e){}
+
+      toast(`✅ Bienvenido: ${current.displayName} (${current.role})`, true);
+
+      // al entrar, intenta enviar cola si hay internet
+      if(navigator.onLine) flushQueue().catch(()=>{});
+    });
+
   </script>
 </body>
 </html>
