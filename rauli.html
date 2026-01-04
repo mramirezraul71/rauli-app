@@ -14,24 +14,23 @@
     :root{
       --bg:#0a1222;
 
-      /* colores marca (azul + amarillo) */
+      /* marca */
       --blue:#2f6cff;
       --blue2:#1f4fc9;
       --blueDeep:#0b2f5b;
 
-      --yellow:#ffd24a;       /* amarillo suave legible */
-      --yellowStrong:#ffc400; /* títulos */
+      --yellow:#ffd24a;
+      --yellowStrong:#ffc400;
       --yellow2:#d7a90b;
 
-      --text: var(--yellow);  /* texto general */
-      --muted:#c9d3f2;        /* ayudas */
+      --text: var(--yellow);
+      --muted:#c9d3f2;
       --muted2:#aebae0;
 
       --line:rgba(255,255,255,.14);
       --shadow: 0 18px 55px rgba(0,0,0,.44);
       --radius: 22px;
 
-      /* Tipografía grande (Lisi) */
       --fs-base: 18px;
       --fs-small: 14px;
       --fs-title: 20px;
@@ -59,7 +58,6 @@
     @keyframes pulse{0%{transform:scale(1);opacity:.85}50%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:.85}}
     @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:100% 50%}}
 
-    /* Top bar */
     .topbar{
       position: sticky; top:0; z-index:50;
       padding: 12px 12px 10px;
@@ -104,24 +102,22 @@
       width:10px;height:10px;border-radius:50%;
       background:#2ecc71;
       animation: pulse 1.4s ease-in-out infinite;
-      box-shadow: 0 0 0 0 rgba(46,204,113,.55);
     }
 
-    /* Botones */
     .btn{
       border:0; cursor:pointer;
       font-weight: 950;
       letter-spacing:.2px;
       padding:12px 14px;
       border-radius:16px;
-      color:#0b1220; /* amarillo con texto oscuro -> legible */
+      color:#0b1220;
       background: linear-gradient(135deg, var(--yellow), var(--yellow2));
       box-shadow: 0 12px 26px rgba(0,0,0,.28);
       display:inline-flex; gap:8px; align-items:center;
       font-size: var(--fs-small);
     }
     .btn.blue{
-      color:#ffe08a; /* texto amarillo sobre azul */
+      color:#ffe08a;
       background: linear-gradient(135deg, var(--blue), var(--blue2));
     }
     .btn.ghost{
@@ -135,8 +131,8 @@
       background: linear-gradient(135deg, #e74c3c, #b3392f);
     }
 
-    /* Main */
     .wrap{max-width:1140px;margin:0 auto;padding:16px 12px 132px}
+
     .hero{
       display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
       padding:16px 16px;
@@ -158,40 +154,14 @@
       mask: linear-gradient(#000, transparent 70%);
     }
     .hero h1{margin:0;font-size:var(--fs-h1); color: var(--yellowStrong); position:relative}
-    .hero p{margin:8px 0 0;color:var(--muted);font-size:var(--fs-base);max-width:820px; position:relative}
+    .hero p{margin:8px 0 0;color:var(--muted);font-size:var(--fs-base);max-width:860px; position:relative}
     .hero-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap; position:relative}
 
-    /* Login card */
-    .login-wrap{
-      max-width: 760px;
-      margin: 14px auto 0;
-      padding: 16px;
-      border-radius: var(--radius);
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,28,51,.88), rgba(13,23,48,.78));
-      box-shadow: var(--shadow);
-    }
-    .row{display:flex; gap:10px; flex-wrap:wrap}
-    .field{
-      display:flex; flex-direction:column; gap:8px;
-      flex: 1 1 260px;
-    }
-    label{color:var(--muted); font-weight:950; font-size: var(--fs-small)}
-    input, textarea{
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: var(--yellow);
-      outline:none;
-      font-size: var(--fs-base);
-    }
-    input:focus, textarea:focus{border-color: rgba(255,196,0,.48)}
-    .hint{color:var(--muted); font-size: var(--fs-small); margin-top:10px; line-height:1.45}
+    /* Secciones */
+    .section{display:none; margin-top:14px;}
+    .section.show{display:block;}
 
-    /* Dashboard cards */
     .grid{
-      margin-top:14px;
       display:grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
       gap:10px;
@@ -207,7 +177,6 @@
       box-shadow: 0 14px 40px rgba(0,0,0,.28);
       min-height: 140px;
       display:flex; flex-direction:column; gap:10px;
-      transform: translateY(0);
       transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
       cursor:pointer;
     }
@@ -218,7 +187,7 @@
     }
     .card b{font-size:var(--fs-card-title); color: var(--yellowStrong)}
     .card small{color:var(--muted);line-height:1.45; font-size: var(--fs-base)}
-    .card .tag{
+    .tag{
       margin-top:auto;
       display:inline-flex; align-self:flex-start;
       padding:8px 11px;
@@ -230,57 +199,109 @@
       color: var(--yellow);
     }
 
-    /* Assistant */
-    .assistant{
-      margin-top: 14px;
+    .panel{
       border-radius: var(--radius);
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
       box-shadow: var(--shadow);
       padding: 14px;
     }
-    .assistant h2{margin:0; font-size: var(--fs-title); color: var(--yellowStrong)}
-    .assistant p{margin:8px 0 0; color:var(--muted)}
-    .assistant .box{
-      margin-top:10px;
-      padding: 12px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.16);
-    }
-    .chat{
-      margin-top:10px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      max-height: 260px;
-      overflow:auto;
-      padding-right:6px;
-    }
-    .bubble{
-      max-width: 92%;
+    .panel h2{margin:0; font-size: var(--fs-title); color: var(--yellowStrong)}
+    .panel p{margin:8px 0 0; color:var(--muted)}
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .field{display:flex; flex-direction:column; gap:8px; flex: 1 1 260px;}
+    label{color:var(--muted); font-weight:950; font-size: var(--fs-small)}
+    input, textarea, select{
       padding: 12px 12px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.08);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
       color: var(--yellow);
+      outline:none;
       font-size: var(--fs-base);
-      line-height:1.4;
-      white-space:pre-wrap;
-      word-break:break-word;
     }
-    .bubble.user{
-      align-self:flex-end;
-      background: rgba(47,108,255,.16);
-      border-color: rgba(47,108,255,.30);
+    input:focus, textarea:focus, select:focus{border-color: rgba(255,196,0,.48)}
+    textarea{min-height:84px; resize:vertical}
+
+    .kpis{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
     }
-    .bubble.ai{
-      align-self:flex-start;
-      background: rgba(255,196,0,.10);
-      border-color: rgba(255,196,0,.26);
+    @media (max-width: 980px){ .kpis{grid-template-columns: repeat(2, minmax(0,1fr));} }
+    .kpi{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.16);
+      padding: 12px;
+    }
+    .kpi b{color: var(--yellowStrong)}
+    .kpi small{display:block; color: var(--muted); margin-top:6px; line-height:1.35}
+
+    .table{
+      margin-top:12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.14);
+      overflow:hidden;
+    }
+    table{
+      width:100%;
+      border-collapse: collapse;
+      background: rgba(0,0,0,.14);
+    }
+    th, td{
+      padding: 10px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      text-align:left;
+      vertical-align:top;
+      font-size: 15px;
+      color: var(--yellow);
+    }
+    th{
+      color: var(--muted);
+      font-weight: 950;
+      background: rgba(255,255,255,.06);
+    }
+    tr:hover td{background: rgba(255,255,255,.04)}
+
+    .badge{
+      display:inline-flex;
+      padding:6px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      font-weight: 950;
+      font-size: 12px;
+      color: var(--yellow);
+      white-space:nowrap;
+    }
+    .badge.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.12)}
+    .badge.bad{border-color: rgba(231,76,60,.35); background: rgba(231,76,60,.12); color:#fff}
+
+    .toast{
+      position:fixed;
+      left:50%;
+      transform: translateX(-50%);
+      bottom: 98px;
+      z-index:99999;
+      padding:12px 14px;
+      border-radius: 14px;
+      color:#ffe08a;
+      font: 14px system-ui;
+      box-shadow: 0 12px 34px rgba(0,0,0,.28);
+      background: rgba(11,47,91,.92);
+      display:none;
+      max-width: min(720px, 92vw);
+      border: 1px solid rgba(255,196,0,.22);
+    }
+    .toast.show{display:block}
+    .toast.bad{
+      background: rgba(139,0,0,.92);
+      border-color: rgba(255,255,255,.12);
+      color: #fff;
     }
 
-    /* Bottom nav */
     .bottom{
       position:fixed; left:0; right:0; bottom:0;
       z-index:60;
@@ -319,85 +340,6 @@
       border:0;
     }
 
-    /* Modal */
-    .modal{
-      position:fixed; inset:0; z-index:9999;
-      background: rgba(0,0,0,.60);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 14px;
-    }
-    .modal.show{display:flex}
-    .sheet{
-      width:min(960px,100%);
-      border-radius: 24px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(16,35,85,.96), rgba(10,14,22,.96));
-      box-shadow: 0 22px 80px rgba(0,0,0,.50);
-      overflow:hidden;
-    }
-    .sheet-top{
-      padding:14px 16px;
-      display:flex; gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      flex-wrap:wrap;
-    }
-    .sheet-top .who{display:flex; flex-direction:column; gap:3px}
-    .sheet-top .who b{letter-spacing:.2px; font-size: 17px; color: var(--yellowStrong)}
-    .sheet-top .who span{color:var(--muted);font-size:var(--fs-small)}
-    .sheet-body{padding:14px 16px}
-    .module-grid{
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap:10px;
-    }
-    @media (max-width: 720px){ .module-grid{grid-template-columns:1fr;} }
-    .module{
-      padding:14px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.08);
-      cursor:pointer;
-      text-align:left;
-      transition: transform .14s ease, border-color .14s ease;
-      color: var(--yellow);
-    }
-    .module:hover{
-      transform: translateY(-2px);
-      border-color: rgba(255,196,0,.42);
-    }
-    .module b{display:block; font-size: 16px; color: var(--yellowStrong)}
-    .module small{display:block;color:var(--muted);margin-top:6px;line-height:1.45; font-size: var(--fs-base)}
-    .quick{margin-top:12px; display:flex; gap:10px; flex-wrap:wrap}
-
-    /* Toast */
-    .toast{
-      position:fixed;
-      left:50%;
-      transform: translateX(-50%);
-      bottom: 98px;
-      z-index:99999;
-      padding:12px 14px;
-      border-radius: 14px;
-      color:#ffe08a;
-      font: 14px system-ui;
-      box-shadow: 0 12px 34px rgba(0,0,0,.28);
-      background: rgba(11,47,91,.92);
-      display:none;
-      max-width: min(640px, 92vw);
-      border: 1px solid rgba(255,196,0,.22);
-    }
-    .toast.show{display:block}
-    .toast.bad{
-      background: rgba(139,0,0,.92);
-      border-color: rgba(255,255,255,.12);
-      color: #fff;
-    }
-
     .footer{
       margin-top: 14px;
       color: var(--muted);
@@ -416,16 +358,14 @@
         <div class="logo"></div>
         <div class="title">
           <b>RAULI</b>
-          <span id="subTitle">Panadería & Dulcería · Offline-first + IA</span>
+          <span id="subTitle">Panadería & Dulcería · Offline-first + Caja + IA</span>
         </div>
       </div>
 
       <div class="chips">
         <button class="btn" id="btnUpdate">🔔 Actualizar</button>
-
         <span class="chip" id="chipConn"><span class="dot offline"></span> Offline</span>
         <span class="chip" id="chipSync">🟥 Sin señal (guardando local)</span>
-
         <span class="chip" id="chipQueue" style="display:none">🤖 IA pendiente: 0</span>
         <span class="chip" id="chipUser" style="display:none">👤 —</span>
       </div>
@@ -435,30 +375,26 @@
   <div class="wrap">
     <div class="hero">
       <div>
-        <h1>RAULI Operativo (IA + Offline)</h1>
+        <h1>RAULI Operativo</h1>
         <p>
-          La app guarda todo sin señal (offline-first). El asistente guarda mensajes en cola y cuando vuelve la señal, los envía
-          y solicita respuesta a la IA (Cloud Function <b>rauliAssistant</b>).
+          Ya tienes registro y control. Ahora añadimos <b>CAJA profesional</b> con evidencias y alertas automáticas.
+          La IA guarda offline y al volver señal envía y responde (Function <b>rauliAssistant</b> si está desplegada).
         </p>
       </div>
       <div class="hero-actions">
         <button class="btn blue" id="btnProbe">🚀 Probar Nube</button>
         <button class="btn ghost" id="btnInstall">📲 Instalar App</button>
-        <button class="btn ghost" id="btnAbout">ℹ️ Acerca de</button>
+        <button class="btn ghost" id="btnAbout">ℹ️ Autor</button>
         <button class="btn danger" id="btnLogout" style="display:none">Salir</button>
       </div>
     </div>
 
     <!-- LOGIN -->
-    <div class="login-wrap" id="loginBox">
-      <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap">
-        <div>
-          <b style="font-size:18px;color:var(--yellowStrong)">🔐 Iniciar sesión</b>
-          <div class="hint">Usa el correo/clave creado en Firebase Authentication.</div>
-        </div>
-      </div>
+    <div class="panel" id="loginBox" style="max-width:760px;margin:14px auto 0;">
+      <h2>🔐 Iniciar sesión</h2>
+      <p>Usa el correo/clave creado en Firebase Authentication.</p>
 
-      <div class="row" style="margin-top:12px">
+      <div class="row">
         <div class="field">
           <label>Correo</label>
           <input id="email" type="email" placeholder="ej: bety@rauli.com" autocomplete="username">
@@ -469,49 +405,199 @@
         </div>
       </div>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
         <button class="btn blue" id="btnLogin">Entrar</button>
-        <button class="btn ghost" id="btnDemo">Entrar demo (sin login)</button>
+        <button class="btn ghost" id="btnDemo">Entrar demo</button>
       </div>
 
-      <div class="hint">
-        <b>Nota:</b> Demo es para ver pantallas. Para IA real y seguridad, usa login.
+      <div class="footer" style="margin-top:10px">
+        Prototipo asistido por <b>ChatGPT (GPT-5.2 Thinking)</b> · Autor del prototipo RAULI
       </div>
     </div>
 
-    <!-- DASHBOARD -->
-    <div id="dashBox" style="display:none">
-      <div class="grid" id="roleCards"></div>
+    <!-- APP -->
+    <div id="appBox" style="display:none">
 
-      <!-- Asistente -->
-      <div class="assistant" id="assistantSection">
-        <h2>🤖 Asistente RAULI (Offline → Online IA)</h2>
-        <p>
-          Escribe o dicta. Si no hay señal, se guarda. Cuando vuelve internet, se envía y se consulta la IA.
-        </p>
+      <!-- INICIO -->
+      <div class="section show" id="secHome">
+        <div class="grid" id="homeCards"></div>
 
-        <div class="box">
-          <textarea id="assistantInput" placeholder="Ej: 'Bety: cierre de caja, faltan $10, revisar evidencias'"></textarea>
+        <div class="panel" style="margin-top:14px">
+          <h2>🤖 Asistente RAULI</h2>
+          <p>Escribe o dicta. Si no hay señal, se guarda y se envía al recuperar señal.</p>
 
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+          <div class="row">
+            <div class="field" style="flex:1 1 420px">
+              <label>Mensaje</label>
+              <textarea id="assistantInput" placeholder="Ej: 'Bety: cierre de caja, faltan $10, revisar evidencias'"></textarea>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn blue" id="btnSendIA">Enviar / Guardar</button>
             <button class="btn ghost" id="btnVoice">🎙️ Dictar</button>
             <button class="btn ghost" id="btnFlushIA">📡 Enviar cola</button>
           </div>
 
-          <div class="hint" id="queueHint">🤖 IA pendiente: 0</div>
+          <div class="footer" style="text-align:left;margin-top:10px" id="queueHint">🤖 IA pendiente: 0</div>
 
-          <div class="chat" id="chat"></div>
+          <div class="panel" style="margin-top:10px;background:rgba(0,0,0,.14)">
+            <h2 style="font-size:18px">Chat</h2>
+            <div id="chat" style="max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px"></div>
+          </div>
+        </div>
+
+        <div class="footer">
+          Sistema RAULI © 2026 · Autor del prototipo: <b>ChatGPT (GPT-5.2 Thinking)</b>
         </div>
       </div>
 
-      <div class="footer">
-        Sistema RAULI © 2026 · Prototipo asistido por <b>ChatGPT (GPT-5.2 Thinking)</b> · Autor del prototipo RAULI
+      <!-- CAJA -->
+      <div class="section" id="secCaja">
+        <div class="panel">
+          <h2>💰 Caja</h2>
+          <p>
+            Apertura, movimientos, entrega de efectivo, reembolsos y cierre con evidencias.
+            <b>Solo Raúl / Lisi / Bety</b>.
+          </p>
+
+          <div id="cajaNoPerm" class="panel" style="display:none;margin-top:12px;background:rgba(231,76,60,.10);border-color:rgba(231,76,60,.35)">
+            <h2 style="color:#fff">⛔ Sin permiso</h2>
+            <p style="color:#fff;margin-top:6px">
+              Tu rol no tiene acceso a Caja. (Esto también se controla con reglas en Firestore).
+            </p>
+          </div>
+
+          <div id="cajaPermWrap" style="display:none">
+
+            <div class="kpis">
+              <div class="kpi">
+                <b>Apertura</b>
+                <small id="kApertura">$0.00</small>
+              </div>
+              <div class="kpi">
+                <b>Entradas</b>
+                <small id="kEntradas">$0.00</small>
+              </div>
+              <div class="kpi">
+                <b>Salidas</b>
+                <small id="kSalidas">$0.00</small>
+              </div>
+              <div class="kpi">
+                <b>Saldo teórico</b>
+                <small id="kTeorico">$0.00</small>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field">
+                <label>Tipo</label>
+                <select id="cajaTipo">
+                  <option value="apertura">Apertura</option>
+                  <option value="ingreso">Ingreso</option>
+                  <option value="gasto">Gasto</option>
+                  <option value="entrega_efectivo">Entrega de efectivo</option>
+                  <option value="reembolso">Reembolso</option>
+                  <option value="cierre">Cierre</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Monto</label>
+                <input id="cajaMonto" type="number" step="0.01" placeholder="0.00">
+              </div>
+
+              <div class="field">
+                <label>Método</label>
+                <select id="cajaMetodo">
+                  <option value="efectivo">Efectivo</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="tarjeta">Tarjeta</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Evidencia (foto/archivo)</label>
+                <input id="cajaEvi" type="file" accept="image/*,application/pdf">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="field" style="flex:1 1 420px">
+                <label>Nota / detalle</label>
+                <textarea id="cajaNota" placeholder="Ej: 'Compra de mantequilla', 'Entrega a Bety', 'Cierre del día'"></textarea>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn blue" id="btnCajaGuardar">Guardar movimiento</button>
+              <button class="btn ghost" id="btnCajaCierreRapido">Cerrar caja (comparar)</button>
+              <button class="btn ghost" id="btnCajaRefrescar">Refrescar</button>
+            </div>
+
+            <div class="table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Monto</th>
+                    <th>Nota</th>
+                    <th>Evidencia</th>
+                  </tr>
+                </thead>
+                <tbody id="cajaRows"></tbody>
+              </table>
+            </div>
+
+            <div class="footer" id="cajaAlert"></div>
+          </div>
+        </div>
       </div>
+
+      <!-- INVENTARIO -->
+      <div class="section" id="secInv">
+        <div class="panel">
+          <h2>📦 Inventario</h2>
+          <p>En el próximo paso lo dejamos completo (entradas, salidas, mínimos, alertas, recetas/consumo).</p>
+          <div class="grid" style="margin-top:12px">
+            <div class="card"><b>Entrada de insumo</b><small>Registrar compra + evidencia + proveedor.</small><span class="tag">Próximo</span></div>
+            <div class="card"><b>Salida a producción</b><small>Consumo por lote / receta.</small><span class="tag">Próximo</span></div>
+            <div class="card"><b>Alertas</b><small>Bajo mínimo, merma, faltantes.</small><span class="tag">Próximo</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCCIÓN -->
+      <div class="section" id="secProd">
+        <div class="panel">
+          <h2>🥖 Producción</h2>
+          <p>En el próximo paso: lotes, recetas, control de calidad, merma y trazabilidad.</p>
+          <div class="grid" style="margin-top:12px">
+            <div class="card"><b>Lotes</b><small>Entrada a proceso, salida a ventas.</small><span class="tag">Próximo</span></div>
+            <div class="card"><b>Calidad</b><small>Checklists por producto.</small><span class="tag">Próximo</span></div>
+            <div class="card"><b>Merma</b><small>Registro y evidencia.</small><span class="tag">Próximo</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VENTAS -->
+      <div class="section" id="secVentas">
+        <div class="panel">
+          <h2>🧾 Ventas</h2>
+          <p>En el próximo paso: ventas por producto, métodos, facturas, devoluciones y link con Caja.</p>
+          <div class="grid" style="margin-top:12px">
+            <div class="card"><b>Registrar venta</b><small>Por producto + método + evidencia.</small><span class="tag">Próximo</span></div>
+            <div class="card"><b>Reembolso</b><small>Motivo + aprobación + evidencia.</small><span class="tag">Próximo</span></div>
+            <div class="card"><b>Reportes</b><small>Día / semana / mes.</small><span class="tag">Próximo</span></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- Bottom -->
   <div class="bottom">
     <div class="bottom-inner">
       <div class="nav">
@@ -521,66 +607,15 @@
         <button id="navProd">🥖 Producción</button>
         <button id="navVentas">🧾 Ventas</button>
       </div>
-
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn ghost" id="btnOpenPanel">🧭 Panel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Panel por Rol -->
-  <div class="modal" id="modal">
-    <div class="sheet">
-      <div class="sheet-top">
-        <div class="who">
-          <b id="whoName">Usuario</b>
-          <span id="whoMeta">Rol · Módulos disponibles</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <button class="btn" id="btnInitBase" style="display:none">📦 Inicializar base</button>
-          <button class="btn ghost" id="btnClose">Cerrar</button>
-        </div>
-      </div>
-      <div class="sheet-body">
-        <div class="module-grid" id="moduleGrid"></div>
-
-        <div class="quick">
-          <button class="btn blue" id="btnOpenCash">💰 Apertura de caja (hoy)</button>
-          <button class="btn ghost" id="btnQuickInsumo">📦 Registrar insumo (rápido)</button>
-          <button class="btn ghost" id="btnBack">↩️ Volver</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- About modal -->
-  <div class="modal" id="aboutModal">
-    <div class="sheet">
-      <div class="sheet-top">
-        <div class="who">
-          <b>ℹ️ Acerca de RAULI</b>
-          <span>Offline-first + Firestore + IA por Cloud Functions</span>
-        </div>
-        <button class="btn ghost" id="btnAboutClose">Cerrar</button>
-      </div>
-      <div class="sheet-body">
-        <div class="module" style="cursor:default">
-          <b>Autor</b>
-          <small>ChatGPT (GPT-5.2 Thinking) — Autor del prototipo RAULI.</small>
-        </div>
-        <div class="module" style="cursor:default;margin-top:10px">
-          <b>IA (modo profesional)</b>
-          <small>
-            La app llama a la Cloud Function <b>rauliAssistant</b>. Offline: se guarda en cola local y se envía al recuperar señal.
-          </small>
-        </div>
+        <button class="btn ghost" id="btnGoIA">🤖 IA</button>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
-  <!-- UI Script (NO module) -->
+  <!-- UI Script -->
   <script>
     // Toast
     const toastEl = document.getElementById('toast');
@@ -590,8 +625,9 @@
       toastEl.classList.add('show');
       setTimeout(()=>toastEl.classList.remove('show'), 2800);
     }
+    window.toast = toast;
 
-    // Campanita (WebAudio)
+    // Campanita
     function ding(){
       try{
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -608,8 +644,20 @@
         setTimeout(()=>{ o.stop(); ctx.close(); }, 320);
       }catch(e){}
     }
+    window.ding = ding;
 
-    // Online/Offline Chips
+    // Update
+    document.getElementById('btnUpdate').addEventListener('click', async ()=>{
+      ding();
+      toast("Actualizando versión…", true);
+      try{
+        const reg = await navigator.serviceWorker?.getRegistration();
+        if(reg) await reg.update();
+      }catch(e){}
+      setTimeout(()=>location.reload(true), 350);
+    });
+
+    // Online/Offline chips
     const chipConn = document.getElementById('chipConn');
     const chipSync = document.getElementById('chipSync');
     function paintConn(){
@@ -641,7 +689,7 @@
       toast(choice?.outcome === 'accepted' ? "✅ Instalación iniciada" : "Instalación cancelada", true);
     });
 
-    // SW register (si existe sw.js)
+    // SW register
     (async ()=>{
       if('serviceWorker' in navigator){
         try{ await navigator.serviceWorker.register('./sw.js', { scope:'./' }); }
@@ -649,52 +697,84 @@
       }
     })();
 
-    // Update
-    document.getElementById('btnUpdate').addEventListener('click', async ()=>{
-      ding();
-      toast("Actualizando versión…", true);
-      try{
-        // intenta pedir update a SW si existe
-        const reg = await navigator.serviceWorker?.getRegistration();
-        if(reg) await reg.update();
-      }catch(e){}
-      setTimeout(()=>location.reload(true), 350);
-    });
+    // Secciones
+    const sections = {
+      home: document.getElementById("secHome"),
+      caja: document.getElementById("secCaja"),
+      inv: document.getElementById("secInv"),
+      prod: document.getElementById("secProd"),
+      ventas: document.getElementById("secVentas"),
+    };
+    function showSection(key){
+      Object.values(sections).forEach(s=>s.classList.remove("show"));
+      sections[key].classList.add("show");
+    }
+    window.showSection = showSection;
 
-    // About
-    const aboutModal = document.getElementById('aboutModal');
-    document.getElementById('btnAbout').addEventListener('click', ()=>aboutModal.classList.add('show'));
-    document.getElementById('btnAboutClose').addEventListener('click', ()=>aboutModal.classList.remove('show'));
-
-    // Bottom nav feedback
-    const navBtns = ["navHome","navCaja","navInv","navProd","navVentas"].map(id=>document.getElementById(id));
-    navBtns.forEach(b=>{
-      b.addEventListener('click', ()=>{
-        navBtns.forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        toast("Módulo: " + b.textContent.replace(/\s+/g,' ').trim(), true);
+    // Bottom nav
+    const navMap = [
+      ["navHome","home"],
+      ["navCaja","caja"],
+      ["navInv","inv"],
+      ["navProd","prod"],
+      ["navVentas","ventas"]
+    ];
+    navMap.forEach(([id,key])=>{
+      const btn = document.getElementById(id);
+      btn.addEventListener("click", ()=>{
+        navMap.forEach(([id2])=>document.getElementById(id2).classList.remove("active"));
+        btn.classList.add("active");
+        showSection(key);
       });
     });
 
-    // helpers chat UI
+    // Go IA shortcut
+    document.getElementById("btnGoIA").addEventListener("click", ()=>{
+      navMap.forEach(([id2])=>document.getElementById(id2).classList.remove("active"));
+      document.getElementById("navHome").classList.add("active");
+      showSection("home");
+      document.getElementById("assistantInput")?.scrollIntoView({behavior:"smooth", block:"center"});
+      toast("🤖 Asistente listo", true);
+    });
+
+    // About
+    document.getElementById("btnAbout").addEventListener("click", ()=>{
+      toast("Autor del prototipo RAULI: ChatGPT (GPT-5.2 Thinking)", true);
+    });
+
+    // Chat bubbles
     function chatAdd(text, who="user"){
       const chat = document.getElementById("chat");
       const div = document.createElement("div");
-      div.className = "bubble " + (who === "ai" ? "ai" : "user");
+      div.style.maxWidth="92%";
+      div.style.padding="12px 12px";
+      div.style.borderRadius="16px";
+      div.style.border="1px solid rgba(255,255,255,.12)";
+      div.style.background = (who==="ai") ? "rgba(255,196,0,.10)" : "rgba(47,108,255,.16)";
+      div.style.borderColor = (who==="ai") ? "rgba(255,196,0,.26)" : "rgba(47,108,255,.30)";
+      div.style.color = "var(--yellow)";
+      div.style.whiteSpace="pre-wrap";
+      div.style.wordBreak="break-word";
+      div.style.alignSelf = (who==="ai") ? "flex-start" : "flex-end";
       div.textContent = text;
+      chat.style.display="flex";
+      chat.style.flexDirection="column";
+      chat.style.gap="10px";
       chat.appendChild(div);
       chat.scrollTop = chat.scrollHeight;
     }
+    window.chatAdd = chatAdd;
   </script>
 
-  <!-- Firebase + App Logic (module) -->
+  <!-- Firebase + App Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
       getFirestore, enableIndexedDbPersistence,
       doc, getDoc, setDoc,
       collection, addDoc,
-      serverTimestamp
+      serverTimestamp,
+      query, orderBy, limit, getDocs
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
     import {
       getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
@@ -703,7 +783,7 @@
       getFunctions, httpsCallable
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js";
 
-    // ===== Firebase config (tu proyecto) =====
+    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyCGPDlRAIKsrI6EhE3Tb2-1sYJ1VDaH2jw",
       authDomain: "rauli-e7fdb.firebaseapp.com",
@@ -719,389 +799,50 @@
     const auth = getAuth(app);
     const functions = getFunctions(app);
 
-    // Offline-first Firestore
+    // Offline-first
     try { await enableIndexedDbPersistence(db); } catch(e) {}
 
     const $ = (id)=>document.getElementById(id);
+    const toast = window.toast;
+    const ding = window.ding;
+    const chatAdd = window.chatAdd;
+
     const RAULI_BIZ = "rauli";
     const bizDocRef = () => doc(db, "business", RAULI_BIZ);
     const subCol = (name) => collection(db, "business", RAULI_BIZ, name);
     const userProfileRef = (uid)=>doc(db, "business", RAULI_BIZ, "users", uid);
 
-    // Roles (como acordamos)
+    // Roles
     const ROLES = {
-      owner: { name:"Raúl (Dueño)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría","Configuración"] },
-      co_owner: { name:"Lisi (Co-propietaria)", modules:["Caja","Inventario","Producción","Ventas","Contabilidad","Auditoría"] },
-      supervisor: { name:"Orlandito (Supervisor)", modules:["Calidad","Inventario","Producción","Ventas","Auditoría"] },
-      admin_produccion: { name:"Papito (Producción)", modules:["Producción","Inventario","Ventas","Caja"] },
-      contadora: { name:"Bety (Contadora)", modules:["Caja","Finanzas","Cierres","Evidencias","Auditoría"] }
+      owner: { name:"Raúl (Dueño)" },
+      co_owner: { name:"Lisi (Co-propietaria)" },
+      supervisor: { name:"Orlandito (Supervisor)" },
+      admin_produccion: { name:"Papito (Producción)" },
+      contadora: { name:"Bety (Contadora)" }
     };
-
-    // UI helpers from non-module script
-    const toast = window.toast;
-    const ding = window.ding;
-    const chatAdd = window.chatAdd;
+    const FINANCE_ROLES = new Set(["owner","co_owner","contadora"]);
 
     // Session
     let current = { uid:null, email:null, role:null, displayName:null };
 
     function showLogin(){
       $("loginBox").style.display = "block";
-      $("dashBox").style.display = "none";
+      $("appBox").style.display = "none";
       $("btnLogout").style.display = "none";
       $("chipUser").style.display = "none";
       $("chipQueue").style.display = "none";
     }
-    function showDash(){
+    function showApp(){
       $("loginBox").style.display = "none";
-      $("dashBox").style.display = "block";
+      $("appBox").style.display = "block";
       $("btnLogout").style.display = "inline-flex";
       $("chipUser").style.display = "inline-flex";
-      $("chipUser").textContent = `👤 ${current.displayName || current.email || 'Usuario'} · ${current.role || 'rol'}`;
       $("chipQueue").style.display = "inline-flex";
+      $("chipUser").textContent = `👤 ${current.displayName || current.email || 'Usuario'} · ${current.role || 'rol'}`;
       updateQueueUI();
     }
 
-    // ---- Base init (solo dueño) ----
-    function nowISO(){ return new Date().toISOString().slice(0,10); }
-
-    async function ensureBizMeta(){
-      const ref = bizDocRef();
-      const snap = await getDoc(ref);
-      if(!snap.exists()){
-        await setDoc(ref, {
-          name:"Panadería & Dulcería RAULI",
-          createdAt: serverTimestamp(),
-          version:"v3-ia",
-          status:"active"
-        });
-      }
-    }
-    async function ensureConfig(){
-      const ref = doc(db, "business", RAULI_BIZ, "config", "general");
-      const snap = await getDoc(ref);
-      if(!snap.exists()){
-        await setDoc(ref, {
-          currency:"USD",
-          timezone:"America/New_York",
-          lowStockThreshold: 5,
-          createdAt: serverTimestamp()
-        });
-      }
-    }
-    async function seedBase(){
-      const marker = { createdAt: serverTimestamp(), seed:true };
-      await addDoc(subCol("inventario"), { ...marker, type:"insumo", sku:"HARINA-0001", name:"Harina (demo)", unit:"lb", qty:50, min:10 });
-      await addDoc(subCol("produccion"), { ...marker, type:"lote", product:"Pan (demo)", qty:20, status:"en_proceso", date: nowISO() });
-      await addDoc(subCol("ventas"), { ...marker, type:"venta", date: nowISO(), total:0, method:"efectivo", note:"Venta demo" });
-      await addDoc(subCol("caja"), { ...marker, type:"apertura", date: nowISO(), amount:0, note:"Caja demo" });
-      await addDoc(subCol("auditoria"), { ...marker, type:"seed", msg:"Base inicial creada desde RAULI", at: serverTimestamp() });
-    }
-    async function initBase(){
-      try{
-        await ensureBizMeta();
-        await ensureConfig();
-        await seedBase();
-        toast("✅ Base RAULI inicializada", true);
-      }catch(e){
-        toast("❌ Error inicializando base: " + (e?.message || e), false);
-      }
-    }
-
-    // ---- Panel por rol (modal) ----
-    function openPanel(){
-      const modal = $("modal");
-      const r = ROLES[current.role] || ROLES.owner;
-      $("whoName").textContent = current.displayName || r.name;
-      $("whoMeta").textContent = `Rol: ${current.role} · Módulos: ${r.modules.length}`;
-      $("btnInitBase").style.display = (current.role === "owner") ? "inline-flex" : "none";
-
-      const grid = $("moduleGrid");
-      grid.innerHTML = "";
-      r.modules.forEach(m=>{
-        const b = document.createElement("button");
-        b.className = "module";
-        b.innerHTML = `<b>${m}</b><small>Entrar a ${m.toLowerCase()} y registrar evidencias.</small>`;
-        b.onclick = async ()=>{
-          try{
-            await addDoc(subCol("auditoria"), {
-              type:"open_module",
-              module:m,
-              role: current.role,
-              uid: current.uid || null,
-              at: serverTimestamp()
-            });
-          }catch(e){}
-          toast("Abriendo: " + m, true);
-        };
-        grid.appendChild(b);
-      });
-
-      modal.classList.add("show");
-    }
-    function closePanel(){ $("modal").classList.remove("show"); }
-
-    $("btnClose").addEventListener("click", closePanel);
-    $("btnBack").addEventListener("click", closePanel);
-    $("btnOpenPanel").addEventListener("click", openPanel);
-    $("btnInitBase").addEventListener("click", initBase);
-
-    // Quick actions
-    $("btnOpenCash").addEventListener("click", async ()=>{
-      try{
-        await addDoc(subCol("caja"), {
-          type:"apertura",
-          date: nowISO(),
-          amount: 0,
-          byRole: current.role,
-          uid: current.uid,
-          at: serverTimestamp(),
-          note: "Apertura creada desde RAULI"
-        });
-        toast("✅ Apertura de caja registrada", true);
-      }catch(e){
-        toast("❌ Error caja: " + (e?.message || e), false);
-      }
-    });
-
-    $("btnQuickInsumo").addEventListener("click", async ()=>{
-      try{
-        await addDoc(subCol("inventario"), {
-          type:"insumo",
-          sku:"INS-" + Math.floor(Math.random()*99999),
-          name:"Insumo rápido",
-          unit:"unidad",
-          qty: 1,
-          min: 1,
-          byRole: current.role,
-          uid: current.uid,
-          at: serverTimestamp()
-        });
-        toast("✅ Insumo registrado (demo)", true);
-      }catch(e){
-        toast("❌ Error inventario: " + (e?.message || e), false);
-      }
-    });
-
-    // ---- Probar nube ----
-    $("btnProbe").addEventListener("click", async ()=>{
-      try{
-        await addDoc(collection(db, "business", RAULI_BIZ, "events"), {
-          type:"test",
-          desc:"Prueba Firestore OK (RAULI v3 IA)",
-          uid: current.uid || null,
-          role: current.role || null,
-          clientTime: Date.now(),
-          createdAt: serverTimestamp()
-        });
-        toast("✅ ¡Listo! Firestore escribió. Ve a Firebase > Datos.", true);
-      }catch(e){
-        toast("❌ Error Firestore: " + (e?.message || e), false);
-      }
-    });
-
-    // ---- Render dashboard (una tarjeta por tu rol) ----
-    function renderDashboard(){
-      const holder = $("roleCards");
-      holder.innerHTML = "";
-      const r = ROLES[current.role] || ROLES.owner;
-
-      const c = document.createElement("div");
-      c.className = "card";
-      c.innerHTML = `
-        <b>${r.name}</b>
-        <small>Tu panel está listo. Entra a tus módulos y registra evidencias. La IA te ayuda y guarda offline.</small>
-        <span class="tag">Abrir panel</span>
-      `;
-      c.addEventListener("click", openPanel);
-      holder.appendChild(c);
-    }
-
-    // ---- IA OFFLINE-FIRST + ONLINE Function ----
-    const IA_QUEUE_KEY = "rauli_ia_queue_v2";
-    function getQueue(){
-      try{ return JSON.parse(localStorage.getItem(IA_QUEUE_KEY) || "[]"); }catch(e){ return []; }
-    }
-    function setQueue(q){
-      localStorage.setItem(IA_QUEUE_KEY, JSON.stringify(q));
-      updateQueueUI();
-    }
-    function updateQueueUI(){
-      const q = getQueue();
-      $("queueHint").textContent = `🤖 IA pendiente: ${q.length}`;
-      $("chipQueue").textContent = `🤖 IA pendiente: ${q.length}`;
-    }
-    updateQueueUI();
-
-    async function saveAssistantMessage(type, text, extra={}){
-      // Guardamos en Firestore (offline persistence se encarga si no hay internet)
-      try{
-        await addDoc(subCol("assistantMessages"), {
-          type, text,
-          uid: current.uid || null,
-          role: current.role || null,
-          email: current.email || null,
-          clientTime: Date.now(),
-          createdAt: serverTimestamp(),
-          ...extra
-        });
-      }catch(e){
-        // si falla por reglas o algo, no bloqueamos el flujo
-      }
-    }
-
-    async function callFunctionAI(text){
-      // Llama Cloud Function: rauliAssistant
-      // Si no está desplegada aún, fallará y caemos a respuesta local.
-      const fn = httpsCallable(functions, "rauliAssistant");
-      const res = await fn({ text, role: current.role || "operacion" });
-      return res?.data?.answer || "No hubo respuesta de IA.";
-    }
-
-    function localFallbackAI(text){
-      // Respuesta local útil cuando no hay function
-      const t = text.toLowerCase();
-      if(t.includes("caja") || t.includes("falt") || t.includes("efectivo")){
-        return "🔎 Revisión rápida: registra evidencia, verifica movimientos de caja y confirma cierre. Si falta efectivo, deja nota + responsable + foto.";
-      }
-      if(t.includes("inventario") || t.includes("insumo") || t.includes("harina")){
-        return "📦 Inventario: registra entrada/salida del insumo, valida mínimo, y crea alerta si baja de umbral. Adjunta evidencia (factura/foto).";
-      }
-      if(t.includes("venta") || t.includes("ventas")){
-        return "🧾 Ventas: registra el total, método de pago y evidencia. Si es reembolso, anota motivo y firma/responsable.";
-      }
-      return "✅ Recibido. Quedó registrado. (IA completa se activará al conectar la Cloud Function).";
-    }
-
-    async function askIA(text, source="texto"){
-      if(!text || !text.trim()){
-        toast("Escribe un mensaje para el asistente", false);
-        return;
-      }
-
-      // Mostrar burbuja del usuario
-      chatAdd(text, "user");
-      await saveAssistantMessage("user", text, { source });
-
-      // OFFLINE -> cola
-      if(!navigator.onLine){
-        const q = getQueue();
-        q.push({ id: crypto.randomUUID(), text, source, ts: Date.now(), role: current.role || "operacion" });
-        setQueue(q);
-        toast("🟥 Sin conexión: guardado en cola IA", true);
-        chatAdd("🟥 Sin conexión: guardé tu mensaje. Se enviará cuando vuelva la señal.", "ai");
-        return;
-      }
-
-      // ONLINE -> intenta function, si falla usa fallback
-      toast("🤖 Consultando IA…", true);
-      let answer = "";
-      try{
-        answer = await callFunctionAI(text);
-        ding();
-      }catch(e){
-        answer = localFallbackAI(text);
-      }
-      chatAdd(answer, "ai");
-      await saveAssistantMessage("ai", answer, { inResponseTo: text, source:"ai" });
-    }
-
-    async function flushQueue(){
-      const q = getQueue();
-      if(!q.length){
-        toast("Cola IA vacía ✅", true);
-        return;
-      }
-      if(!navigator.onLine){
-        toast("Sin señal: no puedo enviar la cola", false);
-        return;
-      }
-
-      toast(`📡 Enviando cola IA (${q.length})…`, true);
-
-      const remaining = [];
-      for(const item of q){
-        try{
-          // re-procesar con IA
-          let answer = "";
-          try{
-            answer = await callFunctionAI(item.text);
-            ding();
-          }catch(e){
-            answer = localFallbackAI(item.text);
-          }
-          // registrar
-          await saveAssistantMessage("user", item.text, { fromQueue:true, source:item.source, ts:item.ts });
-          await saveAssistantMessage("ai", answer, { fromQueue:true, source:"ai", inResponseTo:item.id });
-
-          chatAdd(`(Desde cola) ${item.text}`, "user");
-          chatAdd(answer, "ai");
-        }catch(e){
-          remaining.push(item);
-        }
-      }
-      setQueue(remaining);
-      toast(remaining.length ? `⚠️ Quedaron ${remaining.length} en cola` : "✅ Cola IA enviada completa", !remaining.length);
-    }
-
-    $("btnSendIA").addEventListener("click", async ()=>{
-      const text = $("assistantInput").value.trim();
-      if(!text) return toast("Escribe un mensaje", false);
-      $("assistantInput").value = "";
-      await askIA(text, "texto");
-      updateQueueUI();
-    });
-
-    $("btnFlushIA").addEventListener("click", async ()=>{
-      await flushQueue();
-      updateQueueUI();
-    });
-
-    // Auto-flush cuando vuelva señal
-    window.addEventListener("online", async ()=>{
-      await flushQueue().catch(()=>{});
-      updateQueueUI();
-    });
-
-    // Voz (dictado)
-    let recognizing = false;
-    let recog = null;
-    function setupVoice(){
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if(!SR) return null;
-      const r = new SR();
-      r.lang = "es-ES";
-      r.interimResults = true;
-      r.continuous = false;
-      return r;
-    }
-    recog = setupVoice();
-
-    $("btnVoice").addEventListener("click", ()=>{
-      if(!recog){
-        toast("Dictado no disponible en este navegador.", false);
-        return;
-      }
-      if(recognizing){ recog.stop(); return; }
-      recognizing = true;
-      toast("🎙️ Dictando…", true);
-
-      let finalText = "";
-      recog.onresult = (ev)=>{
-        let interim = "";
-        for (let i = ev.resultIndex; i < ev.results.length; i++){
-          const tr = ev.results[i][0].transcript;
-          if(ev.results[i].isFinal) finalText += tr + " ";
-          else interim += tr;
-        }
-        $("assistantInput").value = (finalText + interim).trim();
-      };
-      recog.onerror = ()=>{ recognizing=false; toast("Error de voz. Intenta otra vez.", false); };
-      recog.onend = ()=>{ recognizing=false; toast("✅ Dictado listo. Puedes enviar.", true); };
-      recog.start();
-    });
-
-    // ---- Login ----
+    // Login
     $("btnLogin").addEventListener("click", async ()=>{
       const email = $("email").value.trim();
       const pass = $("pass").value;
@@ -1126,9 +867,421 @@
     // Demo
     $("btnDemo").addEventListener("click", ()=>{
       current = { uid:null, email:"demo@rauli", role:"owner", displayName:"Demo (Dueño)" };
-      showDash();
-      renderDashboard();
+      showApp();
+      renderHome();
+      applyCajaPermissions();
+      loadCajaToday();
       toast("Modo demo activado", true);
+    });
+
+    // Probar nube
+    $("btnProbe").addEventListener("click", async ()=>{
+      try{
+        await addDoc(collection(db, "business", RAULI_BIZ, "events"), {
+          type:"test",
+          desc:"Prueba Firestore OK (RAULI Caja + IA)",
+          uid: current.uid || null,
+          role: current.role || null,
+          clientTime: Date.now(),
+          createdAt: serverTimestamp()
+        });
+        toast("✅ ¡Listo! Firestore escribió. Ve a Firebase > Datos.", true);
+      }catch(e){
+        toast("❌ Error Firestore: " + (e?.message || e), false);
+      }
+    });
+
+    // Home cards
+    function renderHome(){
+      const holder = $("homeCards");
+      holder.innerHTML = "";
+      const cards = [
+        { title:"💰 Caja", desc:"Apertura, movimientos, cierre, evidencias y alertas.", go:"caja" },
+        { title:"📦 Inventario", desc:"Entradas/salidas, mínimos, alertas (próximo paso).", go:"inv" },
+        { title:"🥖 Producción", desc:"Lotes, recetas, calidad, merma (próximo paso).", go:"prod" },
+      ];
+      cards.forEach(c=>{
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `<b>${c.title}</b><small>${c.desc}</small><span class="tag">Abrir</span>`;
+        div.onclick = ()=>{
+          // activar nav correspondiente
+          document.getElementById("navHome").classList.remove("active");
+          if(c.go==="caja"){ document.getElementById("navCaja").click(); }
+          if(c.go==="inv"){ document.getElementById("navInv").click(); }
+          if(c.go==="prod"){ document.getElementById("navProd").click(); }
+        };
+        holder.appendChild(div);
+      });
+    }
+
+    // ============ IA OFFLINE-FIRST + ONLINE (Function) ============
+    const IA_QUEUE_KEY = "rauli_ia_queue_v3";
+    function getQueue(){ try{ return JSON.parse(localStorage.getItem(IA_QUEUE_KEY) || "[]"); }catch(e){ return []; } }
+    function setQueue(q){ localStorage.setItem(IA_QUEUE_KEY, JSON.stringify(q)); updateQueueUI(); }
+    function updateQueueUI(){
+      const q = getQueue();
+      $("queueHint").textContent = `🤖 IA pendiente: ${q.length}`;
+      $("chipQueue").textContent = `🤖 IA pendiente: ${q.length}`;
+    }
+    updateQueueUI();
+
+    async function saveAssistantMessage(type, text, extra={}){
+      try{
+        await addDoc(subCol("assistantMessages"), {
+          type, text,
+          uid: current.uid || null,
+          role: current.role || null,
+          email: current.email || null,
+          clientTime: Date.now(),
+          createdAt: serverTimestamp(),
+          ...extra
+        });
+      }catch(e){}
+    }
+
+    async function callFunctionAI(text){
+      const fn = httpsCallable(functions, "rauliAssistant");
+      const res = await fn({ text, role: current.role || "operacion" });
+      return res?.data?.answer || "No hubo respuesta de IA.";
+    }
+
+    function localFallbackAI(text){
+      const t = (text||"").toLowerCase();
+      if(t.includes("caja") || t.includes("falt") || t.includes("efectivo")){
+        return "🔎 Caja: registra evidencia, verifica movimientos (ingresos/gastos/entregas) y ejecuta cierre comparando saldo teórico vs contado.";
+      }
+      if(t.includes("inventario") || t.includes("insumo") || t.includes("harina")){
+        return "📦 Inventario: registra entrada/salida, valida mínimos y crea alerta si baja del umbral. Adjunta evidencia (factura/foto).";
+      }
+      if(t.includes("venta") || t.includes("ventas")){
+        return "🧾 Ventas: registra total, método de pago y evidencia. Si reembolso, anota motivo y responsable.";
+      }
+      return "✅ Recibido. Quedó registrado. (IA completa se activará al conectar la Cloud Function).";
+    }
+
+    async function askIA(text, source="texto"){
+      if(!text || !text.trim()){
+        toast("Escribe un mensaje para el asistente", false);
+        return;
+      }
+
+      chatAdd(text, "user");
+      await saveAssistantMessage("user", text, { source });
+
+      if(!navigator.onLine){
+        const q = getQueue();
+        q.push({ id: crypto.randomUUID(), text, source, ts: Date.now(), role: current.role || "operacion" });
+        setQueue(q);
+        toast("🟥 Sin conexión: guardado en cola IA", true);
+        chatAdd("🟥 Sin conexión: guardé tu mensaje. Se enviará cuando vuelva la señal.", "ai");
+        return;
+      }
+
+      toast("🤖 Consultando IA…", true);
+      let answer = "";
+      try{
+        answer = await callFunctionAI(text);
+        ding();
+      }catch(e){
+        answer = localFallbackAI(text);
+      }
+      chatAdd(answer, "ai");
+      await saveAssistantMessage("ai", answer, { inResponseTo: text, source:"ai" });
+    }
+
+    async function flushQueue(){
+      const q = getQueue();
+      if(!q.length) return;
+      if(!navigator.onLine) return;
+
+      toast(`📡 Enviando cola IA (${q.length})…`, true);
+      const remaining = [];
+
+      for(const item of q){
+        try{
+          let answer = "";
+          try{ answer = await callFunctionAI(item.text); ding(); }
+          catch(e){ answer = localFallbackAI(item.text); }
+
+          await saveAssistantMessage("user", item.text, { fromQueue:true, source:item.source, ts:item.ts });
+          await saveAssistantMessage("ai", answer, { fromQueue:true, source:"ai", inResponseTo:item.id });
+
+          chatAdd(`(Desde cola) ${item.text}`, "user");
+          chatAdd(answer, "ai");
+        }catch(e){
+          remaining.push(item);
+        }
+      }
+
+      setQueue(remaining);
+      toast(remaining.length ? `⚠️ Quedaron ${remaining.length} en cola` : "✅ Cola IA enviada completa", !remaining.length);
+    }
+
+    $("btnSendIA").addEventListener("click", async ()=>{
+      const text = $("assistantInput").value.trim();
+      if(!text) return toast("Escribe un mensaje", false);
+      $("assistantInput").value = "";
+      await askIA(text, "texto");
+      updateQueueUI();
+    });
+
+    $("btnFlushIA").addEventListener("click", async ()=>{
+      await flushQueue();
+      updateQueueUI();
+    });
+
+    window.addEventListener("online", async ()=>{
+      await flushQueue().catch(()=>{});
+      updateQueueUI();
+    });
+
+    // Dictado
+    let recognizing = false;
+    let recog = null;
+    function setupVoice(){
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if(!SR) return null;
+      const r = new SR();
+      r.lang = "es-ES";
+      r.interimResults = true;
+      r.continuous = false;
+      return r;
+    }
+    recog = setupVoice();
+
+    $("btnVoice").addEventListener("click", ()=>{
+      if(!recog) return toast("Dictado no disponible en este navegador.", false);
+      if(recognizing){ recog.stop(); return; }
+      recognizing = true;
+      toast("🎙️ Dictando…", true);
+
+      let finalText = "";
+      recog.onresult = (ev)=>{
+        let interim = "";
+        for (let i = ev.resultIndex; i < ev.results.length; i++){
+          const tr = ev.results[i][0].transcript;
+          if(ev.results[i].isFinal) finalText += tr + " ";
+          else interim += tr;
+        }
+        $("assistantInput").value = (finalText + interim).trim();
+      };
+      recog.onerror = ()=>{ recognizing=false; toast("Error de voz. Intenta otra vez.", false); };
+      recog.onend = ()=>{ recognizing=false; toast("✅ Dictado listo. Puedes enviar.", true); };
+      recog.start();
+    });
+
+    // ============ CAJA (profesional) ============
+    function money(n){
+      const x = Number(n||0);
+      return "$" + x.toFixed(2);
+    }
+    function todayKey(){
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,"0");
+      const dd = String(d.getDate()).padStart(2,"0");
+      return `${y}-${m}-${dd}`;
+    }
+    async function fileToBase64(file){
+      if(!file) return null;
+      return new Promise((resolve, reject)=>{
+        const r = new FileReader();
+        r.onload = ()=>resolve(String(r.result||""));
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+    }
+
+    function applyCajaPermissions(){
+      const has = FINANCE_ROLES.has(current.role || "");
+      $("cajaNoPerm").style.display = has ? "none" : "block";
+      $("cajaPermWrap").style.display = has ? "block" : "none";
+    }
+
+    async function saveCajaMovement({ tipo, monto, metodo, nota, evidenceBase64 }){
+      const day = todayKey();
+      const payload = {
+        type: tipo,
+        amount: Number(monto||0),
+        method: metodo || "efectivo",
+        note: (nota||"").trim(),
+        day,
+        uid: current.uid || null,
+        role: current.role || null,
+        email: current.email || null,
+        createdAt: serverTimestamp(),
+      };
+      if(evidenceBase64){
+        // PROTOTIPO: guardamos base64 dentro del documento (luego lo migramos a Storage).
+        payload.evidence = { kind:"base64", data: evidenceBase64.slice(0, 2_000_000) }; // límite de seguridad
+      }
+      await addDoc(subCol("caja"), payload);
+      await addDoc(subCol("auditoria"), {
+        type:"caja_movimiento",
+        cajaType: tipo,
+        amount: Number(monto||0),
+        day,
+        uid: current.uid || null,
+        role: current.role || null,
+        at: serverTimestamp()
+      });
+    }
+
+    function classifySums(items){
+      // Apertura = apertura
+      // Entradas = ingreso
+      // Salidas = gasto + reembolso + entrega_efectivo
+      let apertura = 0, entradas = 0, salidas = 0;
+      for(const it of items){
+        const t = it.type;
+        const a = Number(it.amount||0);
+        if(t === "apertura") apertura += a;
+        else if(t === "ingreso") entradas += a;
+        else if(t === "gasto" || t === "reembolso" || t === "entrega_efectivo") salidas += a;
+      }
+      const teorico = apertura + entradas - salidas;
+      return { apertura, entradas, salidas, teorico };
+    }
+
+    async function loadCajaToday(){
+      if(!FINANCE_ROLES.has(current.role || "")) return;
+
+      const day = todayKey();
+      const q = query(subCol("caja"), orderBy("createdAt","desc"), limit(80));
+      const snap = await getDocs(q);
+
+      // Filtrar por "day" del cliente (si hay offline timestamps, igual funciona)
+      const items = [];
+      snap.forEach(d=>{
+        const data = d.data();
+        if(data.day === day) items.push({ id:d.id, ...data });
+      });
+
+      // Render tabla
+      const tbody = $("cajaRows");
+      tbody.innerHTML = "";
+
+      items
+        .sort((a,b)=> (a.createdAt?.seconds||0) - (b.createdAt?.seconds||0))
+        .forEach(it=>{
+          const tr = document.createElement("tr");
+          const when = it.createdAt?.seconds ? new Date(it.createdAt.seconds*1000) : new Date();
+          const hh = String(when.getHours()).padStart(2,"0");
+          const mm = String(when.getMinutes()).padStart(2,"0");
+
+          const ev = it.evidence?.data ? `<span class="badge ok">Sí</span>` : `<span class="badge">—</span>`;
+          tr.innerHTML = `
+            <td>${day} ${hh}:${mm}</td>
+            <td><span class="badge">${it.type}</span></td>
+            <td>${money(it.amount)}</td>
+            <td>${(it.note||"")}</td>
+            <td>${ev}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+      // KPIs
+      const sums = classifySums(items);
+      $("kApertura").textContent = money(sums.apertura);
+      $("kEntradas").textContent = money(sums.entradas);
+      $("kSalidas").textContent = money(sums.salidas);
+      $("kTeorico").textContent = money(sums.teorico);
+
+      $("cajaAlert").textContent = `Hoy (${day}) · Saldo teórico calculado automáticamente.`;
+    }
+
+    $("btnCajaRefrescar").addEventListener("click", async ()=>{
+      await loadCajaToday();
+      toast("Caja actualizada", true);
+    });
+
+    $("btnCajaGuardar").addEventListener("click", async ()=>{
+      if(!FINANCE_ROLES.has(current.role || "")) return toast("Sin permiso para Caja", false);
+
+      const tipo = $("cajaTipo").value;
+      const monto = $("cajaMonto").value;
+      const metodo = $("cajaMetodo").value;
+      const nota = $("cajaNota").value;
+      const file = $("cajaEvi").files?.[0] || null;
+
+      if(!monto || Number(monto) === 0){
+        return toast("Monto inválido", false);
+      }
+
+      let base64 = null;
+      try{
+        if(file) base64 = await fileToBase64(file);
+      }catch(e){
+        // no bloquea
+      }
+
+      try{
+        await saveCajaMovement({ tipo, monto, metodo, nota, evidenceBase64: base64 });
+        $("cajaMonto").value = "";
+        $("cajaNota").value = "";
+        $("cajaEvi").value = "";
+        toast("✅ Movimiento guardado", true);
+        await loadCajaToday();
+      }catch(e){
+        toast("❌ Error guardando caja: " + (e?.message || e), false);
+      }
+    });
+
+    $("btnCajaCierreRapido").addEventListener("click", async ()=>{
+      if(!FINANCE_ROLES.has(current.role || "")) return toast("Sin permiso para Caja", false);
+
+      // Cierre rápido: te pide monto contado (prompt) y compara con teórico (de KPIs)
+      const teoricoTxt = $("kTeorico").textContent.replace("$","");
+      const teorico = Number(teoricoTxt || 0);
+
+      const contadoStr = prompt("Monto contado en caja (efectivo real):", teorico.toFixed(2));
+      if(contadoStr === null) return;
+
+      const contado = Number(contadoStr);
+      if(!isFinite(contado)) return toast("Monto contado inválido", false);
+
+      const diff = contado - teorico;
+      const abs = Math.abs(diff);
+
+      try{
+        await saveCajaMovement({
+          tipo: "cierre",
+          monto: contado,
+          metodo: "efectivo",
+          nota: `Cierre rápido. Teórico=${teorico.toFixed(2)} Contado=${contado.toFixed(2)} Diff=${diff.toFixed(2)}`,
+          evidenceBase64: null
+        });
+
+        if(abs >= 0.01){
+          const msg = diff < 0
+            ? `⚠️ FALTANTE: ${money(abs)} (Teórico ${money(teorico)} vs Contado ${money(contado)})`
+            : `⚠️ SOBRANTE: ${money(abs)} (Teórico ${money(teorico)} vs Contado ${money(contado)})`;
+
+          $("cajaAlert").innerHTML = `<span class="badge bad">${msg}</span>`;
+          toast(msg, false);
+
+          // Registrar alerta en auditoría
+          await addDoc(subCol("auditoria"), {
+            type:"alerta_caja",
+            day: todayKey(),
+            diff,
+            teorico,
+            contado,
+            uid: current.uid || null,
+            role: current.role || null,
+            at: serverTimestamp()
+          });
+        }else{
+          $("cajaAlert").innerHTML = `<span class="badge ok">✅ Cierre OK. Teórico y contado coinciden.</span>`;
+          toast("✅ Cierre OK", true);
+          ding();
+        }
+
+        await loadCajaToday();
+      }catch(e){
+        toast("❌ Error cierre: " + (e?.message || e), false);
+      }
     });
 
     // Auth state
@@ -1142,7 +1295,7 @@
       current.uid = user.uid;
       current.email = user.email || null;
 
-      // Cargar perfil (role/name) desde Firestore: business/rauli/users/{uid}
+      // Perfil en business/rauli/users/{uid}
       try{
         const snap = await getDoc(userProfileRef(user.uid));
         if(snap.exists()){
@@ -1150,7 +1303,6 @@
           current.role = data.role || "owner";
           current.displayName = data.name || user.email || "Usuario";
         }else{
-          // fallback (no bloquea)
           current.role = "owner";
           current.displayName = user.email || "Usuario";
         }
@@ -1159,8 +1311,10 @@
         current.displayName = user.email || "Usuario";
       }
 
-      showDash();
-      renderDashboard();
+      showApp();
+      renderHome();
+      applyCajaPermissions();
+      await loadCajaToday();
 
       // Auditoría login
       try{
@@ -1175,11 +1329,12 @@
 
       toast(`✅ Bienvenido: ${current.displayName}`, true);
 
-      // si hay señal, intenta enviar cola IA
+      // flush IA queue
       if(navigator.onLine) flushQueue().catch(()=>{});
       updateQueueUI();
     });
 
+    // ====== Nota: si quieres inicializar docs base, lo hacemos en el próximo paso (inventario/ventas conectados). ======
   </script>
 </body>
 </html>
