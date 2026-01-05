@@ -1,167 +1,126 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>RAULI · Panadería & Dulcería</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<title>RAULI · Panadería & Dulcería</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#1f3c88" />
-  <link rel="icon" href="icon-192.png" />
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1f3c88">
 
-  <style>
-    :root{
-      --blue:#1f3c88;
-      --blue2:#2d5be3;
-      --yellow:#ffd43b;
-      --yellow2:#ffb703;
-      --bg:#0b1220;
-      --panel:#121c33;
-      --text:#ffd43b;
-      --muted:#c7d2ff;
-      --danger:#ff6b6b;
-      --ok:#51cf66;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,Segoe UI,Roboto,Arial;
-      background:linear-gradient(180deg,#0b1220,#0e1630);
-      color:var(--text);
-    }
-    header{
-      background:linear-gradient(90deg,var(--blue),var(--blue2));
-      padding:14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      box-shadow:0 4px 20px rgba(0,0,0,.4);
-    }
-    header h1{
-      margin:0;
-      font-size:20px;
-      letter-spacing:1px;
-    }
-    header span{
-      font-size:13px;
-      color:#fff;
-      opacity:.9;
-    }
-    .status{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .chip{
-      background:rgba(0,0,0,.25);
-      padding:6px 10px;
-      border-radius:20px;
-      font-size:12px;
-      display:flex;
-      gap:6px;
-      align-items:center;
-      color:#fff;
-    }
-    .dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-    }
-    .on{background:#51cf66}
-    .off{background:#ff6b6b}
+<style>
+:root{
+  --blue:#1f3c88;
+  --blue2:#2d5be3;
+  --yellow:#ffd43b;
+  --yellow2:#ffb703;
+  --bg:#0b1220;
+  --panel:#121c33;
+  --text:#ffd43b;
+  --muted:#c7d2ff;
+}
 
-    main{
-      padding:16px;
-      padding-bottom:110px;
-      max-width:1200px;
-      margin:auto;
-    }
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto,Arial;
+  background:linear-gradient(180deg,#0b1220,#0e1630);
+  color:var(--text);
+  font-size:16px;
+}
 
-    .panel{
-      background:var(--panel);
-      border-radius:16px;
-      padding:16px;
-      margin-bottom:16px;
-      box-shadow:0 10px 40px rgba(0,0,0,.4);
-    }
+header{
+  background:linear-gradient(90deg,var(--blue),var(--blue2));
+  padding:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    h2{
-      margin:0 0 10px 0;
-      font-size:18px;
-      color:var(--yellow2);
-    }
-    p{margin:6px 0;color:var(--muted)}
+header h1{margin:0;font-size:22px}
+header span{font-size:13px;color:white}
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:14px;
-    }
-    .card{
-      background:#0e1730;
-      border-radius:14px;
-      padding:14px;
-      border:1px solid rgba(255,255,255,.08);
-    }
-    .card b{color:var(--yellow2)}
+main{
+  padding:16px;
+  padding-bottom:110px;
+  max-width:1200px;
+  margin:auto;
+}
 
-    input,select,textarea{
-      width:100%;
-      padding:10px;
-      border-radius:10px;
-      border:none;
-      background:#0b1328;
-      color:var(--yellow);
-      margin-top:6px;
-    }
+.panel{
+  background:var(--panel);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:16px;
+}
 
-    button{
-      padding:10px 14px;
-      border:none;
-      border-radius:12px;
-      background:linear-gradient(90deg,var(--yellow),var(--yellow2));
-      color:#000;
-      font-weight:700;
-      cursor:pointer;
-      margin-top:10px;
-    }
-    button.secondary{
-      background:#1c2a55;
-      color:var(--yellow);
-    }
-    button.danger{
-      background:var(--danger);
-      color:#fff;
-    }
+h2{margin-top:0;color:var(--yellow2)}
+p{color:var(--muted)}
 
-    nav{
-      position:fixed;
-      bottom:0;
-      left:0;
-      right:0;
-      background:#0b1220;
-      border-top:1px solid rgba(255,255,255,.1);
-      display:flex;
-      justify-content:space-around;
-      padding:10px 0;
-    }
-    nav button{
-      background:none;
-      color:var(--yellow);
-      font-size:12px;
-      margin:0;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:14px;
+}
 
-    .hidden{display:none}
+.card{
+  background:#0e1730;
+  border-radius:14px;
+  padding:14px;
+}
 
-    footer{
-      text-align:center;
-      font-size:11px;
-      color:var(--muted);
-      margin-top:20px;
-    }
-  </style>
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin-top:6px;
+  border-radius:10px;
+  border:none;
+  background:#0b1328;
+  color:var(--yellow);
+  font-size:15px;
+}
+
+button{
+  margin-top:10px;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  font-weight:700;
+  background:linear-gradient(90deg,var(--yellow),var(--yellow2));
+  cursor:pointer;
+}
+
+button.secondary{
+  background:#1c2a55;
+  color:var(--yellow);
+}
+
+.hidden{display:none}
+
+nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#0b1220;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+
+nav button{
+  background:none;
+  color:var(--yellow);
+  font-size:14px;
+}
+
+footer{
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+}
+</style>
 </head>
 
 <body>
@@ -171,114 +130,115 @@
     <h1>RAULI</h1>
     <span>Panadería & Dulcería · Asistente Digital</span>
   </div>
-  <div class="status">
-    <div class="chip" id="connChip">
-      <div class="dot off" id="connDot"></div>
-      <span id="connText">Offline</span>
-    </div>
-    <div class="chip" id="userChip">👤 —</div>
-  </div>
 </header>
 
 <main>
 
-  <!-- INICIO -->
-  <section id="secInicio" class="panel">
-    <h2>🤖 Asistente RAULI</h2>
-    <p id="saludo">Cargando saludo…</p>
+<!-- INICIO -->
+<section id="secInicio" class="panel">
+  <h2>🤖 Asistente RAULI</h2>
+  <p id="saludo">Hola, bienvenido a RAULI</p>
 
-    <textarea id="assistantInput" placeholder="Ej: Venta $120 efectivo / Harina bajo mínimo / Cierre de caja"></textarea>
-    <button id="btnIA">Enviar al asistente</button>
+  <textarea id="assistantInput" placeholder="Escribe aquí..."></textarea>
+  <button id="btnIA">Enviar</button>
 
-    <div class="panel" style="margin-top:12px">
-      <h2>Mensajes</h2>
-      <div id="chatBox"></div>
+  <div class="panel">
+    <h2>Mensajes</h2>
+    <div id="chatBox"></div>
+  </div>
+</section>
+
+<!-- FINANZAS -->
+<section id="secFinanzas" class="panel hidden">
+  <h2>💼 Finanzas</h2>
+  <div class="grid">
+    <div class="card">
+      <b>Fondo operativo</b>
+      <div id="fundBalance">$0</div>
     </div>
-  </section>
+    <div class="card">
+      <b>Hoy vas ganando</b>
+      <div id="todayEarnings">$0</div>
+    </div>
+    <div class="card">
+      <b>Amortización mes</b>
+      <div id="amortMonth">$0</div>
+    </div>
+  </div>
+</section>
 
-  <!-- FINANZAS -->
-  <section id="secFinanzas" class="panel hidden">
-    <h2>💼 Fondo · Nómina · Amortización</h2>
+<!-- INVERSIONES -->
+<section id="secInversiones" class="panel hidden">
+  <h2>🏗️ Inversiones (Amortización)</h2>
+  <p>Registra hornos, equipos y remodelaciones.</p>
 
-    <div class="grid">
-      <div class="card">
-        <b>Fondo Operativo</b>
-        <p>Objetivo</p>
-        <div id="fundTarget">$0</div>
-        <p>Balance actual</p>
-        <div id="fundBalance">$0</div>
-      </div>
+  <div class="grid">
+    <div class="card">
+      <b>Nueva inversión</b>
 
-      <div class="card">
-        <b>Hoy vas ganando</b>
-        <div id="todayEarnings">$0</div>
-      </div>
+      <input id="invName" placeholder="Nombre del activo">
+      <input id="invCost" type="number" placeholder="Costo">
+      <input id="invDate" type="date">
+      <input id="invLife" type="number" placeholder="Vida útil (meses)">
+      <input id="invResidual" type="number" placeholder="Valor residual">
 
-      <div class="card">
-        <b>Amortización</b>
-        <p>Mes actual</p>
-        <div id="amortMonth">$0</div>
-        <p>Acumulado</p>
-        <div id="amortTotal">$0</div>
-      </div>
+      <button id="btnAddInvestment">Guardar inversión</button>
+      <button class="secondary" id="btnRefreshInvestments">Refrescar</button>
     </div>
 
-    <div class="panel" style="margin-top:12px">
-      <h2>📊 Gráfico</h2>
-      <canvas id="financeChart" height="120"></canvas>
+    <div class="card">
+      <b>Resumen</b>
+      <p>Mes actual</p>
+      <div id="invAmortMonth">$0</div>
+      <p>Acumulado</p>
+      <div id="invAmortTotal">$0</div>
+      <p>Total inversiones</p>
+      <div id="invCount">0</div>
     </div>
-  </section>
+  </div>
 
-  <!-- PRODUCCIÓN -->
-  <section id="secProduccion" class="panel hidden">
-    <h2>🥖 Producción</h2>
-    <p>Registro de lotes y libras elaboradas</p>
-    <input id="prodProducto" placeholder="Producto" />
-    <input id="prodLbs" type="number" placeholder="Libras producidas" />
-    <button id="btnProd">Guardar lote</button>
-  </section>
+  <div class="panel">
+    <h2>Listado</h2>
+    <div id="invList"></div>
+  </div>
+</section>
 
-  <!-- VENTAS -->
-  <section id="secVentas" class="panel hidden">
-    <h2>🧾 Ventas</h2>
-    <input id="ventaProducto" placeholder="Producto" />
-    <input id="ventaUnidades" type="number" placeholder="Unidades" />
-    <input id="ventaTotal" type="number" placeholder="Total $" />
-    <select id="ventaMetodo">
-      <option value="efectivo">Efectivo</option>
-      <option value="transferencia">Transferencia</option>
-      <option value="tarjeta">Tarjeta</option>
-    </select>
-    <button id="btnVenta">Guardar venta</button>
-  </section>
+<!-- PRODUCCIÓN -->
+<section id="secProduccion" class="panel hidden">
+  <h2>🥖 Producción</h2>
+  <input id="prodProducto" placeholder="Producto">
+  <input id="prodLbs" type="number" placeholder="Libras">
+  <button id="btnProd">Guardar</button>
+</section>
+
+<!-- VENTAS -->
+<section id="secVentas" class="panel hidden">
+  <h2>🧾 Ventas</h2>
+  <input id="ventaProducto" placeholder="Producto">
+  <input id="ventaUnidades" type="number" placeholder="Unidades">
+  <input id="ventaTotal" type="number" placeholder="Total $">
+  <button id="btnVenta">Guardar venta</button>
+</section>
 
 </main>
 
 <nav>
   <button onclick="show('secInicio')">Inicio</button>
   <button onclick="show('secFinanzas')">Finanzas</button>
+  <button onclick="show('secInversiones')">Inversiones</button>
   <button onclick="show('secProduccion')">Producción</button>
   <button onclick="show('secVentas')">Ventas</button>
 </nav>
 
 <footer>
-  RAULI · Sistema offline-first · Autor del prototipo: ChatGPT
+  RAULI · Sistema de gestión · Autor del prototipo: ChatGPT
 </footer>
 
 <script>
-  function show(id){
-    document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
-  }
-
-  function updateConn(){
-    const online = navigator.onLine;
-    document.getElementById("connDot").className = "dot " + (online ? "on":"off");
-    document.getElementById("connText").textContent = online ? "Online":"Offline";
-  }
-  window.addEventListener("online",updateConn);
-  window.addEventListener("offline",updateConn);
-  updateConn();
+function show(id){
+  document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
 </script>
 
 <script type="module" src="rauli-core.js"></script>
@@ -286,4 +246,3 @@
 
 </body>
 </html>
-
