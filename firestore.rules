@@ -1,0 +1,125 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/business/rauli/users/$(request.auth.uid));
+    }
+
+    function role() {
+      return signedIn() && userDoc().data.role != null ? userDoc().data.role : "none";
+    }
+
+    function isOwner() {
+      return role() == "owner";
+    }
+
+    function isCoOwner() {
+      return role() == "co_owner";
+    }
+
+    function isContadora() {
+      return role() == "contadora";
+    }
+
+    function canSeeAll() {
+      return isOwner() || isCoOwner() || isContadora();
+    }
+
+    // ======================
+    // USERS (roles/names)
+    // ======================
+    match /business/rauli/users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || canSeeAll());
+      // Solo owner puede escribir roles/nombres
+      allow create, update, delete: if isOwner();
+    }
+
+    // ======================
+    // SETTINGS: compensation
+    // ======================
+    match /business/rauli/settings/compensation {
+
+      allow read: if signedIn();
+
+      // owner puede editar cualquier cosa
+      allow update: if signedIn() && (
+        isOwner() ||
+
+        // contadora puede editar SOLO tasas operativas
+        (isContadora() &&
+          request.resource.data.diff(resource.data).changedKeys().hasOnly([
+            "operarioRatePerLb",
+            "vendedorRatePerUnit"
+          ])
+        )
+      );
+
+      // create solo owner
+      allow create: if isOwner();
+      allow delete: if isOwner();
+    }
+
+    // ======================
+    // VENTAS
+    // ======================
+    match /business/rauli/ventas/{id} {
+      allow create: if signedIn();
+      allow read: if signedIn() && (
+        canSeeAll() || resource.data.by.uid == request.auth.uid
+      );
+      allow update, delete: if signedIn() && (
+        isOwner() || isContadora()
+      );
+    }
+
+    // ======================
+    // PRODUCCION
+    // ======================
+    match /business/rauli/produccion/{id} {
+      allow create: if signedIn();
+      allow read: if signedIn() && (
+        canSeeAll() || resource.data.by.uid == request.auth.uid
+      );
+      allow update, delete: if signedIn() && (
+        isOwner() || isContadora()
+      );
+    }
+
+    // ======================
+    // INVERSIONES (amortización)
+    // ======================
+    match /business/rauli/inversiones/{id} {
+      allow read: if signedIn() && canSeeAll();  // solo dueños/contadora ven todo
+      allow create, update, delete: if signedIn() && (isOwner() || isContadora());
+    }
+
+    // ======================
+    // PAYROLL DAILY (resumen cálculos)
+    // ======================
+    match /business/rauli/payroll_daily/{day} {
+      allow read: if signedIn(); // todos ven resultados (para ver "hoy vas ganando")
+      allow create, update, delete: if signedIn() && (isOwner() || isContadora());
+    }
+
+    // ======================
+    // ALERTS
+    // ======================
+    match /business/rauli/alerts/{id} {
+      allow create: if signedIn();
+      allow read: if signedIn() && canSeeAll();
+      allow update, delete: if signedIn() && isOwner();
+    }
+
+    // ======================
+    // DEFAULT: deny
+    // ======================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
