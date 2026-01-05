@@ -1,275 +1,1244 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>RAULI · Panadería & Dulcería</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#173B7A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1f3c88">
+  <title>RAULI · Panadería & Dulcería</title>
 
-<style>
-:root{
-  --blue:#1f3c88;
-  --blue2:#2d5be3;
-  --yellow:#ffd43b;
-  --yellow2:#ffb703;
-  --bg:#0b1220;
-  --panel:#121c33;
-  --text:#ffd43b;
-  --muted:#c7d2ff;
-}
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon-512.png" />
+  <link rel="apple-touch-icon" href="./icon-512.png" />
 
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:system-ui,Segoe UI,Roboto,Arial;
-  background:linear-gradient(180deg,#0b1220,#0e1630);
-  color:var(--text);
-  font-size:16px;
-}
+  <style>
+    :root{
+      --bg:#071425;
+      --card:#0E2342;
+      --card2:#0B1B33;
+      --blue:#1E4FA3;
+      --blue2:#173B7A;
+      --line:rgba(255,255,255,.08);
+      --text:#EAF1FF;
+      --muted:rgba(234,241,255,.72);
+      --yellow:#F4C542;
+      --green:#2CE07A;
+      --red:#FF5A67;
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --radius:18px;
+      --radius2:22px;
+      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --base: 18px; /* letras más grandes */
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--font);
+      background: radial-gradient(1200px 700px at 20% -10%, rgba(30,79,163,.35), transparent 60%),
+                  radial-gradient(1000px 600px at 80% 0%, rgba(244,197,66,.18), transparent 55%),
+                  linear-gradient(180deg, #061224 0%, #071425 50%, #050D1A 100%);
+      color:var(--text);
+      font-size: var(--base);
+      -webkit-font-smoothing:antialiased;
+      padding-bottom: 92px; /* espacio para nav */
+    }
 
-header{
-  background:linear-gradient(90deg,var(--blue),var(--blue2));
-  padding:14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      background: linear-gradient(180deg, rgba(23,59,122,.98), rgba(23,59,122,.86));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 14px 14px 12px;
+      backdrop-filter: blur(10px);
+    }
+    .toprow{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      max-width: 980px; margin: 0 auto;
+    }
+    .brand{
+      display:flex; flex-direction:column; line-height:1.1;
+    }
+    .brand .t1{
+      font-weight:900; letter-spacing:.3px;
+      color: var(--yellow);
+      font-size: 22px;
+    }
+    .brand .t2{
+      color: rgba(234,241,255,.85);
+      font-size: 14px;
+      margin-top: 4px;
+    }
 
-header h1{margin:0;font-size:22px}
-header span{font-size:13px;color:white}
-<!-- Botón Actualizar (forzar refresco) -->
-<button id="btnActualizar" style="
-  background: linear-gradient(90deg,#ffd43b,#ffb703);
-  border:none;
-  padding:10px 14px;
-  border-radius:14px;
-  font-weight:800;
-  cursor:pointer;
-">
-  Actualizar
-</button>
+    .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
+    .chip{
+      display:flex; align-items:center; gap:8px;
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(7,20,37,.22);
+      font-weight:700;
+      font-size: 14px;
+      color: var(--text);
+      user-select:none;
+    }
+    .dot{width:10px; height:10px; border-radius:50%}
+    .dot.green{background:var(--green)}
+    .dot.red{background:var(--red)}
+    .btn{
+      border:none;
+      background: linear-gradient(180deg, #F6D365, #F4C542);
+      color: #1B1B1B;
+      font-weight:900;
+      padding: 9px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(244,197,66,.22);
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn.secondary{
+      background: rgba(255,255,255,.10);
+      color: var(--yellow);
+      border: 1px solid rgba(244,197,66,.35);
+      box-shadow:none;
+    }
 
-main{
-  padding:16px;
-  padding-bottom:110px;
-  max-width:1200px;
-  margin:auto;
-}
+    .wrap{
+      max-width: 980px;
+      margin: 16px auto 40px;
+      padding: 0 14px;
+    }
 
-.panel{
-  background:var(--panel);
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:16px;
-}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns: 1fr;}
+    }
 
-h2{margin-top:0;color:var(--yellow2)}
-p{color:var(--muted)}
+    .card{
+      background: linear-gradient(180deg, rgba(14,35,66,.95), rgba(11,27,51,.95));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:14px;
-}
+    .title{
+      display:flex; align-items:center; gap:10px;
+      font-weight: 900;
+      color: var(--yellow);
+      font-size: 22px;
+      margin: 2px 0 10px;
+    }
+    .subtitle{
+      color: var(--muted);
+      margin: 0 0 10px;
+      font-size: 14px;
+    }
 
-.card{
-  background:#0e1730;
-  border-radius:14px;
-  padding:14px;
-}
+    .aiBox{
+      display:flex; flex-direction:column; gap:10px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.15);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    textarea{
+      width:100%;
+      min-height: 92px;
+      resize:none;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(7,20,37,.35);
+      color: var(--yellow);
+      padding: 12px;
+      outline:none;
+      font-size: 16px;
+    }
+    textarea::placeholder{color: rgba(244,197,66,.55)}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .messages{
+      display:flex; flex-direction:column; gap:10px;
+      margin-top: 8px;
+    }
+    .msg{
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.18);
+    }
+    .msg .who{font-weight:900; color: var(--yellow); margin-bottom:4px}
+    .msg .txt{color: rgba(234,241,255,.92)}
+    .hint{color: rgba(234,241,255,.72); font-size: 13px}
 
-input,select,textarea{
-  width:100%;
-  padding:12px;
-  margin-top:6px;
-  border-radius:10px;
-  border:none;
-  background:#0b1328;
-  color:var(--yellow);
-  font-size:15px;
-}
+    .roleGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 900px){
+      .roleGrid{grid-template-columns: 1fr;}
+    }
+    .role{
+      border-radius: 18px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(7,20,37,.35);
+    }
+    .role .rname{font-weight:900; color: var(--yellow); font-size:18px}
+    .role .rdesc{color: rgba(234,241,255,.80); font-size: 13px; margin-top: 4px}
+    .role .pill{
+      margin-top:10px;
+      display:inline-block;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(244,197,66,.35);
+      color: var(--yellow);
+      background: rgba(244,197,66,.08);
+      font-weight:800;
+      font-size: 13px;
+    }
 
-button{
-  margin-top:10px;
-  padding:12px;
-  border-radius:12px;
-  border:none;
-  font-weight:700;
-  background:linear-gradient(90deg,var(--yellow),var(--yellow2));
-  cursor:pointer;
-}
+    .sectionTabs{
+      display:flex; gap:8px; flex-wrap:wrap; margin: 10px 0 12px;
+    }
+    .tabBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(7,20,37,.20);
+      color: var(--yellow);
+      font-weight:900;
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 14px;
+    }
+    .tabBtn.active{
+      background: rgba(244,197,66,.18);
+      border-color: rgba(244,197,66,.42);
+    }
 
-button.secondary{
-  background:#1c2a55;
-  color:var(--yellow);
-}
+    .kv{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 520px){
+      .kv{grid-template-columns:1fr;}
+    }
+    .kbox{
+      background: rgba(0,0,0,.16);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .kbox .k{color: rgba(234,241,255,.75); font-size: 13px}
+    .kbox .v{color: var(--yellow); font-weight: 950; font-size: 20px; margin-top: 4px}
 
-.hidden{display:none}
+    .chart{
+      margin-top: 12px;
+      background: rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    canvas{width:100%; height:220px; display:block}
 
-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#0b1220;
-  display:flex;
-  justify-content:space-around;
-  padding:10px 0;
-  border-top:1px solid rgba(255,255,255,.1);
-}
+    /* Debug visible (porque F12 a veces no te muestra nada) */
+    .debug{
+      margin-top: 12px;
+      border-radius: 16px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.20);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      color: rgba(234,241,255,.85);
+      max-height: 210px;
+      overflow:auto;
+    }
+    .debug .line{margin: 0 0 6px}
+    .debug .ok{color: #8CFFB0}
+    .debug .warn{color: #FFD27A}
+    .debug .err{color: #FF9AA3}
 
-nav button{
-  background:none;
-  color:var(--yellow);
-  font-size:14px;
-}
+    /* Bottom nav visible (no queda bajo) */
+    .bottomNav{
+      position:fixed; left:0; right:0; bottom:0; z-index:60;
+      background: linear-gradient(180deg, rgba(7,20,37,.55), rgba(7,20,37,.95));
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+      backdrop-filter: blur(12px);
+    }
+    .navRow{
+      max-width: 980px;
+      margin: 0 auto;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .navItem{
+      flex:1;
+      border-radius: 16px;
+      padding: 10px 8px;
+      text-align:center;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: var(--yellow);
+      font-weight: 950;
+      cursor:pointer;
+      user-select:none;
+      font-size: 14px;
+    }
+    .navItem.active{
+      background: rgba(244,197,66,.18);
+      border-color: rgba(244,197,66,.40);
+    }
 
-footer{
-  text-align:center;
-  font-size:12px;
-  color:var(--muted);
-}
-</style>
+    footer{
+      text-align:center;
+      color: rgba(234,241,255,.55);
+      font-size: 12px;
+      margin-top: 20px;
+      padding: 10px 0 0;
+    }
+    a.link{
+      color: var(--yellow);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(244,197,66,.45);
+    }
+  </style>
 </head>
 
 <body>
+  <header class="topbar">
+    <div class="toprow">
+      <div class="brand">
+        <div class="t1">RAULI</div>
+        <div class="t2">Panadería & Dulcería · Asistente Digital</div>
+      </div>
 
-<header>
-  <div>
-    <h1>RAULI</h1>
-    <span>Panadería & Dulcería · Asistente Digital</span>
-  </div>
-</header>
-
-<main>
-
-<!-- INICIO -->
-<section id="secInicio" class="panel">
-  <h2>🤖 Asistente RAULI</h2>
-  <p id="saludo">Hola, bienvenido a RAULI</p>
-
-  <textarea id="assistantInput" placeholder="Escribe aquí..."></textarea>
-  <button id="btnIA">Enviar</button>
-
-  <div class="panel">
-    <h2>Mensajes</h2>
-    <div id="chatBox"></div>
-  </div>
-</section>
-
-<!-- FINANZAS -->
-<section id="secFinanzas" class="panel hidden">
-  <h2>💼 Finanzas</h2>
-  <div class="grid">
-    <div class="card">
-      <b>Fondo operativo</b>
-      <div id="fundBalance">$0</div>
+      <div class="chips">
+        <div class="chip" id="chipOnline"><span class="dot red" id="dotNet"></span><span id="netTxt">Offline</span></div>
+        <div class="chip" id="chipUser">👤 <span id="userTxt">sin sesión</span></div>
+        <button class="btn" id="btnUpdate">Actualizar</button>
+        <button class="btn secondary" id="btnInstall" style="display:none">Instalar</button>
+      </div>
     </div>
-    <div class="card">
-      <b>Hoy vas ganando</b>
-      <div id="todayEarnings">$0</div>
+  </header>
+
+  <main class="wrap">
+    <!-- HOME -->
+    <section id="view-home">
+      <div class="grid">
+        <div class="card">
+          <div class="title">🤖 Asistente RAULI</div>
+          <p class="subtitle" id="greeting">Cargando saludo…</p>
+
+          <div class="aiBox">
+            <textarea id="aiInput" placeholder="Ej: Venta $120 efectivo / Harina bajo mínimo / Cierre de caja"></textarea>
+            <div class="row">
+              <button class="btn" id="btnSendAI">Enviar al asistente</button>
+              <button class="btn secondary" id="btnSync">Sincronizar ahora</button>
+              <span class="hint" id="syncHint">Offline-first: guarda local y sincroniza cuando haya internet.</span>
+            </div>
+          </div>
+
+          <div class="messages" id="msgList"></div>
+
+          <div class="debug" id="debugBox" aria-live="polite"></div>
+
+          <footer>
+            RAULI · Sistema offline-first · Autor del prototipo: <b>ChatGPT</b> · Versión: <b id="verTxt">v1.0</b>
+          </footer>
+        </div>
+
+        <div class="card">
+          <div class="title">👥 Roles</div>
+          <p class="subtitle">Pantallas por rol (modo demo). Luego lo amarramos a permisos reales en Firebase.</p>
+
+          <div class="roleGrid">
+            <div class="role">
+              <div class="rname">Raúl (Propietario)</div>
+              <div class="rdesc">Control total: inversión, % de reparto, fondo operativo, auditoría.</div>
+              <span class="pill">Admin</span>
+            </div>
+
+            <div class="role">
+              <div class="rname">Orlandito (Supervisor)</div>
+              <div class="rdesc">Calidad, insumos, autorizaciones operativas, alertas de mínimos.</div>
+              <span class="pill">Supervisión</span>
+            </div>
+
+            <div class="role">
+              <div class="rname">Bety (Contadora)</div>
+              <div class="rdesc">Caja, cierres, evidencias, nómina indirecta, reportes.</div>
+              <span class="pill">Finanzas</span>
+            </div>
+          </div>
+
+          <div style="margin-top:12px" class="kbox">
+            <div class="k">Acciones rápidas</div>
+            <div class="row" style="margin-top:10px">
+              <button class="btn secondary" id="btnGoCharts">Análisis & Gráficos</button>
+              <button class="btn secondary" id="btnGoInvest">Pantalla Inversiones</button>
+            </div>
+            <p class="hint" style="margin-top:10px">
+              Nota: “Análisis & Gráficos” ahora abre un panel interno. Si quieres redirección a páginas externas, dímelas y las conecto.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINANZAS -->
+    <section id="view-finanzas" style="display:none">
+      <div class="card">
+        <div class="title">💰 Finanzas</div>
+        <div class="sectionTabs">
+          <button class="tabBtn active" data-fin="resumen">Resumen</button>
+          <button class="tabBtn" data-fin="caja">Caja</button>
+          <button class="tabBtn" data-fin="nomina">Nómina</button>
+          <button class="tabBtn" data-fin="amort">Amortización</button>
+        </div>
+
+        <div id="fin-resumen">
+          <div class="kv">
+            <div class="kbox">
+              <div class="k">Fondo operativo (editable solo por Raúl)</div>
+              <div class="v" id="fondoTxt">$0</div>
+              <div class="row" style="margin-top:10px">
+                <input id="fondoInput" type="number" inputmode="decimal" placeholder="Ej: 500" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+                <button class="btn" id="btnSetFondo">Guardar</button>
+              </div>
+              <p class="hint">El fondo se repone con ventas. Luego amarramos permisos reales con Auth.</p>
+            </div>
+
+            <div class="kbox">
+              <div class="k">Reparto (editable solo por Raúl)</div>
+              <div class="v"><span id="pctAdminTxt">20</span>% / <span id="pctAmortTxt">30</span>% / <span id="pctLibreTxt">50</span>%</div>
+              <div class="row" style="margin-top:10px">
+                <input id="pctAdmin" type="number" min="0" max="100" value="20" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+                <input id="pctAmort" type="number" min="0" max="100" value="30" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+                <input id="pctLibre" type="number" min="0" max="100" value="50" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+                <button class="btn" id="btnSavePct">Guardar</button>
+              </div>
+              <p class="hint">Regla: deben sumar 100. Si no, lo ajusto automáticamente.</p>
+            </div>
+          </div>
+
+          <div class="chart">
+            <div class="subtitle" style="margin:0 0 8px">Ganancias estimadas por rol (según algoritmo)</div>
+            <div class="kv">
+              <div class="kbox"><div class="k">Administrador (20%)</div><div class="v" id="gAdmin">$0</div></div>
+              <div class="kbox"><div class="k">Amortización (30%)</div><div class="v" id="gAmort">$0</div></div>
+              <div class="kbox"><div class="k">Libre (50%)</div><div class="v" id="gLibre">$0</div></div>
+              <div class="kbox"><div class="k">Contadora (editable)</div><div class="v" id="gBety">$0</div></div>
+              <div class="kbox"><div class="k">Orlandito (editable)</div><div class="v" id="gOrlan">$0</div></div>
+              <div class="kbox"><div class="k">Operarios (por libras)</div><div class="v" id="gOps">$0</div></div>
+              <div class="kbox"><div class="k">Ventas (por unidades)</div><div class="v" id="gSales">$0</div></div>
+            </div>
+            <div class="row" style="margin-top:10px">
+              <input id="profitInput" type="number" inputmode="decimal" placeholder="Ganancia del día (Ej: 1000)" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <button class="btn" id="btnCalc">Calcular</button>
+            </div>
+            <p class="hint">Esto es el “motor” base. Luego conectamos producción/ventas reales para que se calcule automático.</p>
+          </div>
+        </div>
+
+        <div id="fin-caja" style="display:none">
+          <div class="kbox">
+            <div class="k">Caja</div>
+            <div class="v">Pendiente (lo dejamos para el módulo de caja)</div>
+            <p class="hint">Aquí irá cierre de caja, evidencias, efectivo, transferencias, etc.</p>
+          </div>
+        </div>
+
+        <div id="fin-nomina" style="display:none">
+          <div class="kbox">
+            <div class="k">Parámetros editables</div>
+            <div class="row" style="margin-top:10px">
+              <label style="font-weight:900;color:var(--yellow)">Contadora %</label>
+              <input id="pctBety" type="number" min="0" max="100" value="5" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <label style="font-weight:900;color:var(--yellow)">Orlandito %</label>
+              <input id="pctOrlan" type="number" min="0" max="100" value="5" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <button class="btn" id="btnSaveNom">Guardar</button>
+            </div>
+
+            <div class="row" style="margin-top:10px">
+              <label style="font-weight:900;color:var(--yellow)">Operarios $/lb</label>
+              <input id="opsRate" type="number" inputmode="decimal" value="1.50" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <label style="font-weight:900;color:var(--yellow)">Libras</label>
+              <input id="opsLbs" type="number" inputmode="decimal" value="0" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <button class="btn secondary" id="btnCalcOps">Calcular operarios</button>
+            </div>
+
+            <div class="row" style="margin-top:10px">
+              <label style="font-weight:900;color:var(--yellow)">Ventas $/unidad</label>
+              <input id="salesRate" type="number" inputmode="decimal" value="0.25" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <label style="font-weight:900;color:var(--yellow)">Unidades</label>
+              <input id="salesUnits" type="number" inputmode="decimal" value="0" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <button class="btn secondary" id="btnCalcSales">Calcular ventas</button>
+            </div>
+
+            <p class="hint" style="margin-top:10px">
+              Luego estos parámetros pasan a Firestore y se controlan por rol (solo tú editas %).
+            </p>
+          </div>
+        </div>
+
+        <div id="fin-amort" style="display:none">
+          <div class="kbox">
+            <div class="k">Amortización de inversión</div>
+            <div class="row" style="margin-top:10px">
+              <input id="invTotal" type="number" inputmode="decimal" placeholder="Inversión total (Ej: 20000)" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+              <button class="btn" id="btnSetInv">Guardar</button>
+            </div>
+            <div class="kv" style="margin-top:10px">
+              <div class="kbox"><div class="k">Inversión total</div><div class="v" id="invTotalTxt">$0</div></div>
+              <div class="kbox"><div class="k">Pagado (acumulado)</div><div class="v" id="invPaidTxt">$0</div></div>
+              <div class="kbox"><div class="k">Restante</div><div class="v" id="invLeftTxt">$0</div></div>
+              <div class="kbox"><div class="k">% completado</div><div class="v" id="invPctTxt">0%</div></div>
+            </div>
+
+            <div class="chart">
+              <div class="subtitle" style="margin:0 0 8px">Progreso (simulado con tus aportes de amortización)</div>
+              <canvas id="amortChart" width="900" height="260"></canvas>
+              <p class="hint">Cada vez que calculas ganancias del día, si hay % de amortización, se suma aquí automáticamente.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn secondary" id="btnBackHome1">⬅ Volver</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCCIÓN -->
+    <section id="view-produccion" style="display:none">
+      <div class="card">
+        <div class="title">🏭 Producción</div>
+        <p class="subtitle">Panel base (lo conectamos a inventario/insumos luego).</p>
+        <div class="kbox">
+          <div class="k">Accesos</div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn secondary" id="btnProdMin">Alertas de mínimos</button>
+            <button class="btn secondary" id="btnProdInsum">Salida de insumos</button>
+            <button class="btn secondary" id="btnProdBatch">Lote del día</button>
+          </div>
+          <p class="hint">De momento deja registro en local y lo sube cuando hay internet.</p>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn secondary" id="btnBackHome2">⬅ Volver</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VENTAS -->
+    <section id="view-ventas" style="display:none">
+      <div class="card">
+        <div class="title">🧾 Ventas</div>
+        <p class="subtitle">Panel base (luego conectamos unidades, comisiones, y reposición del fondo).</p>
+        <div class="kbox">
+          <div class="k">Registro rápido</div>
+          <div class="row" style="margin-top:10px">
+            <input id="ventaMonto" type="number" inputmode="decimal" placeholder="Monto (Ej: 120)" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+            <button class="btn" id="btnVenta">Guardar venta</button>
+          </div>
+          <p class="hint">Esto aumentará el “flujo” y luego alimenta amortización/nomina/fondo.</p>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn secondary" id="btnBackHome3">⬅ Volver</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom nav -->
+  <nav class="bottomNav">
+    <div class="navRow">
+      <div class="navItem active" data-view="home">Inicio</div>
+      <div class="navItem" data-view="finanzas">Finanzas</div>
+      <div class="navItem" data-view="produccion">Producción</div>
+      <div class="navItem" data-view="ventas">Ventas</div>
     </div>
-    <div class="card">
-      <b>Amortización mes</b>
-      <div id="amortMonth">$0</div>
-    </div>
-  </div>
-</section>
+  </nav>
 
-<!-- INVERSIONES -->
-<section id="secInversiones" class="panel hidden">
-  <h2>🏗️ Inversiones (Amortización)</h2>
-  <p>Registra hornos, equipos y remodelaciones.</p>
+  <script type="module">
+    /********************
+     * 0) Config & Estado
+     ********************/
+    const APP = {
+      VERSION: "v1.0.0",
+      STORE_KEY: "rauli_store_v1",
+      QUEUE_KEY: "rauli_queue_v1",
+      DEBUG_KEY: "rauli_debug_v1",
+    };
 
-  <div class="grid">
-    <div class="card">
-      <b>Nueva inversión</b>
+    const $ = (id) => document.getElementById(id);
 
-      <input id="invName" placeholder="Nombre del activo">
-      <input id="invCost" type="number" placeholder="Costo">
-      <input id="invDate" type="date">
-      <input id="invLife" type="number" placeholder="Vida útil (meses)">
-      <input id="invResidual" type="number" placeholder="Valor residual">
+    const state = loadStore() || {
+      fondo: 0,
+      pct: { admin: 20, amort: 30, libre: 50 },
+      pctNom: { bety: 5, orlan: 5 },
+      ops: { rate: 1.50, lbs: 0 },
+      sales: { rate: 0.25, units: 0 },
+      inv: { total: 0, paid: 0, history: [] }, // history: [{t, paid}]
+      profitLast: 0,
+      userEmail: "raul@rauli.app",
+      messages: [],
+    };
 
-      <button id="btnAddInvestment">Guardar inversión</button>
-      <button class="secondary" id="btnRefreshInvestments">Refrescar</button>
-    </div>
+    $("verTxt").textContent = APP.VERSION;
+    $("userTxt").textContent = state.userEmail || "sin sesión";
 
-    <div class="card">
-      <b>Resumen</b>
-      <p>Mes actual</p>
-      <div id="invAmortMonth">$0</div>
-      <p>Acumulado</p>
-      <div id="invAmortTotal">$0</div>
-      <p>Total inversiones</p>
-      <div id="invCount">0</div>
-    </div>
-  </div>
+    function money(n){
+      const x = Number(n || 0);
+      return x.toLocaleString("en-US",{style:"currency",currency:"USD"});
+    }
 
-  <div class="panel">
-    <h2>Listado</h2>
-    <div id="invList"></div>
-  </div>
-</section>
+    function saveStore(){
+      localStorage.setItem(APP.STORE_KEY, JSON.stringify(state));
+    }
+    function loadStore(){
+      try { return JSON.parse(localStorage.getItem(APP.STORE_KEY)); } catch { return null; }
+    }
 
-<!-- PRODUCCIÓN -->
-<section id="secProduccion" class="panel hidden">
-  <h2>🥖 Producción</h2>
-  <input id="prodProducto" placeholder="Producto">
-  <input id="prodLbs" type="number" placeholder="Libras">
-  <button id="btnProd">Guardar</button>
-</section>
+    function loadQueue(){
+      try { return JSON.parse(localStorage.getItem(APP.QUEUE_KEY)) || []; } catch { return []; }
+    }
+    function saveQueue(q){
+      localStorage.setItem(APP.QUEUE_KEY, JSON.stringify(q));
+    }
 
-<!-- VENTAS -->
-<section id="secVentas" class="panel hidden">
-  <h2>🧾 Ventas</h2>
-  <input id="ventaProducto" placeholder="Producto">
-  <input id="ventaUnidades" type="number" placeholder="Unidades">
-  <input id="ventaTotal" type="number" placeholder="Total $">
-  <button id="btnVenta">Guardar venta</button>
-</section>
+    function logLine(kind, text){
+      const box = $("debugBox");
+      const line = document.createElement("div");
+      line.className = "line " + (kind || "");
+      line.textContent = "[" + new Date().toLocaleTimeString() + "] " + text;
+      box.prepend(line);
+      // limita
+      const lines = box.querySelectorAll(".line");
+      if(lines.length > 60) lines[lines.length-1].remove();
+    }
 
-</main>
+    /************************
+     * 1) Sonido (sin archivo)
+     ************************/
+    function beep(){
+      try{
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = "sine";
+        o.frequency.value = 880;
+        g.gain.value = 0.0001;
+        o.connect(g); g.connect(ctx.destination);
+        o.start();
+        g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
+        o.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.16);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
+        o.stop(ctx.currentTime + 0.24);
+        setTimeout(()=>ctx.close(), 300);
+      }catch(e){
+        // no pasa nada si el navegador bloquea audio
+      }
+    }
 
-<nav>
-  <button onclick="show('secInicio')">Inicio</button>
-  <button onclick="show('secFinanzas')">Finanzas</button>
-  <button onclick="show('secInversiones')">Inversiones</button>
-  <button onclick="show('secProduccion')">Producción</button>
-  <button onclick="show('secVentas')">Ventas</button>
-</nav>
+    /*******************************
+     * 2) Saludo (buenos días/noches)
+     *******************************/
+    function setGreeting(){
+      const h = new Date().getHours();
+      let msg = "Hola. ¿Qué deseas registrar hoy?";
+      if(h >= 5 && h < 12) msg = "☀️ Buenos días. ¿Quieres revisar ventas, producción o fondo?";
+      else if(h >= 12 && h < 19) msg = "🌤️ Buenas tardes. ¿Deseas registrar algo o ver reportes?";
+      else msg = "🌙 Buenas noches. ¿Deseas cerrar caja o revisar alertas?";
+      $("greeting").textContent = msg;
+    }
+    setGreeting();
 
-<footer>
-  RAULI · Sistema de gestión · Autor del prototipo: ChatGPT
-</footer>
+    /********************
+     * 3) Navegación UI
+     ********************/
+    const views = {
+      home: $("view-home"),
+      finanzas: $("view-finanzas"),
+      produccion: $("view-produccion"),
+      ventas: $("view-ventas"),
+    };
 
-<script>
-function show(id){
-  document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
-}
-</script>
+    function showView(name){
+      Object.entries(views).forEach(([k, el]) => el.style.display = (k===name) ? "" : "none");
+      document.querySelectorAll(".navItem").forEach(x=>{
+        x.classList.toggle("active", x.dataset.view===name);
+      });
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
 
-<script type="module" src="rauli-core.js"></script>
-<script type="module" src="rauli-assistant.js"></script>
-<script>
-  const b = document.getElementById("btnActualizar");
-  if (b) {
-    b.addEventListener("click", async () => {
-      try {
-        // Si hay Service Worker, pide actualización y recarga
-        if ("serviceWorker" in navigator) {
-          const reg = await navigator.serviceWorker.getRegistration();
-          if (reg) await reg.update();
-        }
-      } catch (e) {}
-      // Recarga fuerte
-      location.reload(true);
+    document.querySelectorAll(".navItem").forEach(btn=>{
+      btn.addEventListener("click", ()=> showView(btn.dataset.view));
     });
-  }
-</script>
 
+    $("btnBackHome1").onclick = ()=>showView("home");
+    $("btnBackHome2").onclick = ()=>showView("home");
+    $("btnBackHome3").onclick = ()=>showView("home");
+    $("btnGoCharts").onclick = ()=> showView("finanzas");
+    $("btnGoInvest").onclick = ()=>{
+      showView("finanzas");
+      // activa tab amort
+      document.querySelectorAll("[data-fin]").forEach(b=>b.classList.remove("active"));
+      document.querySelector('[data-fin="amort"]').classList.add("active");
+      setFinTab("amort");
+    };
+
+    function setFinTab(name){
+      $("fin-resumen").style.display = name==="resumen" ? "" : "none";
+      $("fin-caja").style.display = name==="caja" ? "" : "none";
+      $("fin-nomina").style.display = name==="nomina" ? "" : "none";
+      $("fin-amort").style.display = name==="amort" ? "" : "none";
+    }
+    document.querySelectorAll("[data-fin]").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll("[data-fin]").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        setFinTab(btn.dataset.fin);
+      });
+    });
+
+    /***************************
+     * 4) Estado Online/Offline
+     ***************************/
+    function setNetUI(){
+      const on = navigator.onLine;
+      $("dotNet").className = "dot " + (on ? "green" : "red");
+      $("netTxt").textContent = on ? "Online" : "Offline";
+      if(on) logLine("ok", "Conexión detectada (online).");
+      else logLine("warn", "Sin conexión (offline). Guardando local.");
+    }
+    window.addEventListener("online", ()=>{ setNetUI(); beep(); syncQueue(); });
+    window.addEventListener("offline", ()=>{ setNetUI(); beep(); });
+    setNetUI();
+
+    /**********************
+     * 5) Mensajes del bot
+     **********************/
+    function pushMsg(who, txt){
+      state.messages.unshift({ who, txt, t: Date.now() });
+      if(state.messages.length > 20) state.messages.pop();
+      saveStore();
+      renderMsgs();
+    }
+    function renderMsgs(){
+      const list = $("msgList");
+      list.innerHTML = "";
+      state.messages.forEach(m=>{
+        const div = document.createElement("div");
+        div.className = "msg";
+        div.innerHTML = `<div class="who">${m.who}</div><div class="txt">${escapeHtml(m.txt)}</div>`;
+        list.appendChild(div);
+      });
+    }
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
+    }
+
+    if(state.messages.length===0){
+      pushMsg("🤖 RAULI", "RAULI listo. Puedo ayudarte con ventas, producción, fondo, nómina y amortización.");
+    } else {
+      renderMsgs();
+    }
+
+    /*******************************
+     * 6) IA Offline-first (stub útil)
+     * - Offline: responde con reglas locales
+     * - Online: deja preparado el “hook” para IA real
+     *******************************/
+    function offlineAI(text){
+      const t = (text||"").toLowerCase();
+      if(t.includes("buenos") || t.includes("buenas")){
+        return "¡Hola! Estoy activo. ¿Deseas registrar algo hoy?";
+      }
+      if(t.includes("venta")){
+        return "Entendido. Si me das monto y método (efectivo/transferencia), lo registro y luego sincronizo.";
+      }
+      if(t.includes("caja") || t.includes("cierre")){
+        return "Puedo ayudarte a preparar el cierre: total ventas, efectivo, transferencias y evidencias. (Módulo caja pendiente).";
+      }
+      if(t.includes("harina") || t.includes("insumo") || t.includes("mínimo") || t.includes("minimo")){
+        return "Alerta de insumos: lo guardo como 'mínimo' y lo sincronizo. ¿Cuál insumo y cantidad actual?";
+      }
+      if(t.includes("amort") || t.includes("invers")){
+        return "Para amortización: ve a Finanzas → Amortización y define inversión total. Luego cada ganancia del día suma el % de amortización.";
+      }
+      return "Recibido. Dime si esto es: venta / producción / insumos / nómina / inversión, y lo organizo.";
+    }
+
+    // HOOK para IA real (se activa online)
+    // Aquí luego conectamos Firebase Functions + modelo (Gemini/OpenAI) o tu API.
+    async function onlineAI(text){
+      // Por ahora: usa la misma respuesta offline para no romper.
+      // (Dejamos la estructura lista para el paso de IA real).
+      return offlineAI(text) + " (IA online: preparada para conectar más adelante)";
+    }
+
+    $("btnSendAI").onclick = async ()=>{
+      const text = $("aiInput").value.trim();
+      if(!text) return;
+
+      pushMsg("🧑 Tú", text);
+      $("aiInput").value = "";
+
+      // Guardar como evento (offline-first)
+      enqueueEvent({ type:"assistant_input", text, createdAt: Date.now() });
+
+      // Responder
+      let reply = "";
+      if(navigator.onLine) reply = await onlineAI(text);
+      else reply = offlineAI(text);
+
+      pushMsg("🤖 RAULI", reply);
+    };
+
+    /**************************
+     * 7) Cola offline y Sync
+     **************************/
+    function enqueueEvent(evt){
+      const q = loadQueue();
+      q.push({ ...evt, id: cryptoRandomId() });
+      saveQueue(q);
+      logLine("warn", `Evento guardado local (#${q.length}).`);
+    }
+
+    $("btnSync").onclick = ()=> syncQueue();
+
+    function cryptoRandomId(){
+      try{
+        const a = new Uint8Array(10);
+        crypto.getRandomValues(a);
+        return Array.from(a).map(x=>x.toString(16).padStart(2,"0")).join("");
+      }catch{
+        return String(Math.random()).slice(2) + String(Date.now());
+      }
+    }
+
+    /*************************************
+     * 8) Firebase (Firestore + Auth demo)
+     * - SIN build, usando CDN modular.
+     *************************************/
+    // Nota: esta config es pública por diseño (web). La seguridad real se hace con Rules.
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGPDlRAIKsrI6EhE3Tb2-1sYJ1VDaH2jw",
+      authDomain: "rauli-e7fdb.firebaseapp.com",
+      projectId: "rauli-e7fdb",
+      storageBucket: "rauli-e7fdb.firebasestorage.app",
+      messagingSenderId: "406292569158",
+      appId: "1:406292569158:web:c26f46de60d31827317e47",
+      measurementId: "G-PVC6X0TTTL"
+    };
+
+    // Carga Firebase modular desde CDN
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    let fbApp=null, db=null;
+    try{
+      fbApp = initializeApp(firebaseConfig);
+      db = getFirestore(fbApp);
+      logLine("ok", "Firebase inicializado (Firestore listo).");
+    }catch(e){
+      logLine("err", "Firebase error: " + (e?.message || e));
+    }
+
+    async function syncQueue(){
+      const q = loadQueue();
+      if(q.length === 0){
+        logLine("ok","No hay eventos pendientes.");
+        return;
+      }
+      if(!navigator.onLine){
+        logLine("warn","No hay internet. No puedo sincronizar ahora.");
+        return;
+      }
+      if(!db){
+        logLine("err","Firestore no está listo. Revisa Firebase config / red.");
+        return;
+      }
+
+      logLine("ok", `Sincronizando ${q.length} eventos…`);
+      const kept = [];
+      for(const evt of q){
+        try{
+          // guardamos en: business/rauli/events
+          await addDoc(collection(db, "business", "rauli", "events"), {
+            ...evt,
+            syncedAt: serverTimestamp(),
+            clientTime: evt.createdAt || Date.now(),
+          });
+        }catch(e){
+          kept.push(evt);
+          logLine("err", "Sync falló para un evento: " + (e?.message || e));
+        }
+      }
+      saveQueue(kept);
+      if(kept.length===0){
+        logLine("ok","✅ Sincronización completa. Cola vacía.");
+        beep();
+      }else{
+        logLine("warn", `Quedaron ${kept.length} eventos pendientes.`);
+      }
+    }
+
+    /**********************************
+     * 9) Finanzas: algoritmo de reparto
+     **********************************/
+    function clampPct(){
+      let a = Number($("pctAdmin").value||0);
+      let b = Number($("pctAmort").value||0);
+      let c = Number($("pctLibre").value||0);
+      const sum = a+b+c;
+      if(sum !== 100){
+        // normaliza proporcionalmente si sum>0; si no, default
+        if(sum>0){
+          a = Math.round((a/sum)*100);
+          b = Math.round((b/sum)*100);
+          c = 100 - a - b;
+        }else{
+          a=20; b=30; c=50;
+        }
+      }
+      $("pctAdmin").value=a; $("pctAmort").value=b; $("pctLibre").value=c;
+      state.pct = { admin:a, amort:b, libre:c };
+      $("pctAdminTxt").textContent = a;
+      $("pctAmortTxt").textContent = b;
+      $("pctLibreTxt").textContent = c;
+      saveStore();
+      renderFinance();
+      enqueueEvent({ type:"set_pct", pct: state.pct, createdAt: Date.now() });
+    }
+
+    $("btnSavePct").onclick = ()=>{ clampPct(); pushMsg("🤖 RAULI","Porcentajes guardados."); };
+
+    $("btnSetFondo").onclick = ()=>{
+      state.fondo = Number($("fondoInput").value||0);
+      saveStore();
+      renderFinance();
+      enqueueEvent({ type:"set_fondo", fondo: state.fondo, createdAt: Date.now() });
+      pushMsg("🤖 RAULI", "Fondo operativo actualizado: " + money(state.fondo));
+    };
+
+    $("btnSaveNom").onclick = ()=>{
+      state.pctNom.bety = Number($("pctBety").value||0);
+      state.pctNom.orlan = Number($("pctOrlan").value||0);
+      saveStore();
+      renderFinance();
+      enqueueEvent({ type:"set_nom_params", pctNom: state.pctNom, createdAt: Date.now() });
+      pushMsg("🤖 RAULI","Parámetros de nómina indirecta guardados.");
+    };
+
+    $("btnCalcOps").onclick = ()=>{
+      state.ops.rate = Number($("opsRate").value||0);
+      state.ops.lbs = Number($("opsLbs").value||0);
+      saveStore();
+      renderFinance();
+      pushMsg("🤖 RAULI", `Operarios: ${money(state.ops.rate)} x ${state.ops.lbs} lb = ${money(state.ops.rate*state.ops.lbs)}`);
+    };
+
+    $("btnCalcSales").onclick = ()=>{
+      state.sales.rate = Number($("salesRate").value||0);
+      state.sales.units = Number($("salesUnits").value||0);
+      saveStore();
+      renderFinance();
+      pushMsg("🤖 RAULI", `Ventas (comisión): ${money(state.sales.rate)} x ${state.sales.units} = ${money(state.sales.rate*state.sales.units)}`);
+    };
+
+    $("btnCalc").onclick = ()=>{
+      const profit = Number($("profitInput").value||0);
+      state.profitLast = profit;
+
+      // reparto base
+      const admin = profit * (state.pct.admin/100);
+      const amort = profit * (state.pct.amort/100);
+      const libre = profit * (state.pct.libre/100);
+
+      // extras:
+      const bety = profit * (state.pctNom.bety/100);
+      const orlan = profit * (state.pctNom.orlan/100);
+      const ops = (state.ops.rate * state.ops.lbs);
+      const sales = (state.sales.rate * state.sales.units);
+
+      state._calc = { admin, amort, libre, bety, orlan, ops, sales, profit };
+      saveStore();
+      renderFinance();
+
+      // amortización acumula
+      if(amort > 0){
+        state.inv.paid = Number(state.inv.paid||0) + amort;
+        state.inv.history.push({ t: Date.now(), paid: state.inv.paid });
+        if(state.inv.history.length > 60) state.inv.history.shift();
+        saveStore();
+        renderInvestment();
+        drawAmortChart();
+      }
+
+      enqueueEvent({ type:"calc_profit", profit, calc: state._calc, createdAt: Date.now() });
+
+      pushMsg("🤖 RAULI", `Cálculo listo. Admin: ${money(admin)} · Amort: ${money(amort)} · Libre: ${money(libre)}.`);
+      if(navigator.onLine) syncQueue();
+    };
+
+    $("btnSetInv").onclick = ()=>{
+      state.inv.total = Number($("invTotal").value||0);
+      if(!state.inv.history) state.inv.history = [];
+      saveStore();
+      renderInvestment();
+      drawAmortChart();
+      enqueueEvent({ type:"set_investment_total", total: state.inv.total, createdAt: Date.now() });
+      pushMsg("🤖 RAULI", "Inversión total guardada: " + money(state.inv.total));
+    };
+
+    function renderFinance(){
+      $("fondoTxt").textContent = money(state.fondo);
+      $("fondoInput").value = state.fondo;
+
+      $("pctAdmin").value = state.pct.admin;
+      $("pctAmort").value = state.pct.amort;
+      $("pctLibre").value = state.pct.libre;
+      $("pctAdminTxt").textContent = state.pct.admin;
+      $("pctAmortTxt").textContent = state.pct.amort;
+      $("pctLibreTxt").textContent = state.pct.libre;
+
+      $("pctBety").value = state.pctNom.bety;
+      $("pctOrlan").value = state.pctNom.orlan;
+
+      $("opsRate").value = state.ops.rate;
+      $("opsLbs").value = state.ops.lbs;
+      $("salesRate").value = state.sales.rate;
+      $("salesUnits").value = state.sales.units;
+
+      const calc = state._calc || { admin:0, amort:0, libre:0, bety:0, orlan:0, ops:0, sales:0 };
+      $("gAdmin").textContent = money(calc.admin);
+      $("gAmort").textContent = money(calc.amort);
+      $("gLibre").textContent = money(calc.libre);
+      $("gBety").textContent = money(calc.bety);
+      $("gOrlan").textContent = money(calc.orlan);
+      $("gOps").textContent = money(calc.ops);
+      $("gSales").textContent = money(calc.sales);
+
+      renderInvestment();
+      drawAmortChart();
+    }
+
+    function renderInvestment(){
+      const total = Number(state.inv.total||0);
+      const paid = Number(state.inv.paid||0);
+      const left = Math.max(0, total - paid);
+      const pct = total>0 ? Math.min(100, (paid/total)*100) : 0;
+
+      $("invTotalTxt").textContent = money(total);
+      $("invPaidTxt").textContent = money(paid);
+      $("invLeftTxt").textContent = money(left);
+      $("invPctTxt").textContent = pct.toFixed(1) + "%";
+
+      $("invTotal").value = total;
+    }
+
+    renderFinance();
+
+    /*****************************
+     * 10) Amort Chart (canvas)
+     *****************************/
+    function drawAmortChart(){
+      const cv = $("amortChart");
+      if(!cv) return;
+      const ctx = cv.getContext("2d");
+      const W = cv.width, H = cv.height;
+
+      // fondo
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle = "rgba(0,0,0,.10)";
+      ctx.fillRect(0,0,W,H);
+
+      const total = Number(state.inv.total||0);
+      const hist = (state.inv.history||[]);
+
+      // ejes
+      ctx.strokeStyle = "rgba(255,255,255,.12)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(60, 20);
+      ctx.lineTo(60, H-40);
+      ctx.lineTo(W-20, H-40);
+      ctx.stroke();
+
+      // etiqueta
+      ctx.fillStyle = "rgba(244,197,66,.90)";
+      ctx.font = "bold 16px system-ui";
+      ctx.fillText("Pagado acumulado", 70, 20);
+
+      if(hist.length < 2){
+        ctx.fillStyle = "rgba(234,241,255,.75)";
+        ctx.font = "14px system-ui";
+        ctx.fillText("Aún no hay historial (calcula ganancias para generar puntos).", 70, 60);
+        return;
+      }
+
+      // escala Y
+      const maxY = Math.max(total || 0, ...hist.map(x=>x.paid)) || 1;
+      const x0 = 60, y0 = H-40, x1 = W-20, y1 = 20;
+
+      // línea
+      ctx.strokeStyle = "rgba(244,197,66,.95)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      hist.forEach((p, i)=>{
+        const x = x0 + (i/(hist.length-1))*(x1-x0);
+        const y = y0 - (p.paid/maxY)*(y0-y1);
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+
+      // puntos
+      ctx.fillStyle = "rgba(44,224,122,.95)";
+      hist.forEach((p, i)=>{
+        const x = x0 + (i/(hist.length-1))*(x1-x0);
+        const y = y0 - (p.paid/maxY)*(y0-y1);
+        ctx.beginPath();
+        ctx.arc(x,y,4,0,Math.PI*2);
+        ctx.fill();
+      });
+
+      // texto final
+      const last = hist[hist.length-1];
+      ctx.fillStyle = "rgba(234,241,255,.90)";
+      ctx.font = "bold 14px system-ui";
+      ctx.fillText("Último: " + money(last.paid), W-240, 30);
+    }
+
+    /***********************************
+     * 11) Ventas / Producción (demo)
+     ***********************************/
+    $("btnVenta").onclick = ()=>{
+      const monto = Number($("ventaMonto").value||0);
+      if(!monto) return;
+      $("ventaMonto").value = "";
+      enqueueEvent({ type:"venta", monto, createdAt: Date.now() });
+      pushMsg("🤖 RAULI", "Venta guardada: " + money(monto) + ". (Se sincroniza cuando haya internet)");
+      if(navigator.onLine) syncQueue();
+    };
+
+    $("btnProdMin").onclick = ()=>{
+      enqueueEvent({ type:"prod_alert_minimos", createdAt: Date.now() });
+      pushMsg("🤖 RAULI","Alerta de mínimos registrada (demo).");
+      if(navigator.onLine) syncQueue();
+    };
+    $("btnProdInsum").onclick = ()=>{
+      enqueueEvent({ type:"prod_salida_insumos", createdAt: Date.now() });
+      pushMsg("🤖 RAULI","Salida de insumos registrada (demo).");
+      if(navigator.onLine) syncQueue();
+    };
+    $("btnProdBatch").onclick = ()=>{
+      enqueueEvent({ type:"prod_lote_dia", createdAt: Date.now() });
+      pushMsg("🤖 RAULI","Lote del día registrado (demo).");
+      if(navigator.onLine) syncQueue();
+    };
+
+    /******************************
+     * 12) PWA Install Button
+     ******************************/
+    let deferredPrompt = null;
+    window.addEventListener("beforeinstallprompt", (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      $("btnInstall").style.display = "";
+      logLine("ok","Disponible para instalar como app (PWA).");
+    });
+
+    $("btnInstall").onclick = async ()=>{
+      if(!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const r = await deferredPrompt.userChoice;
+      logLine("ok", "Instalación PWA: " + r.outcome);
+      deferredPrompt = null;
+      $("btnInstall").style.display = "none";
+      beep();
+    };
+
+    /******************************
+     * 13) Service Worker + Update
+     ******************************/
+    let swReg = null;
+
+    async function registerSW(){
+      if(!("serviceWorker" in navigator)) {
+        logLine("warn","ServiceWorker no soportado en este navegador.");
+        return;
+      }
+      try{
+        swReg = await navigator.serviceWorker.register("./sw.js", { scope: "./" });
+        logLine("ok","Service Worker registrado.");
+        // escuchar updates
+        swReg.addEventListener("updatefound", ()=>{
+          const newWorker = swReg.installing;
+          logLine("warn","Nueva versión detectada (instalando)...");
+          newWorker.addEventListener("statechange", ()=>{
+            if(newWorker.state === "installed"){
+              if(navigator.serviceWorker.controller){
+                logLine("ok","✅ Nueva versión lista. Presiona 'Actualizar'.");
+                beep();
+              }else{
+                logLine("ok","App lista para uso offline.");
+              }
+            }
+          });
+        });
+      }catch(e){
+        logLine("err","SW error: " + (e?.message || e));
+      }
+    }
+    await registerSW();
+
+    // BOTÓN ACTUALIZAR (forzar tomar nueva versión)
+    $("btnUpdate").onclick = async ()=>{
+      beep();
+      logLine("warn","Buscando actualización...");
+      try{
+        if(swReg) await swReg.update();
+      }catch(e){}
+
+      // Si hay SW esperando, lo activamos
+      if(swReg?.waiting){
+        logLine("ok","Activando nueva versión...");
+        swReg.waiting.postMessage({ type: "SKIP_WAITING" });
+      }else{
+        logLine("warn","Si no cambia, cierra la app y vuelve a abrir. (A veces el cache tarda).");
+      }
+    };
+
+    // Recargar cuando el SW nuevo tome control
+    navigator.serviceWorker?.addEventListener("controllerchange", ()=>{
+      logLine("ok","Controlador actualizado. Recargando…");
+      setTimeout(()=> location.reload(), 200);
+    });
+
+    /******************************
+     * 14) Redirecciones “análisis”
+     ******************************/
+    // Por ahora, panel interno. Si quieres URLs específicas (por país/idioma),
+    // me las dices y las agrego en botones.
+    /********************
+     * 15) Inicio
+     ********************/
+    logLine("ok","RAULI cargó correctamente.");
+    if(navigator.onLine) setTimeout(syncQueue, 700);
+
+  </script>
 </body>
 </html>
