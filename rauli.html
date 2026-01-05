@@ -1,1340 +1,288 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>RAULI — Panadería & Dulcería</title>
+  <meta charset="UTF-8" />
+  <title>RAULI · Panadería & Dulcería</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#123b8a">
-  <link rel="icon" href="icon-512.png">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1f3c88" />
+  <link rel="icon" href="icon-192.png" />
 
   <style>
     :root{
-      --bg:#0a1222;
-
-      /* marca */
-      --blue:#2f6cff;
-      --blue2:#1f4fc9;
-      --blueDeep:#0b2f5b;
-
-      --yellow:#ffd24a;
-      --yellowStrong:#ffc400;
-      --yellow2:#d7a90b;
-
-      --text: var(--yellow);
-      --muted:#c9d3f2;
-      --muted2:#aebae0;
-
-      --line:rgba(255,255,255,.14);
-      --shadow: 0 18px 55px rgba(0,0,0,.44);
-      --radius: 22px;
-
-      --fs-base: 18px;
-      --fs-small: 14px;
-      --fs-title: 20px;
-      --fs-h1: 22px;
-      --fs-card-title: 16px;
+      --blue:#1f3c88;
+      --blue2:#2d5be3;
+      --yellow:#ffd43b;
+      --yellow2:#ffb703;
+      --bg:#0b1220;
+      --panel:#121c33;
+      --text:#ffd43b;
+      --muted:#c7d2ff;
+      --danger:#ff6b6b;
+      --ok:#51cf66;
     }
-
     *{box-sizing:border-box}
-    html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      font-size: var(--fs-base);
-      color: var(--text);
-      background:
-        radial-gradient(1200px 700px at 20% -10%, rgba(47,108,255,.36), transparent 55%),
-        radial-gradient(1100px 700px at 95% 0%, rgba(255,196,0,.22), transparent 50%),
-        radial-gradient(900px 600px at 60% 110%, rgba(47,108,255,.16), transparent 55%),
-        var(--bg);
-      min-height:100vh;
-      overflow-x:hidden;
+      font-family:system-ui,Segoe UI,Roboto,Arial;
+      background:linear-gradient(180deg,#0b1220,#0e1630);
+      color:var(--text);
     }
-
-    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
-    @keyframes pulse{0%{transform:scale(1);opacity:.85}50%{transform:scale(1.15);opacity:1}100%{transform:scale(1);opacity:.85}}
-    @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:100% 50%}}
-
-    .topbar{
-      position: sticky; top:0; z-index:50;
-      padding: 12px 12px 10px;
-      background: linear-gradient(180deg, rgba(10,18,34,.96), rgba(10,18,34,.58));
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid var(--line);
+    header{
+      background:linear-gradient(90deg,var(--blue),var(--blue2));
+      padding:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      box-shadow:0 4px 20px rgba(0,0,0,.4);
     }
-    .topbar-inner{
-      max-width: 1140px;
-      margin: 0 auto;
+    header h1{
+      margin:0;
+      font-size:20px;
+      letter-spacing:1px;
+    }
+    header span{
+      font-size:13px;
+      color:#fff;
+      opacity:.9;
+    }
+    .status{
       display:flex;
       gap:10px;
       align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
     }
-    .brand{display:flex; gap:10px; align-items:center}
-    .logo{
-      width:42px; height:42px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(47,108,255,.95), rgba(255,196,0,.88));
-      box-shadow: 0 12px 24px rgba(0,0,0,.30);
-      animation: floaty 3.2s ease-in-out infinite;
-    }
-    .title{display:flex; flex-direction:column; line-height:1.12}
-    .title b{letter-spacing:.4px; font-size:18px; color: var(--yellowStrong)}
-    .title span{color:var(--muted); font-size:var(--fs-small)}
-    .chips{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
     .chip{
-      display:inline-flex; gap:8px; align-items:center;
-      padding:9px 11px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.07);
-      color: var(--yellow);
-      font-size: var(--fs-small);
-      font-weight: 950;
-    }
-    .dot{width:10px;height:10px;border-radius:50%}
-    .dot.online{background:#2ecc71}
-    .dot.offline{background:#e74c3c}
-    .pulse{
-      width:10px;height:10px;border-radius:50%;
-      background:#2ecc71;
-      animation: pulse 1.4s ease-in-out infinite;
-    }
-
-    .btn{
-      border:0; cursor:pointer;
-      font-weight: 950;
-      letter-spacing:.2px;
-      padding:12px 14px;
-      border-radius:16px;
-      color:#0b1220;
-      background: linear-gradient(135deg, var(--yellow), var(--yellow2));
-      box-shadow: 0 12px 26px rgba(0,0,0,.28);
-      display:inline-flex; gap:8px; align-items:center;
-      font-size: var(--fs-small);
-    }
-    .btn.blue{
-      color:#ffe08a;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-    }
-    .btn.ghost{
-      color: var(--yellow);
-      background: rgba(255,255,255,.08);
-      border:1px solid var(--line);
-      box-shadow:none;
-    }
-    .btn.danger{
+      background:rgba(0,0,0,.25);
+      padding:6px 10px;
+      border-radius:20px;
+      font-size:12px;
+      display:flex;
+      gap:6px;
+      align-items:center;
       color:#fff;
-      background: linear-gradient(135deg, #e74c3c, #b3392f);
     }
+    .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+    }
+    .on{background:#51cf66}
+    .off{background:#ff6b6b}
 
-    .wrap{max-width:1140px;margin:0 auto;padding:16px 12px 132px}
-
-    .hero{
-      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
-      padding:16px 16px;
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-    .hero::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: linear-gradient(90deg, rgba(47,108,255,.24), rgba(255,196,0,.18), rgba(47,108,255,.24));
-      background-size: 200% 200%;
-      animation: shimmer 7s ease-in-out infinite;
-      opacity:.55;
-      pointer-events:none;
-      mask: linear-gradient(#000, transparent 70%);
-    }
-    .hero h1{margin:0;font-size:var(--fs-h1); color: var(--yellowStrong); position:relative}
-    .hero p{margin:8px 0 0;color:var(--muted);font-size:var(--fs-base);max-width:860px; position:relative}
-    .hero-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap; position:relative}
-
-    /* Secciones */
-    .section{display:none; margin-top:14px;}
-    .section.show{display:block;}
-
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap:10px;
-    }
-    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, minmax(0,1fr));} }
-    @media (max-width: 520px){ .grid{grid-template-columns: 1fr;} }
-
-    .card{
-      padding:16px 16px 14px;
-      border-radius: 20px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(15,28,51,.92), rgba(13,23,48,.88));
-      box-shadow: 0 14px 40px rgba(0,0,0,.28);
-      min-height: 140px;
-      display:flex; flex-direction:column; gap:10px;
-      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-      cursor:pointer;
-    }
-    .card:hover{
-      transform: translateY(-3px);
-      box-shadow: 0 18px 54px rgba(0,0,0,.36);
-      border-color: rgba(255,196,0,.36);
-    }
-    .card b{font-size:var(--fs-card-title); color: var(--yellowStrong)}
-    .card small{color:var(--muted);line-height:1.45; font-size: var(--fs-base)}
-    .tag{
-      margin-top:auto;
-      display:inline-flex; align-self:flex-start;
-      padding:8px 11px;
-      border-radius:999px;
-      background: rgba(255,255,255,.08);
-      border:1px solid var(--line);
-      font-weight: 950;
-      font-size: var(--fs-small);
-      color: var(--yellow);
+    main{
+      padding:16px;
+      padding-bottom:110px;
+      max-width:1200px;
+      margin:auto;
     }
 
     .panel{
-      border-radius: var(--radius);
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      box-shadow: var(--shadow);
-      padding: 14px;
-    }
-    .panel h2{margin:0; font-size: var(--fs-title); color: var(--yellowStrong)}
-    .panel p{margin:8px 0 0; color:var(--muted)}
-    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-    .field{display:flex; flex-direction:column; gap:8px; flex: 1 1 260px;}
-    label{color:var(--muted); font-weight:950; font-size: var(--fs-small)}
-    input, textarea, select{
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: var(--yellow);
-      outline:none;
-      font-size: var(--fs-base);
-    }
-    input:focus, textarea:focus, select:focus{border-color: rgba(255,196,0,.48)}
-    textarea{min-height:84px; resize:vertical}
-
-    .kpis{
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0,1fr));
-      gap:10px;
-      margin-top:12px;
-    }
-    @media (max-width: 980px){ .kpis{grid-template-columns: repeat(2, minmax(0,1fr));} }
-    .kpi{
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.16);
-      padding: 12px;
-    }
-    .kpi b{color: var(--yellowStrong)}
-    .kpi small{display:block; color: var(--muted); margin-top:6px; line-height:1.35}
-
-    .table{
-      margin-top:12px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.14);
-      overflow:hidden;
-    }
-    table{
-      width:100%;
-      border-collapse: collapse;
-      background: rgba(0,0,0,.14);
-    }
-    th, td{
-      padding: 10px 10px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      text-align:left;
-      vertical-align:top;
-      font-size: 15px;
-      color: var(--yellow);
-    }
-    th{
-      color: var(--muted);
-      font-weight: 950;
-      background: rgba(255,255,255,.06);
-    }
-    tr:hover td{background: rgba(255,255,255,.04)}
-
-    .badge{
-      display:inline-flex;
-      padding:6px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.08);
-      font-weight: 950;
-      font-size: 12px;
-      color: var(--yellow);
-      white-space:nowrap;
-    }
-    .badge.ok{border-color: rgba(46,204,113,.35); background: rgba(46,204,113,.12)}
-    .badge.bad{border-color: rgba(231,76,60,.35); background: rgba(231,76,60,.12); color:#fff}
-
-    .toast{
-      position:fixed;
-      left:50%;
-      transform: translateX(-50%);
-      bottom: 98px;
-      z-index:99999;
-      padding:12px 14px;
-      border-radius: 14px;
-      color:#ffe08a;
-      font: 14px system-ui;
-      box-shadow: 0 12px 34px rgba(0,0,0,.28);
-      background: rgba(11,47,91,.92);
-      display:none;
-      max-width: min(720px, 92vw);
-      border: 1px solid rgba(255,196,0,.22);
-    }
-    .toast.show{display:block}
-    .toast.bad{
-      background: rgba(139,0,0,.92);
-      border-color: rgba(255,255,255,.12);
-      color: #fff;
-    }
-
-    .bottom{
-      position:fixed; left:0; right:0; bottom:0;
-      z-index:60;
-      padding: 10px 12px 12px;
-      background: linear-gradient(180deg, rgba(10,18,34,.00), rgba(10,18,34,.95));
-      backdrop-filter: blur(10px);
-    }
-    .bottom-inner{
-      max-width:1140px;margin:0 auto;
-      border:1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(8,12,20,.68);
-      display:flex;
-      gap:8px;
-      align-items:center;
-      justify-content:space-between;
-      padding:10px;
-      box-shadow: var(--shadow);
-      flex-wrap:wrap;
-    }
-    .nav{display:flex; gap:8px; flex-wrap:wrap}
-    .nav button{
-      padding:11px 12px;
+      background:var(--panel);
       border-radius:16px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.08);
-      color: var(--yellow);
-      font-weight: 950;
-      cursor:pointer;
-      display:inline-flex; gap:8px; align-items:center;
-      font-size: var(--fs-small);
-    }
-    .nav button.active{
-      color:#ffe08a;
-      background: linear-gradient(135deg, var(--blue), var(--blue2));
-      border:0;
+      padding:16px;
+      margin-bottom:16px;
+      box-shadow:0 10px 40px rgba(0,0,0,.4);
     }
 
-    .footer{
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: var(--fs-small);
+    h2{
+      margin:0 0 10px 0;
+      font-size:18px;
+      color:var(--yellow2);
+    }
+    p{margin:6px 0;color:var(--muted)}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+    }
+    .card{
+      background:#0e1730;
+      border-radius:14px;
+      padding:14px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .card b{color:var(--yellow2)}
+
+    input,select,textarea{
+      width:100%;
+      padding:10px;
+      border-radius:10px;
+      border:none;
+      background:#0b1328;
+      color:var(--yellow);
+      margin-top:6px;
+    }
+
+    button{
+      padding:10px 14px;
+      border:none;
+      border-radius:12px;
+      background:linear-gradient(90deg,var(--yellow),var(--yellow2));
+      color:#000;
+      font-weight:700;
+      cursor:pointer;
+      margin-top:10px;
+    }
+    button.secondary{
+      background:#1c2a55;
+      color:var(--yellow);
+    }
+    button.danger{
+      background:var(--danger);
+      color:#fff;
+    }
+
+    nav{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:#0b1220;
+      border-top:1px solid rgba(255,255,255,.1);
+      display:flex;
+      justify-content:space-around;
+      padding:10px 0;
+    }
+    nav button{
+      background:none;
+      color:var(--yellow);
+      font-size:12px;
+      margin:0;
+    }
+
+    .hidden{display:none}
+
+    footer{
       text-align:center;
-      opacity:.92;
+      font-size:11px;
+      color:var(--muted);
+      margin-top:20px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <div class="logo"></div>
-        <div class="title">
-          <b>RAULI</b>
-          <span id="subTitle">Panadería & Dulcería · Offline-first + Caja + IA</span>
-        </div>
-      </div>
-
-      <div class="chips">
-        <button class="btn" id="btnUpdate">🔔 Actualizar</button>
-        <span class="chip" id="chipConn"><span class="dot offline"></span> Offline</span>
-        <span class="chip" id="chipSync">🟥 Sin señal (guardando local)</span>
-        <span class="chip" id="chipQueue" style="display:none">🤖 IA pendiente: 0</span>
-        <span class="chip" id="chipUser" style="display:none">👤 —</span>
-      </div>
-    </div>
+<header>
+  <div>
+    <h1>RAULI</h1>
+    <span>Panadería & Dulcería · Asistente Digital</span>
   </div>
-
-  <div class="wrap">
-    <div class="hero">
-      <div>
-        <h1>RAULI Operativo</h1>
-        <p>
-          Ya tienes registro y control. Ahora añadimos <b>CAJA profesional</b> con evidencias y alertas automáticas.
-          La IA guarda offline y al volver señal envía y responde (Function <b>rauliAssistant</b> si está desplegada).
-        </p>
-      </div>
-      <div class="hero-actions">
-        <button class="btn blue" id="btnProbe">🚀 Probar Nube</button>
-        <button class="btn ghost" id="btnInstall">📲 Instalar App</button>
-        <button class="btn ghost" id="btnAbout">ℹ️ Autor</button>
-        <button class="btn danger" id="btnLogout" style="display:none">Salir</button>
-      </div>
+  <div class="status">
+    <div class="chip" id="connChip">
+      <div class="dot off" id="connDot"></div>
+      <span id="connText">Offline</span>
     </div>
-
-    <!-- LOGIN -->
-    <div class="panel" id="loginBox" style="max-width:760px;margin:14px auto 0;">
-      <h2>🔐 Iniciar sesión</h2>
-      <p>Usa el correo/clave creado en Firebase Authentication.</p>
-
-      <div class="row">
-        <div class="field">
-          <label>Correo</label>
-          <input id="email" type="email" placeholder="ej: bety@rauli.com" autocomplete="username">
-        </div>
-        <div class="field">
-          <label>Clave</label>
-          <input id="pass" type="password" placeholder="••••••••" autocomplete="current-password">
-        </div>
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-        <button class="btn blue" id="btnLogin">Entrar</button>
-        <button class="btn ghost" id="btnDemo">Entrar demo</button>
-      </div>
-
-      <div class="footer" style="margin-top:10px">
-        Prototipo asistido por <b>ChatGPT (GPT-5.2 Thinking)</b> · Autor del prototipo RAULI
-      </div>
-    </div>
-
-    <!-- APP -->
-    <div id="appBox" style="display:none">
-
-      <!-- INICIO -->
-      <div class="section show" id="secHome">
-        <div class="grid" id="homeCards"></div>
-
-        <div class="panel" style="margin-top:14px">
-          <h2>🤖 Asistente RAULI</h2>
-          <p>Escribe o dicta. Si no hay señal, se guarda y se envía al recuperar señal.</p>
-
-          <div class="row">
-            <div class="field" style="flex:1 1 420px">
-              <label>Mensaje</label>
-              <textarea id="assistantInput" placeholder="Ej: 'Bety: cierre de caja, faltan $10, revisar evidencias'"></textarea>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn blue" id="btnSendIA">Enviar / Guardar</button>
-            <button class="btn ghost" id="btnVoice">🎙️ Dictar</button>
-            <button class="btn ghost" id="btnFlushIA">📡 Enviar cola</button>
-          </div>
-
-          <div class="footer" style="text-align:left;margin-top:10px" id="queueHint">🤖 IA pendiente: 0</div>
-
-          <div class="panel" style="margin-top:10px;background:rgba(0,0,0,.14)">
-            <h2 style="font-size:18px">Chat</h2>
-            <div id="chat" style="max-height:260px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding-right:6px"></div>
-          </div>
-        </div>
-
-        <div class="footer">
-          Sistema RAULI © 2026 · Autor del prototipo: <b>ChatGPT (GPT-5.2 Thinking)</b>
-        </div>
-      </div>
-
-      <!-- CAJA -->
-      <div class="section" id="secCaja">
-        <div class="panel">
-          <h2>💰 Caja</h2>
-          <p>
-            Apertura, movimientos, entrega de efectivo, reembolsos y cierre con evidencias.
-            <b>Solo Raúl / Lisi / Bety</b>.
-          </p>
-
-          <div id="cajaNoPerm" class="panel" style="display:none;margin-top:12px;background:rgba(231,76,60,.10);border-color:rgba(231,76,60,.35)">
-            <h2 style="color:#fff">⛔ Sin permiso</h2>
-            <p style="color:#fff;margin-top:6px">
-              Tu rol no tiene acceso a Caja. (Esto también se controla con reglas en Firestore).
-            </p>
-          </div>
-
-          <div id="cajaPermWrap" style="display:none">
-
-            <div class="kpis">
-              <div class="kpi">
-                <b>Apertura</b>
-                <small id="kApertura">$0.00</small>
-              </div>
-              <div class="kpi">
-                <b>Entradas</b>
-                <small id="kEntradas">$0.00</small>
-              </div>
-              <div class="kpi">
-                <b>Salidas</b>
-                <small id="kSalidas">$0.00</small>
-              </div>
-              <div class="kpi">
-                <b>Saldo teórico</b>
-                <small id="kTeorico">$0.00</small>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="field">
-                <label>Tipo</label>
-                <select id="cajaTipo">
-                  <option value="apertura">Apertura</option>
-                  <option value="ingreso">Ingreso</option>
-                  <option value="gasto">Gasto</option>
-                  <option value="entrega_efectivo">Entrega de efectivo</option>
-                  <option value="reembolso">Reembolso</option>
-                  <option value="cierre">Cierre</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label>Monto</label>
-                <input id="cajaMonto" type="number" step="0.01" placeholder="0.00">
-              </div>
-
-              <div class="field">
-                <label>Método</label>
-                <select id="cajaMetodo">
-                  <option value="efectivo">Efectivo</option>
-                  <option value="transferencia">Transferencia</option>
-                  <option value="tarjeta">Tarjeta</option>
-                  <option value="otro">Otro</option>
-                </select>
-              </div>
-
-              <div class="field">
-                <label>Evidencia (foto/archivo)</label>
-                <input id="cajaEvi" type="file" accept="image/*,application/pdf">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="field" style="flex:1 1 420px">
-                <label>Nota / detalle</label>
-                <textarea id="cajaNota" placeholder="Ej: 'Compra de mantequilla', 'Entrega a Bety', 'Cierre del día'"></textarea>
-              </div>
-            </div>
-
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <button class="btn blue" id="btnCajaGuardar">Guardar movimiento</button>
-              <button class="btn ghost" id="btnCajaCierreRapido">Cerrar caja (comparar)</button>
-              <button class="btn ghost" id="btnCajaRefrescar">Refrescar</button>
-            </div>
-
-            <div class="table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Tipo</th>
-                    <th>Monto</th>
-                    <th>Nota</th>
-                    <th>Evidencia</th>
-                  </tr>
-                </thead>
-                <tbody id="cajaRows"></tbody>
-              </table>
-            </div>
-
-            <div class="footer" id="cajaAlert"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- INVENTARIO -->
-      <div class="section" id="secInv">
-        <div class="panel">
-          <h2>📦 Inventario</h2>
-          <p>En el próximo paso lo dejamos completo (entradas, salidas, mínimos, alertas, recetas/consumo).</p>
-          <div class="grid" style="margin-top:12px">
-            <div class="card"><b>Entrada de insumo</b><small>Registrar compra + evidencia + proveedor.</small><span class="tag">Próximo</span></div>
-            <div class="card"><b>Salida a producción</b><small>Consumo por lote / receta.</small><span class="tag">Próximo</span></div>
-            <div class="card"><b>Alertas</b><small>Bajo mínimo, merma, faltantes.</small><span class="tag">Próximo</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PRODUCCIÓN -->
-      <div class="section" id="secProd">
-        <div class="panel">
-          <h2>🥖 Producción</h2>
-          <p>En el próximo paso: lotes, recetas, control de calidad, merma y trazabilidad.</p>
-          <div class="grid" style="margin-top:12px">
-            <div class="card"><b>Lotes</b><small>Entrada a proceso, salida a ventas.</small><span class="tag">Próximo</span></div>
-            <div class="card"><b>Calidad</b><small>Checklists por producto.</small><span class="tag">Próximo</span></div>
-            <div class="card"><b>Merma</b><small>Registro y evidencia.</small><span class="tag">Próximo</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VENTAS -->
-      <div class="section" id="secVentas">
-        <div class="panel">
-          <h2>🧾 Ventas</h2>
-          <p>En el próximo paso: ventas por producto, métodos, facturas, devoluciones y link con Caja.</p>
-          <div class="grid" style="margin-top:12px">
-            <div class="card"><b>Registrar venta</b><small>Por producto + método + evidencia.</small><span class="tag">Próximo</span></div>
-            <div class="card"><b>Reembolso</b><small>Motivo + aprobación + evidencia.</small><span class="tag">Próximo</span></div>
-            <div class="card"><b>Reportes</b><small>Día / semana / mes.</small><span class="tag">Próximo</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <div class="chip" id="userChip">👤 —</div>
   </div>
+</header>
 
-  <div class="bottom">
-    <div class="bottom-inner">
-      <div class="nav">
-        <button class="active" id="navHome">🏠 Inicio</button>
-        <button id="navCaja">💰 Caja</button>
-        <button id="navInv">📦 Inventario</button>
-        <button id="navProd">🥖 Producción</button>
-        <button id="navVentas">🧾 Ventas</button>
+<main>
+
+  <!-- INICIO -->
+  <section id="secInicio" class="panel">
+    <h2>🤖 Asistente RAULI</h2>
+    <p id="saludo">Cargando saludo…</p>
+
+    <textarea id="assistantInput" placeholder="Ej: Venta $120 efectivo / Harina bajo mínimo / Cierre de caja"></textarea>
+    <button id="btnIA">Enviar al asistente</button>
+
+    <div class="panel" style="margin-top:12px">
+      <h2>Mensajes</h2>
+      <div id="chatBox"></div>
+    </div>
+  </section>
+
+  <!-- FINANZAS -->
+  <section id="secFinanzas" class="panel hidden">
+    <h2>💼 Fondo · Nómina · Amortización</h2>
+
+    <div class="grid">
+      <div class="card">
+        <b>Fondo Operativo</b>
+        <p>Objetivo</p>
+        <div id="fundTarget">$0</div>
+        <p>Balance actual</p>
+        <div id="fundBalance">$0</div>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <button class="btn ghost" id="btnGoIA">🤖 IA</button>
+
+      <div class="card">
+        <b>Hoy vas ganando</b>
+        <div id="todayEarnings">$0</div>
+      </div>
+
+      <div class="card">
+        <b>Amortización</b>
+        <p>Mes actual</p>
+        <div id="amortMonth">$0</div>
+        <p>Acumulado</p>
+        <div id="amortTotal">$0</div>
       </div>
     </div>
-  </div>
 
-  <div class="toast" id="toast"></div>
+    <div class="panel" style="margin-top:12px">
+      <h2>📊 Gráfico</h2>
+      <canvas id="financeChart" height="120"></canvas>
+    </div>
+  </section>
+
+  <!-- PRODUCCIÓN -->
+  <section id="secProduccion" class="panel hidden">
+    <h2>🥖 Producción</h2>
+    <p>Registro de lotes y libras elaboradas</p>
+    <input id="prodProducto" placeholder="Producto" />
+    <input id="prodLbs" type="number" placeholder="Libras producidas" />
+    <button id="btnProd">Guardar lote</button>
+  </section>
+
+  <!-- VENTAS -->
+  <section id="secVentas" class="panel hidden">
+    <h2>🧾 Ventas</h2>
+    <input id="ventaProducto" placeholder="Producto" />
+    <input id="ventaUnidades" type="number" placeholder="Unidades" />
+    <input id="ventaTotal" type="number" placeholder="Total $" />
+    <select id="ventaMetodo">
+      <option value="efectivo">Efectivo</option>
+      <option value="transferencia">Transferencia</option>
+      <option value="tarjeta">Tarjeta</option>
+    </select>
+    <button id="btnVenta">Guardar venta</button>
+  </section>
+
+</main>
+
+<nav>
+  <button onclick="show('secInicio')">Inicio</button>
+  <button onclick="show('secFinanzas')">Finanzas</button>
+  <button onclick="show('secProduccion')">Producción</button>
+  <button onclick="show('secVentas')">Ventas</button>
+</nav>
+
+<footer>
+  RAULI · Sistema offline-first · Autor del prototipo: ChatGPT
+</footer>
+
+<script>
+  function show(id){
+    document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+    document.getElementById(id).classList.remove("hidden");
+  }
+
+  function updateConn(){
+    const online = navigator.onLine;
+    document.getElementById("connDot").className = "dot " + (online ? "on":"off");
+    document.getElementById("connText").textContent = online ? "Online":"Offline";
+  }
+  window.addEventListener("online",updateConn);
+  window.addEventListener("offline",updateConn);
+  updateConn();
+</script>
+
+<script type="module" src="rauli-core.js"></script>
+<script type="module" src="rauli-assistant.js"></script>
 
-  <!-- UI Script -->
-  <script>
-    // Toast
-    const toastEl = document.getElementById('toast');
-    function toast(msg, ok=true){
-      toastEl.textContent = msg;
-      toastEl.classList.toggle('bad', !ok);
-      toastEl.classList.add('show');
-      setTimeout(()=>toastEl.classList.remove('show'), 2800);
-    }
-    window.toast = toast;
-
-    // Campanita
-    function ding(){
-      try{
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = "sine";
-        o.frequency.value = 880;
-        g.gain.value = 0.0001;
-        o.connect(g); g.connect(ctx.destination);
-        o.start();
-        g.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + 0.02);
-        o.frequency.exponentialRampToValueAtTime(1320, ctx.currentTime + 0.08);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
-        setTimeout(()=>{ o.stop(); ctx.close(); }, 320);
-      }catch(e){}
-    }
-    window.ding = ding;
-
-    // Update
-    document.getElementById('btnUpdate').addEventListener('click', async ()=>{
-      ding();
-      toast("Actualizando versión…", true);
-      try{
-        const reg = await navigator.serviceWorker?.getRegistration();
-        if(reg) await reg.update();
-      }catch(e){}
-      setTimeout(()=>location.reload(true), 350);
-    });
-
-    // Online/Offline chips
-    const chipConn = document.getElementById('chipConn');
-    const chipSync = document.getElementById('chipSync');
-    function paintConn(){
-      const online = navigator.onLine;
-      chipConn.innerHTML = online
-        ? `<span class="dot online"></span> Online`
-        : `<span class="dot offline"></span> Offline`;
-      chipSync.textContent = online ? "✅ En línea (guardando local también)" : "🟥 Sin señal (guardando local)";
-    }
-    window.addEventListener('online', ()=>{ paintConn(); toast("🟢 Conexión restablecida. Sincronizando…", true); });
-    window.addEventListener('offline', ()=>{ paintConn(); toast("🟡 Sin conexión. Guardando local.", true); });
-    paintConn();
-
-    // PWA install
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e)=>{
-      e.preventDefault();
-      deferredPrompt = e;
-    });
-
-    document.getElementById('btnInstall').addEventListener('click', async ()=>{
-      if(!deferredPrompt){
-        toast("iPhone: Safari → Compartir → 'Agregar a inicio'. Android/PC: Chrome mostrará instalar si PWA está OK.", true);
-        return;
-      }
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      toast(choice?.outcome === 'accepted' ? "✅ Instalación iniciada" : "Instalación cancelada", true);
-    });
-
-    // SW register
-    (async ()=>{
-      if('serviceWorker' in navigator){
-        try{ await navigator.serviceWorker.register('./sw.js', { scope:'./' }); }
-        catch(e){}
-      }
-    })();
-
-    // Secciones
-    const sections = {
-      home: document.getElementById("secHome"),
-      caja: document.getElementById("secCaja"),
-      inv: document.getElementById("secInv"),
-      prod: document.getElementById("secProd"),
-      ventas: document.getElementById("secVentas"),
-    };
-    function showSection(key){
-      Object.values(sections).forEach(s=>s.classList.remove("show"));
-      sections[key].classList.add("show");
-    }
-    window.showSection = showSection;
-
-    // Bottom nav
-    const navMap = [
-      ["navHome","home"],
-      ["navCaja","caja"],
-      ["navInv","inv"],
-      ["navProd","prod"],
-      ["navVentas","ventas"]
-    ];
-    navMap.forEach(([id,key])=>{
-      const btn = document.getElementById(id);
-      btn.addEventListener("click", ()=>{
-        navMap.forEach(([id2])=>document.getElementById(id2).classList.remove("active"));
-        btn.classList.add("active");
-        showSection(key);
-      });
-    });
-
-    // Go IA shortcut
-    document.getElementById("btnGoIA").addEventListener("click", ()=>{
-      navMap.forEach(([id2])=>document.getElementById(id2).classList.remove("active"));
-      document.getElementById("navHome").classList.add("active");
-      showSection("home");
-      document.getElementById("assistantInput")?.scrollIntoView({behavior:"smooth", block:"center"});
-      toast("🤖 Asistente listo", true);
-    });
-
-    // About
-    document.getElementById("btnAbout").addEventListener("click", ()=>{
-      toast("Autor del prototipo RAULI: ChatGPT (GPT-5.2 Thinking)", true);
-    });
-
-    // Chat bubbles
-    function chatAdd(text, who="user"){
-      const chat = document.getElementById("chat");
-      const div = document.createElement("div");
-      div.style.maxWidth="92%";
-      div.style.padding="12px 12px";
-      div.style.borderRadius="16px";
-      div.style.border="1px solid rgba(255,255,255,.12)";
-      div.style.background = (who==="ai") ? "rgba(255,196,0,.10)" : "rgba(47,108,255,.16)";
-      div.style.borderColor = (who==="ai") ? "rgba(255,196,0,.26)" : "rgba(47,108,255,.30)";
-      div.style.color = "var(--yellow)";
-      div.style.whiteSpace="pre-wrap";
-      div.style.wordBreak="break-word";
-      div.style.alignSelf = (who==="ai") ? "flex-start" : "flex-end";
-      div.textContent = text;
-      chat.style.display="flex";
-      chat.style.flexDirection="column";
-      chat.style.gap="10px";
-      chat.appendChild(div);
-      chat.scrollTop = chat.scrollHeight;
-    }
-    window.chatAdd = chatAdd;
-  </script>
-
-  <!-- Firebase + App Logic -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import {
-      getFirestore, enableIndexedDbPersistence,
-      doc, getDoc, setDoc,
-      collection, addDoc,
-      serverTimestamp,
-      query, orderBy, limit, getDocs
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-    import {
-      getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import {
-      getFunctions, httpsCallable
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js";
-
-    // Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyCGPDlRAIKsrI6EhE3Tb2-1sYJ1VDaH2jw",
-      authDomain: "rauli-e7fdb.firebaseapp.com",
-      projectId: "rauli-e7fdb",
-      storageBucket: "rauli-e7fdb.firebasestorage.app",
-      messagingSenderId: "406292569158",
-      appId: "1:406292569158:web:c26f46de60d31827317e47",
-      measurementId: "G-PVC6X0TTTL"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const functions = getFunctions(app);
-
-    // Offline-first
-    try { await enableIndexedDbPersistence(db); } catch(e) {}
-
-    const $ = (id)=>document.getElementById(id);
-    const toast = window.toast;
-    const ding = window.ding;
-    const chatAdd = window.chatAdd;
-
-    const RAULI_BIZ = "rauli";
-    const bizDocRef = () => doc(db, "business", RAULI_BIZ);
-    const subCol = (name) => collection(db, "business", RAULI_BIZ, name);
-    const userProfileRef = (uid)=>doc(db, "business", RAULI_BIZ, "users", uid);
-
-    // Roles
-    const ROLES = {
-      owner: { name:"Raúl (Dueño)" },
-      co_owner: { name:"Lisi (Co-propietaria)" },
-      supervisor: { name:"Orlandito (Supervisor)" },
-      admin_produccion: { name:"Papito (Producción)" },
-      contadora: { name:"Bety (Contadora)" }
-    };
-    const FINANCE_ROLES = new Set(["owner","co_owner","contadora"]);
-
-    // Session
-    let current = { uid:null, email:null, role:null, displayName:null };
-
-    function showLogin(){
-      $("loginBox").style.display = "block";
-      $("appBox").style.display = "none";
-      $("btnLogout").style.display = "none";
-      $("chipUser").style.display = "none";
-      $("chipQueue").style.display = "none";
-    }
-    function showApp(){
-      $("loginBox").style.display = "none";
-      $("appBox").style.display = "block";
-      $("btnLogout").style.display = "inline-flex";
-      $("chipUser").style.display = "inline-flex";
-      $("chipQueue").style.display = "inline-flex";
-      $("chipUser").textContent = `👤 ${current.displayName || current.email || 'Usuario'} · ${current.role || 'rol'}`;
-      updateQueueUI();
-    }
-
-    // Login
-    $("btnLogin").addEventListener("click", async ()=>{
-      const email = $("email").value.trim();
-      const pass = $("pass").value;
-      if(!email || !pass) return toast("Completa correo y clave", false);
-      try{
-        await signInWithEmailAndPassword(auth, email, pass);
-        toast("✅ Sesión iniciada", true);
-      }catch(e){
-        toast("❌ Login error: " + (e?.message || e), false);
-      }
-    });
-
-    $("btnLogout").addEventListener("click", async ()=>{
-      try{
-        await signOut(auth);
-        toast("Sesión cerrada", true);
-      }catch(e){
-        toast("Error al salir", false);
-      }
-    });
-
-    // Demo
-    $("btnDemo").addEventListener("click", ()=>{
-      current = { uid:null, email:"demo@rauli", role:"owner", displayName:"Demo (Dueño)" };
-      showApp();
-      renderHome();
-      applyCajaPermissions();
-      loadCajaToday();
-      toast("Modo demo activado", true);
-    });
-
-    // Probar nube
-    $("btnProbe").addEventListener("click", async ()=>{
-      try{
-        await addDoc(collection(db, "business", RAULI_BIZ, "events"), {
-          type:"test",
-          desc:"Prueba Firestore OK (RAULI Caja + IA)",
-          uid: current.uid || null,
-          role: current.role || null,
-          clientTime: Date.now(),
-          createdAt: serverTimestamp()
-        });
-        toast("✅ ¡Listo! Firestore escribió. Ve a Firebase > Datos.", true);
-      }catch(e){
-        toast("❌ Error Firestore: " + (e?.message || e), false);
-      }
-    });
-
-    // Home cards
-    function renderHome(){
-      const holder = $("homeCards");
-      holder.innerHTML = "";
-      const cards = [
-        { title:"💰 Caja", desc:"Apertura, movimientos, cierre, evidencias y alertas.", go:"caja" },
-        { title:"📦 Inventario", desc:"Entradas/salidas, mínimos, alertas (próximo paso).", go:"inv" },
-        { title:"🥖 Producción", desc:"Lotes, recetas, calidad, merma (próximo paso).", go:"prod" },
-      ];
-      cards.forEach(c=>{
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `<b>${c.title}</b><small>${c.desc}</small><span class="tag">Abrir</span>`;
-        div.onclick = ()=>{
-          // activar nav correspondiente
-          document.getElementById("navHome").classList.remove("active");
-          if(c.go==="caja"){ document.getElementById("navCaja").click(); }
-          if(c.go==="inv"){ document.getElementById("navInv").click(); }
-          if(c.go==="prod"){ document.getElementById("navProd").click(); }
-        };
-        holder.appendChild(div);
-      });
-    }
-
-    // ============ IA OFFLINE-FIRST + ONLINE (Function) ============
-    const IA_QUEUE_KEY = "rauli_ia_queue_v3";
-    function getQueue(){ try{ return JSON.parse(localStorage.getItem(IA_QUEUE_KEY) || "[]"); }catch(e){ return []; } }
-    function setQueue(q){ localStorage.setItem(IA_QUEUE_KEY, JSON.stringify(q)); updateQueueUI(); }
-    function updateQueueUI(){
-      const q = getQueue();
-      $("queueHint").textContent = `🤖 IA pendiente: ${q.length}`;
-      $("chipQueue").textContent = `🤖 IA pendiente: ${q.length}`;
-    }
-    updateQueueUI();
-
-    async function saveAssistantMessage(type, text, extra={}){
-      try{
-        await addDoc(subCol("assistantMessages"), {
-          type, text,
-          uid: current.uid || null,
-          role: current.role || null,
-          email: current.email || null,
-          clientTime: Date.now(),
-          createdAt: serverTimestamp(),
-          ...extra
-        });
-      }catch(e){}
-    }
-
-    async function callFunctionAI(text){
-      const fn = httpsCallable(functions, "rauliAssistant");
-      const res = await fn({ text, role: current.role || "operacion" });
-      return res?.data?.answer || "No hubo respuesta de IA.";
-    }
-
-    function localFallbackAI(text){
-      const t = (text||"").toLowerCase();
-      if(t.includes("caja") || t.includes("falt") || t.includes("efectivo")){
-        return "🔎 Caja: registra evidencia, verifica movimientos (ingresos/gastos/entregas) y ejecuta cierre comparando saldo teórico vs contado.";
-      }
-      if(t.includes("inventario") || t.includes("insumo") || t.includes("harina")){
-        return "📦 Inventario: registra entrada/salida, valida mínimos y crea alerta si baja del umbral. Adjunta evidencia (factura/foto).";
-      }
-      if(t.includes("venta") || t.includes("ventas")){
-        return "🧾 Ventas: registra total, método de pago y evidencia. Si reembolso, anota motivo y responsable.";
-      }
-      return "✅ Recibido. Quedó registrado. (IA completa se activará al conectar la Cloud Function).";
-    }
-
-    async function askIA(text, source="texto"){
-      if(!text || !text.trim()){
-        toast("Escribe un mensaje para el asistente", false);
-        return;
-      }
-
-      chatAdd(text, "user");
-      await saveAssistantMessage("user", text, { source });
-
-      if(!navigator.onLine){
-        const q = getQueue();
-        q.push({ id: crypto.randomUUID(), text, source, ts: Date.now(), role: current.role || "operacion" });
-        setQueue(q);
-        toast("🟥 Sin conexión: guardado en cola IA", true);
-        chatAdd("🟥 Sin conexión: guardé tu mensaje. Se enviará cuando vuelva la señal.", "ai");
-        return;
-      }
-
-      toast("🤖 Consultando IA…", true);
-      let answer = "";
-      try{
-        answer = await callFunctionAI(text);
-        ding();
-      }catch(e){
-        answer = localFallbackAI(text);
-      }
-      chatAdd(answer, "ai");
-      await saveAssistantMessage("ai", answer, { inResponseTo: text, source:"ai" });
-    }
-
-    async function flushQueue(){
-      const q = getQueue();
-      if(!q.length) return;
-      if(!navigator.onLine) return;
-
-      toast(`📡 Enviando cola IA (${q.length})…`, true);
-      const remaining = [];
-
-      for(const item of q){
-        try{
-          let answer = "";
-          try{ answer = await callFunctionAI(item.text); ding(); }
-          catch(e){ answer = localFallbackAI(item.text); }
-
-          await saveAssistantMessage("user", item.text, { fromQueue:true, source:item.source, ts:item.ts });
-          await saveAssistantMessage("ai", answer, { fromQueue:true, source:"ai", inResponseTo:item.id });
-
-          chatAdd(`(Desde cola) ${item.text}`, "user");
-          chatAdd(answer, "ai");
-        }catch(e){
-          remaining.push(item);
-        }
-      }
-
-      setQueue(remaining);
-      toast(remaining.length ? `⚠️ Quedaron ${remaining.length} en cola` : "✅ Cola IA enviada completa", !remaining.length);
-    }
-
-    $("btnSendIA").addEventListener("click", async ()=>{
-      const text = $("assistantInput").value.trim();
-      if(!text) return toast("Escribe un mensaje", false);
-      $("assistantInput").value = "";
-      await askIA(text, "texto");
-      updateQueueUI();
-    });
-
-    $("btnFlushIA").addEventListener("click", async ()=>{
-      await flushQueue();
-      updateQueueUI();
-    });
-
-    window.addEventListener("online", async ()=>{
-      await flushQueue().catch(()=>{});
-      updateQueueUI();
-    });
-
-    // Dictado
-    let recognizing = false;
-    let recog = null;
-    function setupVoice(){
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if(!SR) return null;
-      const r = new SR();
-      r.lang = "es-ES";
-      r.interimResults = true;
-      r.continuous = false;
-      return r;
-    }
-    recog = setupVoice();
-
-    $("btnVoice").addEventListener("click", ()=>{
-      if(!recog) return toast("Dictado no disponible en este navegador.", false);
-      if(recognizing){ recog.stop(); return; }
-      recognizing = true;
-      toast("🎙️ Dictando…", true);
-
-      let finalText = "";
-      recog.onresult = (ev)=>{
-        let interim = "";
-        for (let i = ev.resultIndex; i < ev.results.length; i++){
-          const tr = ev.results[i][0].transcript;
-          if(ev.results[i].isFinal) finalText += tr + " ";
-          else interim += tr;
-        }
-        $("assistantInput").value = (finalText + interim).trim();
-      };
-      recog.onerror = ()=>{ recognizing=false; toast("Error de voz. Intenta otra vez.", false); };
-      recog.onend = ()=>{ recognizing=false; toast("✅ Dictado listo. Puedes enviar.", true); };
-      recog.start();
-    });
-
-    // ============ CAJA (profesional) ============
-    function money(n){
-      const x = Number(n||0);
-      return "$" + x.toFixed(2);
-    }
-    function todayKey(){
-      const d = new Date();
-      const y = d.getFullYear();
-      const m = String(d.getMonth()+1).padStart(2,"0");
-      const dd = String(d.getDate()).padStart(2,"0");
-      return `${y}-${m}-${dd}`;
-    }
-    async function fileToBase64(file){
-      if(!file) return null;
-      return new Promise((resolve, reject)=>{
-        const r = new FileReader();
-        r.onload = ()=>resolve(String(r.result||""));
-        r.onerror = reject;
-        r.readAsDataURL(file);
-      });
-    }
-
-    function applyCajaPermissions(){
-      const has = FINANCE_ROLES.has(current.role || "");
-      $("cajaNoPerm").style.display = has ? "none" : "block";
-      $("cajaPermWrap").style.display = has ? "block" : "none";
-    }
-
-    async function saveCajaMovement({ tipo, monto, metodo, nota, evidenceBase64 }){
-      const day = todayKey();
-      const payload = {
-        type: tipo,
-        amount: Number(monto||0),
-        method: metodo || "efectivo",
-        note: (nota||"").trim(),
-        day,
-        uid: current.uid || null,
-        role: current.role || null,
-        email: current.email || null,
-        createdAt: serverTimestamp(),
-      };
-      if(evidenceBase64){
-        // PROTOTIPO: guardamos base64 dentro del documento (luego lo migramos a Storage).
-        payload.evidence = { kind:"base64", data: evidenceBase64.slice(0, 2_000_000) }; // límite de seguridad
-      }
-      await addDoc(subCol("caja"), payload);
-      await addDoc(subCol("auditoria"), {
-        type:"caja_movimiento",
-        cajaType: tipo,
-        amount: Number(monto||0),
-        day,
-        uid: current.uid || null,
-        role: current.role || null,
-        at: serverTimestamp()
-      });
-    }
-
-    function classifySums(items){
-      // Apertura = apertura
-      // Entradas = ingreso
-      // Salidas = gasto + reembolso + entrega_efectivo
-      let apertura = 0, entradas = 0, salidas = 0;
-      for(const it of items){
-        const t = it.type;
-        const a = Number(it.amount||0);
-        if(t === "apertura") apertura += a;
-        else if(t === "ingreso") entradas += a;
-        else if(t === "gasto" || t === "reembolso" || t === "entrega_efectivo") salidas += a;
-      }
-      const teorico = apertura + entradas - salidas;
-      return { apertura, entradas, salidas, teorico };
-    }
-
-    async function loadCajaToday(){
-      if(!FINANCE_ROLES.has(current.role || "")) return;
-
-      const day = todayKey();
-      const q = query(subCol("caja"), orderBy("createdAt","desc"), limit(80));
-      const snap = await getDocs(q);
-
-      // Filtrar por "day" del cliente (si hay offline timestamps, igual funciona)
-      const items = [];
-      snap.forEach(d=>{
-        const data = d.data();
-        if(data.day === day) items.push({ id:d.id, ...data });
-      });
-
-      // Render tabla
-      const tbody = $("cajaRows");
-      tbody.innerHTML = "";
-
-      items
-        .sort((a,b)=> (a.createdAt?.seconds||0) - (b.createdAt?.seconds||0))
-        .forEach(it=>{
-          const tr = document.createElement("tr");
-          const when = it.createdAt?.seconds ? new Date(it.createdAt.seconds*1000) : new Date();
-          const hh = String(when.getHours()).padStart(2,"0");
-          const mm = String(when.getMinutes()).padStart(2,"0");
-
-          const ev = it.evidence?.data ? `<span class="badge ok">Sí</span>` : `<span class="badge">—</span>`;
-          tr.innerHTML = `
-            <td>${day} ${hh}:${mm}</td>
-            <td><span class="badge">${it.type}</span></td>
-            <td>${money(it.amount)}</td>
-            <td>${(it.note||"")}</td>
-            <td>${ev}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-      // KPIs
-      const sums = classifySums(items);
-      $("kApertura").textContent = money(sums.apertura);
-      $("kEntradas").textContent = money(sums.entradas);
-      $("kSalidas").textContent = money(sums.salidas);
-      $("kTeorico").textContent = money(sums.teorico);
-
-      $("cajaAlert").textContent = `Hoy (${day}) · Saldo teórico calculado automáticamente.`;
-    }
-
-    $("btnCajaRefrescar").addEventListener("click", async ()=>{
-      await loadCajaToday();
-      toast("Caja actualizada", true);
-    });
-
-    $("btnCajaGuardar").addEventListener("click", async ()=>{
-      if(!FINANCE_ROLES.has(current.role || "")) return toast("Sin permiso para Caja", false);
-
-      const tipo = $("cajaTipo").value;
-      const monto = $("cajaMonto").value;
-      const metodo = $("cajaMetodo").value;
-      const nota = $("cajaNota").value;
-      const file = $("cajaEvi").files?.[0] || null;
-
-      if(!monto || Number(monto) === 0){
-        return toast("Monto inválido", false);
-      }
-
-      let base64 = null;
-      try{
-        if(file) base64 = await fileToBase64(file);
-      }catch(e){
-        // no bloquea
-      }
-
-      try{
-        await saveCajaMovement({ tipo, monto, metodo, nota, evidenceBase64: base64 });
-        $("cajaMonto").value = "";
-        $("cajaNota").value = "";
-        $("cajaEvi").value = "";
-        toast("✅ Movimiento guardado", true);
-        await loadCajaToday();
-      }catch(e){
-        toast("❌ Error guardando caja: " + (e?.message || e), false);
-      }
-    });
-
-    $("btnCajaCierreRapido").addEventListener("click", async ()=>{
-      if(!FINANCE_ROLES.has(current.role || "")) return toast("Sin permiso para Caja", false);
-
-      // Cierre rápido: te pide monto contado (prompt) y compara con teórico (de KPIs)
-      const teoricoTxt = $("kTeorico").textContent.replace("$","");
-      const teorico = Number(teoricoTxt || 0);
-
-      const contadoStr = prompt("Monto contado en caja (efectivo real):", teorico.toFixed(2));
-      if(contadoStr === null) return;
-
-      const contado = Number(contadoStr);
-      if(!isFinite(contado)) return toast("Monto contado inválido", false);
-
-      const diff = contado - teorico;
-      const abs = Math.abs(diff);
-
-      try{
-        await saveCajaMovement({
-          tipo: "cierre",
-          monto: contado,
-          metodo: "efectivo",
-          nota: `Cierre rápido. Teórico=${teorico.toFixed(2)} Contado=${contado.toFixed(2)} Diff=${diff.toFixed(2)}`,
-          evidenceBase64: null
-        });
-
-        if(abs >= 0.01){
-          const msg = diff < 0
-            ? `⚠️ FALTANTE: ${money(abs)} (Teórico ${money(teorico)} vs Contado ${money(contado)})`
-            : `⚠️ SOBRANTE: ${money(abs)} (Teórico ${money(teorico)} vs Contado ${money(contado)})`;
-
-          $("cajaAlert").innerHTML = `<span class="badge bad">${msg}</span>`;
-          toast(msg, false);
-
-          // Registrar alerta en auditoría
-          await addDoc(subCol("auditoria"), {
-            type:"alerta_caja",
-            day: todayKey(),
-            diff,
-            teorico,
-            contado,
-            uid: current.uid || null,
-            role: current.role || null,
-            at: serverTimestamp()
-          });
-        }else{
-          $("cajaAlert").innerHTML = `<span class="badge ok">✅ Cierre OK. Teórico y contado coinciden.</span>`;
-          toast("✅ Cierre OK", true);
-          ding();
-        }
-
-        await loadCajaToday();
-      }catch(e){
-        toast("❌ Error cierre: " + (e?.message || e), false);
-      }
-    });
-
-    // Auth state
-    onAuthStateChanged(auth, async (user)=>{
-      if(!user){
-        current = { uid:null, email:null, role:null, displayName:null };
-        showLogin();
-        return;
-      }
-
-      current.uid = user.uid;
-      current.email = user.email || null;
-
-      // Perfil en business/rauli/users/{uid}
-      try{
-        const snap = await getDoc(userProfileRef(user.uid));
-        if(snap.exists()){
-          const data = snap.data();
-          current.role = data.role || "owner";
-          current.displayName = data.name || user.email || "Usuario";
-        }else{
-          current.role = "owner";
-          current.displayName = user.email || "Usuario";
-        }
-      }catch(e){
-        current.role = "owner";
-        current.displayName = user.email || "Usuario";
-      }
-
-      showApp();
-      renderHome();
-      applyCajaPermissions();
-      await loadCajaToday();
-
-      // Auditoría login
-      try{
-        await addDoc(subCol("auditoria"), {
-          type:"login",
-          uid: current.uid,
-          email: current.email,
-          role: current.role,
-          at: serverTimestamp()
-        });
-      }catch(e){}
-
-      toast(`✅ Bienvenido: ${current.displayName}`, true);
-
-      // flush IA queue
-      if(navigator.onLine) flushQueue().catch(()=>{});
-      updateQueueUI();
-    });
-
-    // ====== Nota: si quieres inicializar docs base, lo hacemos en el próximo paso (inventario/ventas conectados). ======
-  </script>
 </body>
 </html>
