@@ -39,6 +39,17 @@ header{
 
 header h1{margin:0;font-size:22px}
 header span{font-size:13px;color:white}
+<!-- Botón Actualizar (forzar refresco) -->
+<button id="btnActualizar" style="
+  background: linear-gradient(90deg,#ffd43b,#ffb703);
+  border:none;
+  padding:10px 14px;
+  border-radius:14px;
+  font-weight:800;
+  cursor:pointer;
+">
+  Actualizar
+</button>
 
 main{
   padding:16px;
@@ -243,6 +254,22 @@ function show(id){
 
 <script type="module" src="rauli-core.js"></script>
 <script type="module" src="rauli-assistant.js"></script>
+<script>
+  const b = document.getElementById("btnActualizar");
+  if (b) {
+    b.addEventListener("click", async () => {
+      try {
+        // Si hay Service Worker, pide actualización y recarga
+        if ("serviceWorker" in navigator) {
+          const reg = await navigator.serviceWorker.getRegistration();
+          if (reg) await reg.update();
+        }
+      } catch (e) {}
+      // Recarga fuerte
+      location.reload(true);
+    });
+  }
+</script>
 
 </body>
 </html>
