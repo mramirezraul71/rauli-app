@@ -1,4 +1,4 @@
-const CACHE_NAME = "rauli-cache-v1";
+const CACHE_NAME = "rauli-cache-v2";
 const ASSETS = [
   "./",
   "./rauli.html",
@@ -20,3 +20,4 @@ self.addEventListener("fetch", (event) => {
     caches.match(event.request).then((cached) => cached || fetch(event.request).catch(() => caches.match("./rauli.html")))
   );
 });
+
