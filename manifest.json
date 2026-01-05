@@ -1,16 +1,17 @@
 {
-  "name": "RAULI Panadería & Dulcería",
+  "name": "RAULI - Panadería & Dulcería",
   "short_name": "RAULI",
-  "start_url": "./rauli.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f6f9ff",
-  "theme_color": "#1f4fa3",
+  "background_color": "#071425",
+  "theme_color": "#173B7A",
   "icons": [
     {
-      "src": "./icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
 }
+
