@@ -1,4 +1,4 @@
-// rauli-assistant.js (RAULI Assistant)
+﻿// rauli-assistant.js (RAULI Assistant)
 // Asistente personal digital + cola offline + saludos + alertas inteligentes (solo registra)
 // Autor del prototipo: ChatGPT
 
@@ -17,9 +17,9 @@ function setQueue(q){
 
 function nowGreeting(){
   const h = new Date().getHours();
-  if(h >= 6 && h <= 11) return "🌅 Buenos días. ¿Qué vamos a registrar hoy en RAULI?";
-  if(h >= 12 && h <= 18) return "☀️ Buenas tardes. ¿Cómo va la producción y las ventas?";
-  return "🌙 Buenas noches. ¿Deseas cerrar caja o revisar alertas?";
+  if(h >= 6 && h <= 11) return "ðŸŒ… Buenos dÃ­as. Â¿QuÃ© vamos a registrar hoy en RAULI?";
+  if(h >= 12 && h <= 18) return "â˜€ï¸ Buenas tardes. Â¿CÃ³mo va la producciÃ³n y las ventas?";
+  return "ðŸŒ™ Buenas noches. Â¿Deseas cerrar caja o revisar alertas?";
 }
 
 function setGreeting(){
@@ -50,29 +50,29 @@ function localBrain(text){
   // Respuesta local (offline o sin IA remota)
   const t = (text||"").toLowerCase();
 
-  // Detectores básicos para ayudar al usuario
+  // Detectores bÃ¡sicos para ayudar al usuario
   if(t.includes("venta")){
-    return "🧾 Para registrar una venta: entra a 'Ventas' y completa Producto, Unidades, Total y Método.\nLuego vuelve a 'Finanzas' para ver el impacto en Fondo, Nómina y Amortización.";
+    return "ðŸ§¾ Para registrar una venta: entra a 'Ventas' y completa Producto, Unidades, Total y MÃ©todo.\nLuego vuelve a 'Finanzas' para ver el impacto en Fondo, NÃ³mina y AmortizaciÃ³n.";
   }
-  if(t.includes("produccion") || t.includes("producción") || t.includes("lote") || t.includes("libras")){
-    return "🥖 Producción: entra a 'Producción', registra el producto y las libras elaboradas.\nEso alimenta el pago por libras y ayuda al costo de producto.";
+  if(t.includes("produccion") || t.includes("producciÃ³n") || t.includes("lote") || t.includes("libras")){
+    return "ðŸ¥– ProducciÃ³n: entra a 'ProducciÃ³n', registra el producto y las libras elaboradas.\nEso alimenta el pago por libras y ayuda al costo de producto.";
   }
   if(t.includes("fondo") || t.includes("circulante")){
-    return "💼 Fondo Operativo: se repone automáticamente con ventas.\nSolo Raúl ajusta el 'Fondo objetivo'. En Finanzas verás el balance y alertas si baja demasiado.";
+    return "ðŸ’¼ Fondo Operativo: se repone automÃ¡ticamente con ventas.\nSolo RaÃºl ajusta el 'Fondo objetivo'. En Finanzas verÃ¡s el balance y alertas si baja demasiado.";
   }
   if(t.includes("amort") || t.includes("invers")){
-    return "📉 Amortización: se calcula mensual (línea recta) con base en inversiones.\nAhora mismo ya ves 'Amortización mes' y 'Acumulado' en Finanzas.\nEn el siguiente paso agregamos la pantalla para registrar inversiones.";
+    return "ðŸ“‰ AmortizaciÃ³n: se calcula mensual (lÃ­nea recta) con base en inversiones.\nAhora mismo ya ves 'AmortizaciÃ³n mes' y 'Acumulado' en Finanzas.\nEn el siguiente paso agregamos la pantalla para registrar inversiones.";
   }
-  if(t.includes("buenos días") || t.includes("buenos dias") || t.includes("buenas noches")){
-    return "🤖 ¡Siempre! Yo te saludo y también puedo recordarte tareas: cierre de caja, inventario bajo, fondo bajo, etc.";
+  if(t.includes("buenos dÃ­as") || t.includes("buenos dias") || t.includes("buenas noches")){
+    return "ðŸ¤– Â¡Siempre! Yo te saludo y tambiÃ©n puedo recordarte tareas: cierre de caja, inventario bajo, fondo bajo, etc.";
   }
 
-  return "✅ Recibido. Puedo ayudarte a registrar ventas, producción, revisar fondo/nómina y alertas.\nDime: ¿qué pasó exactamente y hoy qué necesitas registrar?";
+  return "âœ… Recibido. Puedo ayudarte a registrar ventas, producciÃ³n, revisar fondo/nÃ³mina y alertas.\nDime: Â¿quÃ© pasÃ³ exactamente y hoy quÃ© necesitas registrar?";
 }
 
 function detectAndCreateAlerts(text){
-  // Aquí convertimos texto del usuario en alertas operativas si aplica.
-  // NO manda WhatsApp aún; solo registra en Firestore.
+  // AquÃ­ convertimos texto del usuario en alertas operativas si aplica.
+  // NO manda WhatsApp aÃºn; solo registra en Firestore.
   const core = CORE();
   if(!core?.createAlert) return;
 
@@ -83,16 +83,16 @@ function detectAndCreateAlerts(text){
     core.createAlert(
       "caja_faltante",
       "Posible faltante de caja",
-      "El usuario reportó un posible faltante de efectivo. Revisar cierre y evidencias.",
+      "El usuario reportÃ³ un posible faltante de efectivo. Revisar cierre y evidencias.",
       true
     );
   }
 
-  if(t.includes("inventario") && (t.includes("bajo") || t.includes("falta") || t.includes("mínimo") || t.includes("minimo"))){
+  if(t.includes("inventario") && (t.includes("bajo") || t.includes("falta") || t.includes("mÃ­nimo") || t.includes("minimo"))){
     core.createAlert(
       "inventario_bajo",
       "Inventario reportado bajo",
-      "El usuario reportó inventario bajo. Revisar insumos y movimientos.",
+      "El usuario reportÃ³ inventario bajo. Revisar insumos y movimientos.",
       true
     );
   }
@@ -101,7 +101,7 @@ function detectAndCreateAlerts(text){
     core.createAlert(
       "fondo_bajo",
       "Fondo operativo reportado bajo",
-      "El usuario reportó fondo bajo. Revisar objetivo vs balance y ventas.",
+      "El usuario reportÃ³ fondo bajo. Revisar objetivo vs balance y ventas.",
       true
     );
   }
@@ -110,7 +110,7 @@ function detectAndCreateAlerts(text){
     core.createAlert(
       "cierre_pendiente",
       "Cierre pendiente",
-      "El usuario reportó cierre pendiente. Recomendado cerrar caja y dejar evidencias.",
+      "El usuario reportÃ³ cierre pendiente. Recomendado cerrar caja y dejar evidencias.",
       true
     );
   }
@@ -121,7 +121,7 @@ async function processMessage(text, fromQueue=false){
   const online = navigator.onLine;
 
   // Mostrar en chat
-  addChat((fromQueue ? "📥 (Cola) " : "") + text, "user");
+  addChat((fromQueue ? "ðŸ“¥ (Cola) " : "") + text, "user");
 
   // Detectar alertas por texto
   detectAndCreateAlerts(text);
@@ -131,7 +131,7 @@ async function processMessage(text, fromQueue=false){
     const q = getQueue();
     q.push({ id: crypto.randomUUID(), text, ts: Date.now() });
     setQueue(q);
-    addChat("🟥 Sin señal. Guardé tu mensaje y lo procesaré cuando vuelva internet.", "ai");
+    addChat("ðŸŸ¥ Sin seÃ±al. GuardÃ© tu mensaje y lo procesarÃ© cuando vuelva internet.", "ai");
     return;
   }
 
@@ -155,7 +155,7 @@ async function flushQueue(){
     await processMessage(item.text, true);
   }
   setQueue([]);
-  addChat("✅ Cola procesada. Ya estás al día.", "ai");
+  addChat("âœ… Cola procesada. Ya estÃ¡s al dÃ­a.", "ai");
 }
 
 // UI events
@@ -177,4 +177,5 @@ window.addEventListener("focus", setGreeting);
 setInterval(setGreeting, 60_000);
 
 // Mensaje inicial
-addChat("🤖 RAULI listo. Puedo ayudarte con ventas, producción, fondo, nómina y amortización.", "ai");
+addChat("ðŸ¤– RAULI listo. Puedo ayudarte con ventas, producciÃ³n, fondo, nÃ³mina y amortizaciÃ³n.", "ai");
+

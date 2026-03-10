@@ -1,5 +1,5 @@
-{
-  "name": "RAULI - Panadería & Dulcería",
+﻿{
+  "name": "RAULI - Panaderia & Dulceria",
   "short_name": "RAULI",
   "start_url": "./",
   "scope": "./",
@@ -14,4 +14,3 @@
     }
   ]
 }
-

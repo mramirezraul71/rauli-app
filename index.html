@@ -1,17 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#173B7A" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
 
-  <title>RAULI · Panadería & Dulcería</title>
+  <title>RAULI - Panaderia & Dulceria</title>
 
-  <!-- PWA -->
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" href="./icon-512.png" />
-  <link rel="apple-touch-icon" href="./icon-512.png" />
+  <!--
+    NOTA DESKTOP (Electron / file://)
+    - NO usamos manifest ni service worker aqui, porque en file:// + Electron suele causar cache/confusion.
+    - Si publicas RAULI en web (https), puedes reactivar PWA aparte.
+  -->
 
   <style>
     :root{
@@ -30,7 +32,7 @@
       --radius:18px;
       --radius2:22px;
       --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      --base: 18px; /* letras más grandes */
+      --base: 18px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -43,7 +45,7 @@
       color:var(--text);
       font-size: var(--base);
       -webkit-font-smoothing:antialiased;
-      padding-bottom: 92px; /* espacio para nav */
+      padding-bottom: 92px;
     }
 
     .topbar{
@@ -57,19 +59,9 @@
       display:flex; align-items:center; justify-content:space-between; gap:12px;
       max-width: 980px; margin: 0 auto;
     }
-    .brand{
-      display:flex; flex-direction:column; line-height:1.1;
-    }
-    .brand .t1{
-      font-weight:900; letter-spacing:.3px;
-      color: var(--yellow);
-      font-size: 22px;
-    }
-    .brand .t2{
-      color: rgba(234,241,255,.85);
-      font-size: 14px;
-      margin-top: 4px;
-    }
+    .brand{display:flex; flex-direction:column; line-height:1.1;}
+    .brand .t1{font-weight:900; letter-spacing:.3px; color: var(--yellow); font-size: 22px;}
+    .brand .t2{color: rgba(234,241,255,.85); font-size: 14px; margin-top: 4px;}
 
     .chips{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end}
     .chip{
@@ -105,20 +97,10 @@
       box-shadow:none;
     }
 
-    .wrap{
-      max-width: 980px;
-      margin: 16px auto 40px;
-      padding: 0 14px;
-    }
+    .wrap{max-width: 980px; margin: 16px auto 40px; padding: 0 14px;}
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
-    }
-    @media (max-width: 900px){
-      .grid{grid-template-columns: 1fr;}
-    }
+    .grid{display:grid; grid-template-columns: 1.2fr .8fr; gap:14px;}
+    @media (max-width: 900px){ .grid{grid-template-columns: 1fr;} }
 
     .card{
       background: linear-gradient(180deg, rgba(14,35,66,.95), rgba(11,27,51,.95));
@@ -128,18 +110,8 @@
       padding: 14px;
     }
 
-    .title{
-      display:flex; align-items:center; gap:10px;
-      font-weight: 900;
-      color: var(--yellow);
-      font-size: 22px;
-      margin: 2px 0 10px;
-    }
-    .subtitle{
-      color: var(--muted);
-      margin: 0 0 10px;
-      font-size: 14px;
-    }
+    .title{display:flex; align-items:center; gap:10px; font-weight: 900; color: var(--yellow); font-size: 22px; margin: 2px 0 10px;}
+    .subtitle{color: var(--muted); margin: 0 0 10px; font-size: 14px;}
 
     .aiBox{
       display:flex; flex-direction:column; gap:10px;
@@ -162,112 +134,41 @@
     }
     textarea::placeholder{color: rgba(244,197,66,.55)}
     .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .messages{
-      display:flex; flex-direction:column; gap:10px;
-      margin-top: 8px;
-    }
-    .msg{
-      border-radius: 16px;
-      padding: 12px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.18);
-    }
+    .messages{display:flex; flex-direction:column; gap:10px; margin-top: 8px;}
+    .msg{border-radius: 16px; padding: 12px; border: 1px solid rgba(255,255,255,.08); background: rgba(0,0,0,.18);}
     .msg .who{font-weight:900; color: var(--yellow); margin-bottom:4px}
     .msg .txt{color: rgba(234,241,255,.92)}
     .hint{color: rgba(234,241,255,.72); font-size: 13px}
 
-    .roleGrid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:10px;
-      margin-top: 10px;
-    }
-    @media (max-width: 900px){
-      .roleGrid{grid-template-columns: 1fr;}
-    }
-    .role{
-      border-radius: 18px;
-      padding: 12px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(7,20,37,.35);
-    }
-    .role .rname{font-weight:900; color: var(--yellow); font-size:18px}
-    .role .rdesc{color: rgba(234,241,255,.80); font-size: 13px; margin-top: 4px}
-    .role .pill{
-      margin-top:10px;
-      display:inline-block;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(244,197,66,.35);
-      color: var(--yellow);
-      background: rgba(244,197,66,.08);
-      font-weight:800;
-      font-size: 13px;
-    }
+    .modalMask{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:9999;}
+    .modal{width:min(520px, calc(100vw - 24px)); border-radius: 22px; background: linear-gradient(180deg, rgba(14,35,66,.98), rgba(11,27,51,.98)); border:1px solid rgba(255,255,255,.10); box-shadow: var(--shadow); padding: 14px;}
+    .modal h3{margin:6px 0 6px; color: var(--yellow); font-weight: 900; font-size: 20px;}
+    .modal p{margin:0 0 10px; color: rgba(234,241,255,.80); font-size: 14px;}
+    .toast{position:fixed; left: 50%; transform: translateX(-50%); bottom: 96px; z-index: 9998; display:none; padding: 10px 12px; border-radius: 14px; border:1px solid rgba(255,255,255,.10); background: rgba(7,20,37,.92); box-shadow: var(--shadow); max-width: min(720px, calc(100vw - 24px));}
+    .toast.ok{border-color: rgba(44,224,122,.35)}
+    .toast.err{border-color: rgba(255,90,103,.35)}
+    .toast .t{font-weight: 900; color: var(--yellow); margin-bottom: 4px}
+    .toast .m{color: rgba(234,241,255,.88); font-size: 14px}
 
-    .sectionTabs{
-      display:flex; gap:8px; flex-wrap:wrap; margin: 10px 0 12px;
-    }
-    .tabBtn{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(7,20,37,.20);
-      color: var(--yellow);
-      font-weight:900;
-      padding: 8px 10px;
-      border-radius: 12px;
-      cursor:pointer;
-      font-size: 14px;
-    }
-    .tabBtn.active{
-      background: rgba(244,197,66,.18);
-      border-color: rgba(244,197,66,.42);
-    }
+    .sectionTabs{display:flex; gap:8px; flex-wrap:wrap; margin: 10px 0 12px;}
+    .tabBtn{border:1px solid rgba(255,255,255,.14); background: rgba(7,20,37,.20); color: var(--yellow); font-weight:900; padding: 8px 10px; border-radius: 12px; cursor:pointer; font-size: 14px;}
+    .tabBtn.active{background: rgba(244,197,66,.18); border-color: rgba(244,197,66,.42);}
 
-    .kv{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width: 520px){
-      .kv{grid-template-columns:1fr;}
-    }
-    .kbox{
-      background: rgba(0,0,0,.16);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 12px;
-    }
+    .kv{display:grid; grid-template-columns: 1fr 1fr; gap:10px;}
+    @media (max-width: 520px){ .kv{grid-template-columns:1fr;} }
+    .kbox{background: rgba(0,0,0,.16); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 12px;}
     .kbox .k{color: rgba(234,241,255,.75); font-size: 13px}
     .kbox .v{color: var(--yellow); font-weight: 950; font-size: 20px; margin-top: 4px}
 
-    .chart{
-      margin-top: 12px;
-      background: rgba(0,0,0,.14);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 12px;
-    }
+    .chart{margin-top: 12px; background: rgba(0,0,0,.14); border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 12px;}
     canvas{width:100%; height:220px; display:block}
 
-    /* Debug visible (porque F12 a veces no te muestra nada) */
-    .debug{
-      margin-top: 12px;
-      border-radius: 16px;
-      padding: 12px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.20);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: 12px;
-      color: rgba(234,241,255,.85);
-      max-height: 210px;
-      overflow:auto;
-    }
+    .debug{margin-top: 12px; border-radius: 16px; padding: 12px; border: 1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.20); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: rgba(234,241,255,.85); max-height: 210px; overflow:auto;}
     .debug .line{margin: 0 0 6px}
     .debug .ok{color: #8CFFB0}
     .debug .warn{color: #FFD27A}
     .debug .err{color: #FF9AA3}
 
-    /* Bottom nav visible (no queda bajo) */
     .bottomNav{
       position:fixed; left:0; right:0; bottom:0; z-index:60;
       background: linear-gradient(180deg, rgba(7,20,37,.55), rgba(7,20,37,.95));
@@ -275,43 +176,22 @@
       padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
       backdrop-filter: blur(12px);
     }
-    .navRow{
-      max-width: 980px;
-      margin: 0 auto;
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .navItem{
-      flex:1;
-      border-radius: 16px;
-      padding: 10px 8px;
-      text-align:center;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      color: var(--yellow);
-      font-weight: 950;
-      cursor:pointer;
-      user-select:none;
-      font-size: 14px;
-    }
-    .navItem.active{
-      background: rgba(244,197,66,.18);
-      border-color: rgba(244,197,66,.40);
-    }
+    .navRow{max-width: 980px; margin: 0 auto; display:flex; justify-content:space-between; gap:10px;}
+    .navItem{flex:1; border-radius: 16px; padding: 10px 8px; text-align:center; border: 1px solid rgba(255,255,255,.10); background: rgba(0,0,0,.18); color: var(--yellow); font-weight: 950; cursor:pointer; user-select:none; font-size: 14px;}
+    .navItem.active{background: rgba(244,197,66,.18); border-color: rgba(244,197,66,.40);}
 
-    footer{
-      text-align:center;
-      color: rgba(234,241,255,.55);
-      font-size: 12px;
-      margin-top: 20px;
-      padding: 10px 0 0;
+    footer{text-align:center; color: rgba(234,241,255,.55); font-size: 12px; margin-top: 20px; padding: 10px 0 0;}
+
+    input, select{
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(7,20,37,.35);
+      color:var(--yellow);
+      padding:10px;
+      font-weight:900;
     }
-    a.link{
-      color: var(--yellow);
-      text-decoration:none;
-      border-bottom:1px dashed rgba(244,197,66,.45);
-    }
+    select{padding-right:12px}
+
   </style>
 </head>
 
@@ -320,17 +200,23 @@
     <div class="toprow">
       <div class="brand">
         <div class="t1">RAULI</div>
-        <div class="t2">Panadería & Dulcería · Asistente Digital</div>
+        <div class="t2">Panaderia & Dulceria - Asistente Digital</div>
+        <div class="t3" style="font-size:12px;color:rgba(234,241,255,.72);margin-top:2px">Modo: <b id="modeTxt">Desktop/Local</b> - Version: <b id="verTxt">v5.2.0</b></div>
       </div>
 
       <div class="chips">
         <div class="chip" id="chipOnline"><span class="dot red" id="dotNet"></span><span id="netTxt">Offline</span></div>
-        <div class="chip" id="chipUser">👤 <span id="userTxt">sin sesión</span></div>
-        <button class="btn" id="btnUpdate">Actualizar</button>
-        <button class="btn secondary" id="btnInstall" style="display:none">Instalar</button>
+        <div class="chip" id="chipCur" title="Cambiar moneda">Moneda: <span id="curTxt">CUP</span></div>
+        <div class="chip" id="chipUser" title="Modo simple">Usuario: <span id="userTxt">Operacion</span></div>
+        <button class="btn secondary" id="btnExport">Exportar</button>
+        <button class="btn secondary" id="btnImport">Importar</button>
+        <button class="btn" id="btnUpdate">Refrescar UI</button>
       </div>
     </div>
   </header>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"><div class="t" id="toastT">RAULI</div><div class="m" id="toastM"></div></div>
 
   <main class="wrap">
     <!-- HOME -->
@@ -338,204 +224,115 @@
       <div class="grid">
         <div class="card">
           <div class="title">🤖 Asistente RAULI</div>
-          <p class="subtitle" id="greeting">Cargando saludo…</p>
+          <p class="subtitle" id="greeting">Cargando saludo...</p>
 
           <div class="aiBox">
-            <textarea id="aiInput" placeholder="Ej: Venta $120 efectivo / Harina bajo mínimo / Cierre de caja"></textarea>
+            <textarea id="aiInput" placeholder="Ej: Venta $120 efectivo / Harina bajo minimo / Cierre de caja"></textarea>
             <div class="row">
               <button class="btn" id="btnSendAI">Enviar al asistente</button>
-              <button class="btn secondary" id="btnSync">Sincronizar ahora</button>
-              <span class="hint" id="syncHint">Offline-first: guarda local y sincroniza cuando haya internet.</span>
+              <button class="btn secondary" id="btnVoice" title="Dictado por voz (si el navegador lo soporta)">🎙 Voz</button>
+              <button class="btn secondary" id="btnVoiceOn" title="Activar/desactivar lectura en voz alta">Audio: <span id="voiceTxt">OFF</span></button>
+              <button class="btn secondary" id="btnSync">Sincronizar</button>
+              <span class="hint" id="syncHint">Offline-first: guarda local y sincroniza con ATLAS cuando haya internet.</span>
+            </div>
+
+            <div class="row" style="margin-top:2px">
+              <button class="tabBtn" data-q="/venta">Venta</button>
+              <button class="tabBtn" data-q="/entrada">Entrada almacen</button>
+              <button class="tabBtn" data-q="/produccion">Salida produccion</button>
+              <button class="tabBtn" data-q="/alerta tipo=insumos nivel=alto texto=harina_baja">Alerta insumo</button>
+              <button class="tabBtn" data-q="/caja">Cuadre caja</button>
+              <button class="tabBtn" data-q="/inventario">Inventario</button>
             </div>
           </div>
 
           <div class="messages" id="msgList"></div>
-
           <div class="debug" id="debugBox" aria-live="polite"></div>
 
           <footer>
-            RAULI · Sistema offline-first · Autor del prototipo: <b>ChatGPT</b> · Versión: <b id="verTxt">v1.0</b>
+            RAULI - Offline-first - Version: <b id="verTxtFooter">v1.0.5.0</b>
           </footer>
         </div>
 
         <div class="card">
-          <div class="title">👥 Roles</div>
-          <p class="subtitle">Pantallas por rol (modo demo). Luego lo amarramos a permisos reales en Firebase.</p>
+          <div class="title">📦 Cadena primaria</div>
+          <p class="subtitle">Captura minima para alimentar la app completa de Panaderia en ATLAS.</p>
 
-          <div class="roleGrid">
-            <div class="role">
-              <div class="rname">Raúl (Propietario)</div>
-              <div class="rdesc">Control total: inversión, % de reparto, fondo operativo, auditoría.</div>
-              <span class="pill">Admin</span>
-            </div>
+          <div class="kv">
+            <div class="kbox"><div class="k">Productos</div><div class="v" id="homeInvCount">0</div></div>
+            <div class="kbox"><div class="k">Bajo minimo</div><div class="v" id="homeInvLow">0</div></div>
+            <div class="kbox"><div class="k">Pendientes</div><div class="v" id="homePendingCount">0</div></div>
+          </div>
 
-            <div class="role">
-              <div class="rname">Orlandito (Supervisor)</div>
-              <div class="rdesc">Calidad, insumos, autorizaciones operativas, alertas de mínimos.</div>
-              <span class="pill">Supervisión</span>
-            </div>
-
-            <div class="role">
-              <div class="rname">Bety (Contadora)</div>
-              <div class="rdesc">Caja, cierres, evidencias, nómina indirecta, reportes.</div>
-              <span class="pill">Finanzas</span>
+          <div style="margin-top:12px" class="kbox">
+            <div class="k">Acciones rapidas</div>
+            <div class="row" style="margin-top:10px">
+              <button class="btn secondary" id="btnGoInventory">Ver inventario</button>
+              <button class="btn secondary" id="btnQuickEntrada">Entrada almacen</button>
+              <button class="btn secondary" id="btnQuickSalida">Salida produccion</button>
+              <button class="btn secondary" id="btnQuickCaja">Cuadre caja</button>
             </div>
           </div>
 
           <div style="margin-top:12px" class="kbox">
-            <div class="k">Acciones rápidas</div>
-            <div class="row" style="margin-top:10px">
-              <button class="btn secondary" id="btnGoCharts">Análisis & Gráficos</button>
-              <button class="btn secondary" id="btnGoInvest">Pantalla Inversiones</button>
-            </div>
-            <p class="hint" style="margin-top:10px">
-              Nota: “Análisis & Gráficos” ahora abre un panel interno. Si quieres redirección a páginas externas, dímelas y las conecto.
-            </p>
+            <div class="k">Ultima actividad</div>
+            <p class="hint" id="homeInventoryNote">Catalogo local listo para capturar entradas, salidas y ventas.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FINANZAS -->
-    <section id="view-finanzas" style="display:none">
+    <!-- INVENTARIO -->
+    <section id="view-inventario" style="display:none">
       <div class="card">
-        <div class="title">💰 Finanzas</div>
-        <div class="sectionTabs">
-          <button class="tabBtn active" data-fin="resumen">Resumen</button>
-          <button class="tabBtn" data-fin="caja">Caja</button>
-          <button class="tabBtn" data-fin="nomina">Nómina</button>
-          <button class="tabBtn" data-fin="amort">Amortización</button>
-        </div>
+        <div class="title">📦 Inventario</div>
+        <p class="subtitle">Base operativa minima: entradas, salidas y minimos para surtir Panaderia Compact.</p>
 
-        <div id="fin-resumen">
-          <div class="kv">
-            <div class="kbox">
-              <div class="k">Fondo operativo (editable solo por Raúl)</div>
-              <div class="v" id="fondoTxt">$0</div>
-              <div class="row" style="margin-top:10px">
-                <input id="fondoInput" type="number" inputmode="decimal" placeholder="Ej: 500" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-                <button class="btn" id="btnSetFondo">Guardar</button>
-              </div>
-              <p class="hint">El fondo se repone con ventas. Luego amarramos permisos reales con Auth.</p>
-            </div>
-
-            <div class="kbox">
-              <div class="k">Reparto (editable solo por Raúl)</div>
-              <div class="v"><span id="pctAdminTxt">20</span>% / <span id="pctAmortTxt">30</span>% / <span id="pctLibreTxt">50</span>%</div>
-              <div class="row" style="margin-top:10px">
-                <input id="pctAdmin" type="number" min="0" max="100" value="20" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-                <input id="pctAmort" type="number" min="0" max="100" value="30" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-                <input id="pctLibre" type="number" min="0" max="100" value="50" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-                <button class="btn" id="btnSavePct">Guardar</button>
-              </div>
-              <p class="hint">Regla: deben sumar 100. Si no, lo ajusto automáticamente.</p>
-            </div>
-          </div>
-
-          <div class="chart">
-            <div class="subtitle" style="margin:0 0 8px">Ganancias estimadas por rol (según algoritmo)</div>
-            <div class="kv">
-              <div class="kbox"><div class="k">Administrador (20%)</div><div class="v" id="gAdmin">$0</div></div>
-              <div class="kbox"><div class="k">Amortización (30%)</div><div class="v" id="gAmort">$0</div></div>
-              <div class="kbox"><div class="k">Libre (50%)</div><div class="v" id="gLibre">$0</div></div>
-              <div class="kbox"><div class="k">Contadora (editable)</div><div class="v" id="gBety">$0</div></div>
-              <div class="kbox"><div class="k">Orlandito (editable)</div><div class="v" id="gOrlan">$0</div></div>
-              <div class="kbox"><div class="k">Operarios (por libras)</div><div class="v" id="gOps">$0</div></div>
-              <div class="kbox"><div class="k">Ventas (por unidades)</div><div class="v" id="gSales">$0</div></div>
-            </div>
-            <div class="row" style="margin-top:10px">
-              <input id="profitInput" type="number" inputmode="decimal" placeholder="Ganancia del día (Ej: 1000)" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <button class="btn" id="btnCalc">Calcular</button>
-            </div>
-            <p class="hint">Esto es el “motor” base. Luego conectamos producción/ventas reales para que se calcule automático.</p>
-          </div>
-        </div>
-
-        <div id="fin-caja" style="display:none">
-          <div class="kbox">
-            <div class="k">Caja</div>
-            <div class="v">Pendiente (lo dejamos para el módulo de caja)</div>
-            <p class="hint">Aquí irá cierre de caja, evidencias, efectivo, transferencias, etc.</p>
-          </div>
-        </div>
-
-        <div id="fin-nomina" style="display:none">
-          <div class="kbox">
-            <div class="k">Parámetros editables</div>
-            <div class="row" style="margin-top:10px">
-              <label style="font-weight:900;color:var(--yellow)">Contadora %</label>
-              <input id="pctBety" type="number" min="0" max="100" value="5" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <label style="font-weight:900;color:var(--yellow)">Orlandito %</label>
-              <input id="pctOrlan" type="number" min="0" max="100" value="5" style="width:90px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <button class="btn" id="btnSaveNom">Guardar</button>
-            </div>
-
-            <div class="row" style="margin-top:10px">
-              <label style="font-weight:900;color:var(--yellow)">Operarios $/lb</label>
-              <input id="opsRate" type="number" inputmode="decimal" value="1.50" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <label style="font-weight:900;color:var(--yellow)">Libras</label>
-              <input id="opsLbs" type="number" inputmode="decimal" value="0" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <button class="btn secondary" id="btnCalcOps">Calcular operarios</button>
-            </div>
-
-            <div class="row" style="margin-top:10px">
-              <label style="font-weight:900;color:var(--yellow)">Ventas $/unidad</label>
-              <input id="salesRate" type="number" inputmode="decimal" value="0.25" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <label style="font-weight:900;color:var(--yellow)">Unidades</label>
-              <input id="salesUnits" type="number" inputmode="decimal" value="0" style="width:110px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <button class="btn secondary" id="btnCalcSales">Calcular ventas</button>
-            </div>
-
-            <p class="hint" style="margin-top:10px">
-              Luego estos parámetros pasan a Firestore y se controlan por rol (solo tú editas %).
-            </p>
-          </div>
-        </div>
-
-        <div id="fin-amort" style="display:none">
-          <div class="kbox">
-            <div class="k">Amortización de inversión</div>
-            <div class="row" style="margin-top:10px">
-              <input id="invTotal" type="number" inputmode="decimal" placeholder="Inversión total (Ej: 20000)" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
-              <button class="btn" id="btnSetInv">Guardar</button>
-            </div>
-            <div class="kv" style="margin-top:10px">
-              <div class="kbox"><div class="k">Inversión total</div><div class="v" id="invTotalTxt">$0</div></div>
-              <div class="kbox"><div class="k">Pagado (acumulado)</div><div class="v" id="invPaidTxt">$0</div></div>
-              <div class="kbox"><div class="k">Restante</div><div class="v" id="invLeftTxt">$0</div></div>
-              <div class="kbox"><div class="k">% completado</div><div class="v" id="invPctTxt">0%</div></div>
-            </div>
-
-            <div class="chart">
-              <div class="subtitle" style="margin:0 0 8px">Progreso (simulado con tus aportes de amortización)</div>
-              <canvas id="amortChart" width="900" height="260"></canvas>
-              <p class="hint">Cada vez que calculas ganancias del día, si hay % de amortización, se suma aquí automáticamente.</p>
-            </div>
-          </div>
+        <div class="kv">
+          <div class="kbox"><div class="k">Productos activos</div><div class="v" id="invProductsCount">0</div></div>
+          <div class="kbox"><div class="k">Bajo minimo</div><div class="v" id="invLowCount">0</div></div>
+          <div class="kbox"><div class="k">Pendientes</div><div class="v" id="invPendingCount">0</div></div>
+          <div class="kbox"><div class="k">Ultima sync</div><div class="v" id="invLastSync">Sin sync</div></div>
         </div>
 
         <div class="row" style="margin-top:12px">
-          <button class="btn secondary" id="btnBackHome1">⬅ Volver</button>
+          <button class="btn" id="btnInvRefresh">Actualizar catalogo</button>
+          <button class="btn secondary" id="btnInvEntry">Entrada almacen</button>
+          <button class="btn secondary" id="btnInvOutput">Salida produccion</button>
+          <button class="btn secondary" id="btnInvSale">Registrar venta</button>
+        </div>
+
+        <div class="chart" style="margin-top:12px">
+          <div class="subtitle" style="margin:0 0 8px">Catalogo operativo</div>
+          <div id="inventoryList" class="messages"></div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn secondary" id="btnBackHome1">Volver</button>
         </div>
       </div>
     </section>
 
-    <!-- PRODUCCIÓN -->
+    <!-- PRODUCCION -->
     <section id="view-produccion" style="display:none">
       <div class="card">
-        <div class="title">🏭 Producción</div>
-        <p class="subtitle">Panel base (lo conectamos a inventario/insumos luego).</p>
+        <div class="title">Produccion</div>
+        <p class="subtitle">Salida minima de insumos hacia produccion.</p>
         <div class="kbox">
-          <div class="k">Accesos</div>
+          <div class="k">Registrar salida</div>
           <div class="row" style="margin-top:10px">
-            <button class="btn secondary" id="btnProdMin">Alertas de mínimos</button>
-            <button class="btn secondary" id="btnProdInsum">Salida de insumos</button>
-            <button class="btn secondary" id="btnProdBatch">Lote del día</button>
+            <input id="prodProducto" placeholder="Producto o lote" style="flex:1;">
+            <input id="prodCantidad" type="number" inputmode="decimal" placeholder="Cantidad" style="width:120px;">
+            <input id="prodUnidad" placeholder="Unidad" value="unidad" style="width:120px;">
+            <button class="btn" id="btnProdSave">Guardar</button>
           </div>
-          <p class="hint">De momento deja registro en local y lo sube cuando hay internet.</p>
+          <div class="row" style="margin-top:10px">
+            <button class="btn secondary" id="btnProdMin">Alertas de minimos</button>
+            <button class="btn secondary" id="btnProdGuide">Usar asistente</button>
+          </div>
         </div>
         <div class="row" style="margin-top:12px">
-          <button class="btn secondary" id="btnBackHome2">⬅ Volver</button>
+          <button class="btn secondary" id="btnBackHome2">Volver</button>
         </div>
       </div>
     </section>
@@ -543,18 +340,66 @@
     <!-- VENTAS -->
     <section id="view-ventas" style="display:none">
       <div class="card">
-        <div class="title">🧾 Ventas</div>
-        <p class="subtitle">Panel base (luego conectamos unidades, comisiones, y reposición del fondo).</p>
+        <div class="title">Ventas</div>
+        <p class="subtitle">Captura minima para surtir la contabilidad operativa.</p>
         <div class="kbox">
-          <div class="k">Registro rápido</div>
+          <div class="k">Registro rapido</div>
           <div class="row" style="margin-top:10px">
-            <input id="ventaMonto" type="number" inputmode="decimal" placeholder="Monto (Ej: 120)" style="flex:1;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(7,20,37,.35);color:var(--yellow);padding:10px;font-weight:900">
+            <input id="ventaProducto" placeholder="Producto" style="flex:1;">
+            <input id="ventaCantidad" type="number" inputmode="decimal" placeholder="Cant." style="width:110px;">
+            <input id="ventaPrecio" type="number" inputmode="decimal" placeholder="Precio" style="width:110px;">
+            <select id="ventaMetodo" style="width:150px;">
+              <option value="efectivo">Efectivo</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="tarjeta">Tarjeta</option>
+            </select>
             <button class="btn" id="btnVenta">Guardar venta</button>
           </div>
-          <p class="hint">Esto aumentará el “flujo” y luego alimenta amortización/nomina/fondo.</p>
         </div>
         <div class="row" style="margin-top:12px">
-          <button class="btn secondary" id="btnBackHome3">⬅ Volver</button>
+          <button class="btn secondary" id="btnVentaGuide">Usar asistente</button>
+          <button class="btn secondary" id="btnBackHome3">Volver</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALERTAS -->
+    <section id="view-alertas" style="display:none">
+      <div class="card">
+        <div class="title">Alertas</div>
+        <p class="subtitle">Centro de alertas (offline-first).</p>
+
+        <div class="kbox">
+          <div class="k">Crear alerta rapida</div>
+          <div class="row" style="margin-top:10px">
+            <select id="alertTipo" style="flex:1;">
+              <option value="insumos">Insumos / Minimos</option>
+              <option value="caja">Caja / Cierre</option>
+              <option value="produccion">Produccion</option>
+              <option value="ventas">Ventas</option>
+              <option value="general">General</option>
+            </select>
+            <select id="alertNivel" style="width:160px;">
+              <option value="bajo">Bajo</option>
+              <option value="medio" selected>Medio</option>
+              <option value="alto">Alto</option>
+              <option value="critico">Critico</option>
+            </select>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <input id="alertTexto" placeholder="Descripcion (Ej: Harina 0 / Falta efectivo)" style="flex:1;">
+            <button class="btn" id="btnAddAlert">Crear</button>
+          </div>
+          <p class="hint">Se guarda local. En version web se enviara a Telegram/WhatsApp/email.</p>
+        </div>
+
+        <div class="chart" style="margin-top:12px">
+          <div class="subtitle" style="margin:0 0 8px">Alertas activas</div>
+          <div id="alertsList" class="messages"></div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn secondary" id="btnBackHome4">Volver</button>
         </div>
       </div>
     </section>
@@ -564,57 +409,123 @@
   <nav class="bottomNav">
     <div class="navRow">
       <div class="navItem active" data-view="home">Inicio</div>
-      <div class="navItem" data-view="finanzas">Finanzas</div>
-      <div class="navItem" data-view="produccion">Producción</div>
+      <div class="navItem" data-view="inventario">Inventario</div>
+      <div class="navItem" data-view="produccion">Produccion</div>
       <div class="navItem" data-view="ventas">Ventas</div>
+      <div class="navItem" data-view="alertas">Alertas</div>
     </div>
   </nav>
 
+  <input id="fileImport" type="file" accept="application/json" style="display:none" />
+
   <script type="module">
-    /********************
-     * 0) Config & Estado
-     ********************/
+    const LOCAL_API_BASES = ["http://127.0.0.1:3001", "http://localhost:3001"];
+    const REMOTE_API_BASES = ["https://panaderia-api.rauliatlasapp.com", "https://panaderia.rauliatlasapp.com"];
+    const isLocalPreview = /^(localhost|127\.0\.0\.1)$/i.test(location.hostname) && String(location.port || '') !== '3001';
+
     const APP = {
-      VERSION: "v1.0.0",
-      STORE_KEY: "rauli_store_v1",
-      QUEUE_KEY: "rauli_queue_v1",
-      DEBUG_KEY: "rauli_debug_v1",
+      VERSION: "v1.0.5.0",
+      STORE_KEY: "rauli_store_v2",
+      QUEUE_KEY: "rauli_queue_v2",
+      DEVICE_KEY: "rauli_device_id_v1",
+      API_BASES: Array.from(new Set([
+        window.RAULI_API_BASE,
+        window.ATLAS_API_BASE,
+        ...(isLocalPreview ? LOCAL_API_BASES : []),
+        /^https?:/i.test(location.origin) ? location.origin : "",
+        ...REMOTE_API_BASES,
+        ...(!isLocalPreview ? LOCAL_API_BASES : [])
+      ].filter(Boolean).map((v) => String(v).replace(/\/+$/, ""))))
     };
+
+    window.__APP_VERSION__ = APP.VERSION;
 
     const $ = (id) => document.getElementById(id);
 
+    const IS_ELECTRON = !!(navigator.userAgent && navigator.userAgent.toLowerCase().includes('electron'));
+    const IS_FILE = location.protocol === 'file:';
+    $("modeTxt").textContent = (IS_ELECTRON || IS_FILE) ? "Desktop/Local" : "Web";
+
+    // ===== estado =====
     const state = loadStore() || {
-      fondo: 0,
-      pct: { admin: 20, amort: 30, libre: 50 },
-      pctNom: { bety: 5, orlan: 5 },
-      ops: { rate: 1.50, lbs: 0 },
-      sales: { rate: 0.25, units: 0 },
-      inv: { total: 0, paid: 0, history: [] }, // history: [{t, paid}]
-      profitLast: 0,
-      userEmail: "raul@rauli.app",
+      userEmail: "",
+      userName: "Operacion",
+      userRole: "base",
+      currency: "CUP",
+      fxUsdToCup: 360,
+      voice: { enabled: false, autoSend: true },
+      alerts: [],
       messages: [],
+      assistant: { pending: null },
+      sync: { lastAt: null, lastResult: null, pending: 0 },
+      inventory: { items: [], lastLoadedAt: null, lowCount: 0 },
     };
 
     $("verTxt").textContent = APP.VERSION;
-    $("userTxt").textContent = state.userEmail || "sin sesión";
+    $("verTxtFooter").textContent = APP.VERSION;
 
-    function money(n){
-      const x = Number(n || 0);
-      return x.toLocaleString("en-US",{style:"currency",currency:"USD"});
+    // ===== helpers =====
+    function saveStore(){ localStorage.setItem(APP.STORE_KEY, JSON.stringify(state)); }
+    function loadStore(){ try { return JSON.parse(localStorage.getItem(APP.STORE_KEY)); } catch { return null; } }
+    function loadQueue(){ try { return JSON.parse(localStorage.getItem(APP.QUEUE_KEY)) || []; } catch { return []; } }
+    function saveQueue(q){ localStorage.setItem(APP.QUEUE_KEY, JSON.stringify(q)); }
+    function getDeviceId(){
+      let current = localStorage.getItem(APP.DEVICE_KEY);
+      if(!current){
+        current = `rauli-lite-${cryptoRandomId()}`;
+        localStorage.setItem(APP.DEVICE_KEY, current);
+      }
+      return current;
+    }
+    function fixMojibake(text){
+      const raw = String(text ?? "");
+      const trimmed = raw.trim();
+      if(!trimmed) return raw;
+      const looksBroken = /(?:Ãƒ.|Ã‚.|Ã¢.|Ã°Å¸|Ã¯Â¸|â€¦|Ã¢Å“|Ã¢Â¬)/.test(raw);
+      if(!looksBroken) return raw;
+      const attempts = [
+        () => decodeURIComponent(escape(raw)),
+        () => decodeURIComponent(escape(decodeURIComponent(escape(raw))))
+      ];
+      for(const attempt of attempts){
+        try{
+          const next = attempt();
+          if(next && !/(?:Ãƒ.|Ã‚.|Ã¢.|Ã°Å¸|Ã¯Â¸|â€¦|Ã¢Å“|Ã¢Â¬)/.test(next)) return next;
+        }catch{}
+      }
+      return raw;
+    }
+    function normalizeMoney(value, fallback = 0){
+      const num = Number(String(value ?? "").replace(",", ".").replace(/[^0-9.-]/g, ""));
+      return Number.isFinite(num) ? num : fallback;
+    }
+    async function fetchJsonAny(path, options = {}){
+      const errors = [];
+      for(const base of APP.API_BASES){
+        try{
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 12000);
+          const res = await fetch(`${base}${path}`, {
+            ...options,
+            headers: {
+              "Content-Type": "application/json",
+              ...(options.headers || {})
+            },
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+          const data = await res.json().catch(() => ({}));
+          if(res.ok) return { ok: true, base, data };
+          errors.push({ base, error: data?.error || `http_${res.status}` });
+        }catch(err){
+          errors.push({ base, error: err?.name === "AbortError" ? "timeout" : (err?.message || "network_error") });
+        }
+      }
+      return { ok: false, errors };
     }
 
-    function saveStore(){
-      localStorage.setItem(APP.STORE_KEY, JSON.stringify(state));
-    }
-    function loadStore(){
-      try { return JSON.parse(localStorage.getItem(APP.STORE_KEY)); } catch { return null; }
-    }
-
-    function loadQueue(){
-      try { return JSON.parse(localStorage.getItem(APP.QUEUE_KEY)) || []; } catch { return []; }
-    }
-    function saveQueue(q){
-      localStorage.setItem(APP.QUEUE_KEY, JSON.stringify(q));
+    function escapeHtml(s){
+      return fixMojibake(String(s)).replace(/[&<>"']/g, (c)=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
     }
 
     function logLine(kind, text){
@@ -623,201 +534,20 @@
       line.className = "line " + (kind || "");
       line.textContent = "[" + new Date().toLocaleTimeString() + "] " + text;
       box.prepend(line);
-      // limita
       const lines = box.querySelectorAll(".line");
-      if(lines.length > 60) lines[lines.length-1].remove();
+      if(lines.length > 80) lines[lines.length-1].remove();
     }
 
-    /************************
-     * 1) Sonido (sin archivo)
-     ************************/
-    function beep(){
-      try{
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioContext();
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = "sine";
-        o.frequency.value = 880;
-        g.gain.value = 0.0001;
-        o.connect(g); g.connect(ctx.destination);
-        o.start();
-        g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
-        o.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.16);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.22);
-        o.stop(ctx.currentTime + 0.24);
-        setTimeout(()=>ctx.close(), 300);
-      }catch(e){
-        // no pasa nada si el navegador bloquea audio
-      }
+    function toast(kind, title, msg){
+      const box = $("toast");
+      box.classList.remove("ok","err");
+      if(kind) box.classList.add(kind);
+      $("toastT").textContent = title || "RAULI";
+      $("toastM").textContent = msg || "";
+      box.style.display = "block";
+      clearTimeout(window.__rauli_toast);
+      window.__rauli_toast = setTimeout(()=> box.style.display = "none", 4200);
     }
-
-    /*******************************
-     * 2) Saludo (buenos días/noches)
-     *******************************/
-    function setGreeting(){
-      const h = new Date().getHours();
-      let msg = "Hola. ¿Qué deseas registrar hoy?";
-      if(h >= 5 && h < 12) msg = "☀️ Buenos días. ¿Quieres revisar ventas, producción o fondo?";
-      else if(h >= 12 && h < 19) msg = "🌤️ Buenas tardes. ¿Deseas registrar algo o ver reportes?";
-      else msg = "🌙 Buenas noches. ¿Deseas cerrar caja o revisar alertas?";
-      $("greeting").textContent = msg;
-    }
-    setGreeting();
-
-    /********************
-     * 3) Navegación UI
-     ********************/
-    const views = {
-      home: $("view-home"),
-      finanzas: $("view-finanzas"),
-      produccion: $("view-produccion"),
-      ventas: $("view-ventas"),
-    };
-
-    function showView(name){
-      Object.entries(views).forEach(([k, el]) => el.style.display = (k===name) ? "" : "none");
-      document.querySelectorAll(".navItem").forEach(x=>{
-        x.classList.toggle("active", x.dataset.view===name);
-      });
-      window.scrollTo({top:0, behavior:"smooth"});
-    }
-
-    document.querySelectorAll(".navItem").forEach(btn=>{
-      btn.addEventListener("click", ()=> showView(btn.dataset.view));
-    });
-
-    $("btnBackHome1").onclick = ()=>showView("home");
-    $("btnBackHome2").onclick = ()=>showView("home");
-    $("btnBackHome3").onclick = ()=>showView("home");
-    $("btnGoCharts").onclick = ()=> showView("finanzas");
-    $("btnGoInvest").onclick = ()=>{
-      showView("finanzas");
-      // activa tab amort
-      document.querySelectorAll("[data-fin]").forEach(b=>b.classList.remove("active"));
-      document.querySelector('[data-fin="amort"]').classList.add("active");
-      setFinTab("amort");
-    };
-
-    function setFinTab(name){
-      $("fin-resumen").style.display = name==="resumen" ? "" : "none";
-      $("fin-caja").style.display = name==="caja" ? "" : "none";
-      $("fin-nomina").style.display = name==="nomina" ? "" : "none";
-      $("fin-amort").style.display = name==="amort" ? "" : "none";
-    }
-    document.querySelectorAll("[data-fin]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.querySelectorAll("[data-fin]").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        setFinTab(btn.dataset.fin);
-      });
-    });
-
-    /***************************
-     * 4) Estado Online/Offline
-     ***************************/
-    function setNetUI(){
-      const on = navigator.onLine;
-      $("dotNet").className = "dot " + (on ? "green" : "red");
-      $("netTxt").textContent = on ? "Online" : "Offline";
-      if(on) logLine("ok", "Conexión detectada (online).");
-      else logLine("warn", "Sin conexión (offline). Guardando local.");
-    }
-    window.addEventListener("online", ()=>{ setNetUI(); beep(); syncQueue(); });
-    window.addEventListener("offline", ()=>{ setNetUI(); beep(); });
-    setNetUI();
-
-    /**********************
-     * 5) Mensajes del bot
-     **********************/
-    function pushMsg(who, txt){
-      state.messages.unshift({ who, txt, t: Date.now() });
-      if(state.messages.length > 20) state.messages.pop();
-      saveStore();
-      renderMsgs();
-    }
-    function renderMsgs(){
-      const list = $("msgList");
-      list.innerHTML = "";
-      state.messages.forEach(m=>{
-        const div = document.createElement("div");
-        div.className = "msg";
-        div.innerHTML = `<div class="who">${m.who}</div><div class="txt">${escapeHtml(m.txt)}</div>`;
-        list.appendChild(div);
-      });
-    }
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
-    }
-
-    if(state.messages.length===0){
-      pushMsg("🤖 RAULI", "RAULI listo. Puedo ayudarte con ventas, producción, fondo, nómina y amortización.");
-    } else {
-      renderMsgs();
-    }
-
-    /*******************************
-     * 6) IA Offline-first (stub útil)
-     * - Offline: responde con reglas locales
-     * - Online: deja preparado el “hook” para IA real
-     *******************************/
-    function offlineAI(text){
-      const t = (text||"").toLowerCase();
-      if(t.includes("buenos") || t.includes("buenas")){
-        return "¡Hola! Estoy activo. ¿Deseas registrar algo hoy?";
-      }
-      if(t.includes("venta")){
-        return "Entendido. Si me das monto y método (efectivo/transferencia), lo registro y luego sincronizo.";
-      }
-      if(t.includes("caja") || t.includes("cierre")){
-        return "Puedo ayudarte a preparar el cierre: total ventas, efectivo, transferencias y evidencias. (Módulo caja pendiente).";
-      }
-      if(t.includes("harina") || t.includes("insumo") || t.includes("mínimo") || t.includes("minimo")){
-        return "Alerta de insumos: lo guardo como 'mínimo' y lo sincronizo. ¿Cuál insumo y cantidad actual?";
-      }
-      if(t.includes("amort") || t.includes("invers")){
-        return "Para amortización: ve a Finanzas → Amortización y define inversión total. Luego cada ganancia del día suma el % de amortización.";
-      }
-      return "Recibido. Dime si esto es: venta / producción / insumos / nómina / inversión, y lo organizo.";
-    }
-
-    // HOOK para IA real (se activa online)
-    // Aquí luego conectamos Firebase Functions + modelo (Gemini/OpenAI) o tu API.
-    async function onlineAI(text){
-      // Por ahora: usa la misma respuesta offline para no romper.
-      // (Dejamos la estructura lista para el paso de IA real).
-      return offlineAI(text) + " (IA online: preparada para conectar más adelante)";
-    }
-
-    $("btnSendAI").onclick = async ()=>{
-      const text = $("aiInput").value.trim();
-      if(!text) return;
-
-      pushMsg("🧑 Tú", text);
-      $("aiInput").value = "";
-
-      // Guardar como evento (offline-first)
-      enqueueEvent({ type:"assistant_input", text, createdAt: Date.now() });
-
-      // Responder
-      let reply = "";
-      if(navigator.onLine) reply = await onlineAI(text);
-      else reply = offlineAI(text);
-
-      pushMsg("🤖 RAULI", reply);
-    };
-
-    /**************************
-     * 7) Cola offline y Sync
-     **************************/
-    function enqueueEvent(evt){
-      const q = loadQueue();
-      q.push({ ...evt, id: cryptoRandomId() });
-      saveQueue(q);
-      logLine("warn", `Evento guardado local (#${q.length}).`);
-    }
-
-    $("btnSync").onclick = ()=> syncQueue();
 
     function cryptoRandomId(){
       try{
@@ -829,416 +559,919 @@
       }
     }
 
-    /*************************************
-     * 8) Firebase (Firestore + Auth demo)
-     * - SIN build, usando CDN modular.
-     *************************************/
-    // Nota: esta config es pública por diseño (web). La seguridad real se hace con Rules.
-    const firebaseConfig = {
-      apiKey: "AIzaSyCGPDlRAIKsrI6EhE3Tb2-1sYJ1VDaH2jw",
-      authDomain: "rauli-e7fdb.firebaseapp.com",
-      projectId: "rauli-e7fdb",
-      storageBucket: "rauli-e7fdb.firebasestorage.app",
-      messagingSenderId: "406292569158",
-      appId: "1:406292569158:web:c26f46de60d31827317e47",
-      measurementId: "G-PVC6X0TTTL"
-    };
-
-    // Carga Firebase modular desde CDN
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-    let fbApp=null, db=null;
-    try{
-      fbApp = initializeApp(firebaseConfig);
-      db = getFirestore(fbApp);
-      logLine("ok", "Firebase inicializado (Firestore listo).");
-    }catch(e){
-      logLine("err", "Firebase error: " + (e?.message || e));
-    }
-
-    async function syncQueue(){
+    function enqueueEvent(evt){
       const q = loadQueue();
-      if(q.length === 0){
-        logLine("ok","No hay eventos pendientes.");
-        return;
-      }
-      if(!navigator.onLine){
-        logLine("warn","No hay internet. No puedo sincronizar ahora.");
-        return;
-      }
-      if(!db){
-        logLine("err","Firestore no está listo. Revisa Firebase config / red.");
-        return;
-      }
-
-      logLine("ok", `Sincronizando ${q.length} eventos…`);
-      const kept = [];
-      for(const evt of q){
-        try{
-          // guardamos en: business/rauli/events
-          await addDoc(collection(db, "business", "rauli", "events"), {
-            ...evt,
-            syncedAt: serverTimestamp(),
-            clientTime: evt.createdAt || Date.now(),
-          });
-        }catch(e){
-          kept.push(evt);
-          logLine("err", "Sync falló para un evento: " + (e?.message || e));
-        }
-      }
-      saveQueue(kept);
-      if(kept.length===0){
-        logLine("ok","✅ Sincronización completa. Cola vacía.");
-        beep();
-      }else{
-        logLine("warn", `Quedaron ${kept.length} eventos pendientes.`);
-      }
+      q.push({ ...evt, id: cryptoRandomId() });
+      saveQueue(q);
+      state.sync.pending = q.length;
+      logLine("warn", `Evento guardado local (#${q.length}).`);
     }
 
-    /**********************************
-     * 9) Finanzas: algoritmo de reparto
-     **********************************/
-    function clampPct(){
-      let a = Number($("pctAdmin").value||0);
-      let b = Number($("pctAmort").value||0);
-      let c = Number($("pctLibre").value||0);
-      const sum = a+b+c;
-      if(sum !== 100){
-        // normaliza proporcionalmente si sum>0; si no, default
-        if(sum>0){
-          a = Math.round((a/sum)*100);
-          b = Math.round((b/sum)*100);
-          c = 100 - a - b;
-        }else{
-          a=20; b=30; c=50;
-        }
-      }
-      $("pctAdmin").value=a; $("pctAmort").value=b; $("pctLibre").value=c;
-      state.pct = { admin:a, amort:b, libre:c };
-      $("pctAdminTxt").textContent = a;
-      $("pctAmortTxt").textContent = b;
-      $("pctLibreTxt").textContent = c;
-      saveStore();
-      renderFinance();
-      enqueueEvent({ type:"set_pct", pct: state.pct, createdAt: Date.now() });
+    function money(n, cur){
+      const x = Number(n || 0);
+      const c = (cur || state.currency || "CUP").toUpperCase();
+      if(c === "USD") return x.toLocaleString("en-US", { style: "currency", currency: "USD" });
+      return x.toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " CUP";
     }
 
-    $("btnSavePct").onclick = ()=>{ clampPct(); pushMsg("🤖 RAULI","Porcentajes guardados."); };
+    state.userName = "Operacion";
+    state.userRole = "base";
+    state.userEmail = state.userEmail || "";
+    state.messages = (state.messages || []).filter((m) => !/Usuario activo:/i.test(String(m.txt || ""))).slice(0, 12);
+    const cleanQueue = loadQueue().filter((evt) => evt?.type !== "set_user_pin");
+    saveQueue(cleanQueue);
+    state.sync.pending = cleanQueue.length;
+    saveStore();
+    $("userTxt").textContent = "Operacion";
 
-    $("btnSetFondo").onclick = ()=>{
-      state.fondo = Number($("fondoInput").value||0);
+    // moneda
+    $("curTxt").textContent = (state.currency || "CUP").toUpperCase();
+    $("chipCur").style.cursor = 'pointer';
+    $("chipCur").onclick = ()=>{
+      state.currency = (state.currency || "CUP").toUpperCase() === "CUP" ? "USD" : "CUP";
+      $("curTxt").textContent = state.currency;
       saveStore();
-      renderFinance();
-      enqueueEvent({ type:"set_fondo", fondo: state.fondo, createdAt: Date.now() });
-      pushMsg("🤖 RAULI", "Fondo operativo actualizado: " + money(state.fondo));
+      toast('ok','Moneda', `Mostrando montos en ${state.currency}`);
+      renderInventory();
     };
 
-    $("btnSaveNom").onclick = ()=>{
-      state.pctNom.bety = Number($("pctBety").value||0);
-      state.pctNom.orlan = Number($("pctOrlan").value||0);
-      saveStore();
-      renderFinance();
-      enqueueEvent({ type:"set_nom_params", pctNom: state.pctNom, createdAt: Date.now() });
-      pushMsg("🤖 RAULI","Parámetros de nómina indirecta guardados.");
-    };
+    // chip user
+    $("chipUser").style.cursor = 'default';
+    $("chipUser").title = 'Modo simple';
 
-    $("btnCalcOps").onclick = ()=>{
-      state.ops.rate = Number($("opsRate").value||0);
-      state.ops.lbs = Number($("opsLbs").value||0);
-      saveStore();
-      renderFinance();
-      pushMsg("🤖 RAULI", `Operarios: ${money(state.ops.rate)} x ${state.ops.lbs} lb = ${money(state.ops.rate*state.ops.lbs)}`);
-    };
-
-    $("btnCalcSales").onclick = ()=>{
-      state.sales.rate = Number($("salesRate").value||0);
-      state.sales.units = Number($("salesUnits").value||0);
-      saveStore();
-      renderFinance();
-      pushMsg("🤖 RAULI", `Ventas (comisión): ${money(state.sales.rate)} x ${state.sales.units} = ${money(state.sales.rate*state.sales.units)}`);
-    };
-
-    $("btnCalc").onclick = ()=>{
-      const profit = Number($("profitInput").value||0);
-      state.profitLast = profit;
-
-      // reparto base
-      const admin = profit * (state.pct.admin/100);
-      const amort = profit * (state.pct.amort/100);
-      const libre = profit * (state.pct.libre/100);
-
-      // extras:
-      const bety = profit * (state.pctNom.bety/100);
-      const orlan = profit * (state.pctNom.orlan/100);
-      const ops = (state.ops.rate * state.ops.lbs);
-      const sales = (state.sales.rate * state.sales.units);
-
-      state._calc = { admin, amort, libre, bety, orlan, ops, sales, profit };
-      saveStore();
-      renderFinance();
-
-      // amortización acumula
-      if(amort > 0){
-        state.inv.paid = Number(state.inv.paid||0) + amort;
-        state.inv.history.push({ t: Date.now(), paid: state.inv.paid });
-        if(state.inv.history.length > 60) state.inv.history.shift();
-        saveStore();
-        renderInvestment();
-        drawAmortChart();
-      }
-
-      enqueueEvent({ type:"calc_profit", profit, calc: state._calc, createdAt: Date.now() });
-
-      pushMsg("🤖 RAULI", `Cálculo listo. Admin: ${money(admin)} · Amort: ${money(amort)} · Libre: ${money(libre)}.`);
-      if(navigator.onLine) syncQueue();
-    };
-
-    $("btnSetInv").onclick = ()=>{
-      state.inv.total = Number($("invTotal").value||0);
-      if(!state.inv.history) state.inv.history = [];
-      saveStore();
-      renderInvestment();
-      drawAmortChart();
-      enqueueEvent({ type:"set_investment_total", total: state.inv.total, createdAt: Date.now() });
-      pushMsg("🤖 RAULI", "Inversión total guardada: " + money(state.inv.total));
-    };
-
-    function renderFinance(){
-      $("fondoTxt").textContent = money(state.fondo);
-      $("fondoInput").value = state.fondo;
-
-      $("pctAdmin").value = state.pct.admin;
-      $("pctAmort").value = state.pct.amort;
-      $("pctLibre").value = state.pct.libre;
-      $("pctAdminTxt").textContent = state.pct.admin;
-      $("pctAmortTxt").textContent = state.pct.amort;
-      $("pctLibreTxt").textContent = state.pct.libre;
-
-      $("pctBety").value = state.pctNom.bety;
-      $("pctOrlan").value = state.pctNom.orlan;
-
-      $("opsRate").value = state.ops.rate;
-      $("opsLbs").value = state.ops.lbs;
-      $("salesRate").value = state.sales.rate;
-      $("salesUnits").value = state.sales.units;
-
-      const calc = state._calc || { admin:0, amort:0, libre:0, bety:0, orlan:0, ops:0, sales:0 };
-      $("gAdmin").textContent = money(calc.admin);
-      $("gAmort").textContent = money(calc.amort);
-      $("gLibre").textContent = money(calc.libre);
-      $("gBety").textContent = money(calc.bety);
-      $("gOrlan").textContent = money(calc.orlan);
-      $("gOps").textContent = money(calc.ops);
-      $("gSales").textContent = money(calc.sales);
-
-      renderInvestment();
-      drawAmortChart();
+    // ===== Online/offline =====
+    function setNetUI(){
+      const on = navigator.onLine;
+      $("dotNet").className = "dot " + (on ? "green" : "red");
+      $("netTxt").textContent = on ? "Online" : "Offline";
+      if(on) logLine("ok", "Conexion detectada."); else logLine("warn", "Sin conexion. Guardando local.");
+      refreshSyncHint();
+      if(on) setTimeout(() => { syncQueueNow(false); refreshInventory(false); }, 200);
     }
+    window.addEventListener("online", ()=> setNetUI());
+    window.addEventListener("offline", ()=> setNetUI());
+    setNetUI();
 
-    function renderInvestment(){
-      const total = Number(state.inv.total||0);
-      const paid = Number(state.inv.paid||0);
-      const left = Math.max(0, total - paid);
-      const pct = total>0 ? Math.min(100, (paid/total)*100) : 0;
-
-      $("invTotalTxt").textContent = money(total);
-      $("invPaidTxt").textContent = money(paid);
-      $("invLeftTxt").textContent = money(left);
-      $("invPctTxt").textContent = pct.toFixed(1) + "%";
-
-      $("invTotal").value = total;
+    // ===== Mensajes =====
+    function pushMsg(who, txt){
+      state.messages.unshift({ who, txt, t: Date.now() });
+      if(state.messages.length > 18) state.messages.pop();
+      saveStore();
+      renderMsgs();
+      if(String(who).includes("RAULI")) speak(txt);
     }
-
-    renderFinance();
-
-    /*****************************
-     * 10) Amort Chart (canvas)
-     *****************************/
-    function drawAmortChart(){
-      const cv = $("amortChart");
-      if(!cv) return;
-      const ctx = cv.getContext("2d");
-      const W = cv.width, H = cv.height;
-
-      // fondo
-      ctx.clearRect(0,0,W,H);
-      ctx.fillStyle = "rgba(0,0,0,.10)";
-      ctx.fillRect(0,0,W,H);
-
-      const total = Number(state.inv.total||0);
-      const hist = (state.inv.history||[]);
-
-      // ejes
-      ctx.strokeStyle = "rgba(255,255,255,.12)";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(60, 20);
-      ctx.lineTo(60, H-40);
-      ctx.lineTo(W-20, H-40);
-      ctx.stroke();
-
-      // etiqueta
-      ctx.fillStyle = "rgba(244,197,66,.90)";
-      ctx.font = "bold 16px system-ui";
-      ctx.fillText("Pagado acumulado", 70, 20);
-
-      if(hist.length < 2){
-        ctx.fillStyle = "rgba(234,241,255,.75)";
-        ctx.font = "14px system-ui";
-        ctx.fillText("Aún no hay historial (calcula ganancias para generar puntos).", 70, 60);
-        return;
-      }
-
-      // escala Y
-      const maxY = Math.max(total || 0, ...hist.map(x=>x.paid)) || 1;
-      const x0 = 60, y0 = H-40, x1 = W-20, y1 = 20;
-
-      // línea
-      ctx.strokeStyle = "rgba(244,197,66,.95)";
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      hist.forEach((p, i)=>{
-        const x = x0 + (i/(hist.length-1))*(x1-x0);
-        const y = y0 - (p.paid/maxY)*(y0-y1);
-        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    function renderMsgs(){
+      const list = $("msgList");
+      list.innerHTML = "";
+      state.messages.slice(0, 3).forEach(m=>{
+        const div = document.createElement("div");
+        div.className = "msg";
+        div.innerHTML = `<div class="who">${escapeHtml(m.who)}</div><div class="txt">${escapeHtml(m.txt)}</div>`;
+        list.appendChild(div);
       });
-      ctx.stroke();
+    }
+    if(state.messages.length===0) pushMsg("RAULI", "RAULI listo. Puedo ayudarte con ventas, inventario, produccion, alertas y sincronizacion con ATLAS.");
 
-      // puntos
-      ctx.fillStyle = "rgba(44,224,122,.95)";
-      hist.forEach((p, i)=>{
-        const x = x0 + (i/(hist.length-1))*(x1-x0);
-        const y = y0 - (p.paid/maxY)*(y0-y1);
-        ctx.beginPath();
-        ctx.arc(x,y,4,0,Math.PI*2);
-        ctx.fill();
-      });
+    // ===== Voz =====
+    function setVoiceUI(){ $("voiceTxt").textContent = state.voice?.enabled ? "ON" : "OFF"; }
+    setVoiceUI();
 
-      // texto final
-      const last = hist[hist.length-1];
-      ctx.fillStyle = "rgba(234,241,255,.90)";
-      ctx.font = "bold 14px system-ui";
-      ctx.fillText("Último: " + money(last.paid), W-240, 30);
+    function speak(text){
+      if(!state.voice?.enabled) return;
+      try{
+        if(!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(String(text||""));
+        u.lang = "es-ES";
+        u.rate = 1.0;
+        window.speechSynthesis.speak(u);
+      }catch{}
     }
 
-    /***********************************
-     * 11) Ventas / Producción (demo)
-     ***********************************/
-    $("btnVenta").onclick = ()=>{
-      const monto = Number($("ventaMonto").value||0);
-      if(!monto) return;
-      $("ventaMonto").value = "";
-      enqueueEvent({ type:"venta", monto, createdAt: Date.now() });
-      pushMsg("🤖 RAULI", "Venta guardada: " + money(monto) + ". (Se sincroniza cuando haya internet)");
-      if(navigator.onLine) syncQueue();
+    $("btnVoiceOn").onclick = ()=>{
+      state.voice.enabled = !state.voice.enabled;
+      saveStore();
+      setVoiceUI();
+      pushMsg("RAULI", state.voice.enabled ? "Voz activada." : "Voz desactivada.");
     };
 
-    $("btnProdMin").onclick = ()=>{
-      enqueueEvent({ type:"prod_alert_minimos", createdAt: Date.now() });
-      pushMsg("🤖 RAULI","Alerta de mínimos registrada (demo).");
-      if(navigator.onLine) syncQueue();
-    };
-    $("btnProdInsum").onclick = ()=>{
-      enqueueEvent({ type:"prod_salida_insumos", createdAt: Date.now() });
-      pushMsg("🤖 RAULI","Salida de insumos registrada (demo).");
-      if(navigator.onLine) syncQueue();
-    };
-    $("btnProdBatch").onclick = ()=>{
-      enqueueEvent({ type:"prod_lote_dia", createdAt: Date.now() });
-      pushMsg("🤖 RAULI","Lote del día registrado (demo).");
-      if(navigator.onLine) syncQueue();
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let rec = null;
+    if(SpeechRec){
+      rec = new SpeechRec();
+      rec.lang = "es-ES";
+      rec.interimResults = false;
+      rec.maxAlternatives = 1;
+      rec.onresult = (e)=>{
+        const text = e.results?.[0]?.[0]?.transcript || "";
+        if(text){
+          $("aiInput").value = text.trim();
+          if(state.voice.autoSend) $("btnSendAI").click();
+        }
+      };
+      rec.onerror = ()=> pushMsg("RAULI", "No pude usar dictado por voz en este navegador.");
+    }
+    $("btnVoice").onclick = ()=>{
+      if(!rec){ pushMsg("RAULI", "Tu navegador no soporta dictado por voz."); return; }
+      try{ rec.start(); pushMsg("RAULI", "Te escucho. Habla ahora."); }catch{}
     };
 
-    /******************************
-     * 12) PWA Install Button
-     ******************************/
-    let deferredPrompt = null;
-    window.addEventListener("beforeinstallprompt", (e)=>{
-      e.preventDefault();
-      deferredPrompt = e;
-      $("btnInstall").style.display = "";
-      logLine("ok","Disponible para instalar como app (PWA).");
+    // ===== Saludo =====
+    function setGreeting(){
+      const h = new Date().getHours();
+      let msg = "Hola. Que deseas registrar hoy: entrada, produccion o venta?";
+      if(h >= 5 && h < 12) msg = "Buenos dias. Quieres registrar inventario, produccion o ventas?";
+      else if(h >= 12 && h < 19) msg = "Buenas tardes. Deseas registrar entradas, salidas o revisar alertas?";
+      else msg = "Buenas noches. Deseas registrar ventas, salida a produccion o revisar alertas?";
+      $("greeting").textContent = msg;
+    }
+    setGreeting();
+
+    // ===== Navegacion =====
+    const views = {
+      home: $("view-home"),
+      inventario: $("view-inventario"),
+      produccion: $("view-produccion"),
+      ventas: $("view-ventas"),
+      alertas: $("view-alertas"),
+    };
+
+    function showView(name){
+      Object.entries(views).forEach(([k, el]) => el.style.display = (k===name) ? "" : "none");
+      document.querySelectorAll(".navItem").forEach(x=> x.classList.toggle("active", x.dataset.view===name));
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+
+    document.querySelectorAll(".navItem").forEach(btn=> btn.addEventListener("click", ()=> showView(btn.dataset.view)));
+
+    $("btnBackHome1").onclick = ()=>showView("home");
+    $("btnBackHome2").onclick = ()=>showView("home");
+    $("btnBackHome3").onclick = ()=>showView("home");
+    $("btnBackHome4").onclick = ()=>showView("home");
+    $("btnGoInventory").onclick = ()=> { showView("inventario"); refreshInventory(true); };
+    $("btnQuickEntrada").onclick = ()=>{ showView("home"); pushMsg("RAULI", startAssistantFlow("entrada")); $("aiInput").focus(); };
+    $("btnQuickSalida").onclick = ()=>{ showView("home"); pushMsg("RAULI", startAssistantFlow("produccion")); $("aiInput").focus(); };
+    $("btnQuickCaja").onclick = ()=>{ showView("home"); pushMsg("RAULI", startAssistantFlow("caja")); $("aiInput").focus(); };
+
+    // ===== Botones rapidos =====
+    document.querySelectorAll('[data-q]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const q = b.getAttribute('data-q') || '';
+        const detected = detectAssistantIntent(q);
+        if(detected === 'entrada' || detected === 'venta' || detected === 'produccion' || detected === 'alerta' || detected === 'caja'){
+          const reply = startAssistantFlow(detected);
+          pushMsg("RAULI", reply);
+          $("aiInput").focus();
+          return;
+        }
+        $("aiInput").value = q;
+        $("aiInput").focus();
+        if(detected === 'reporte' || detected === 'inventario'){
+          $("btnSendAI").click();
+        }
+      });
     });
 
-    $("btnInstall").onclick = async ()=>{
-      if(!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const r = await deferredPrompt.userChoice;
-      logLine("ok", "Instalación PWA: " + r.outcome);
-      deferredPrompt = null;
-      $("btnInstall").style.display = "none";
-      beep();
-    };
+    // ===== Alertas =====
+    function addAlert({tipo, nivel, text, createdBy}){
+      const id = cryptoRandomId();
+      const a = { id, tipo: tipo||'general', nivel: nivel||'medio', text: String(text||'').trim(), createdAt: Date.now(), createdBy: createdBy||{name: state.userName}, doneAt: null };
+      if(!a.text) return null;
+      state.alerts.unshift(a);
+      if(state.alerts.length > 120) state.alerts.pop();
+      saveStore();
+      renderAlerts();
+      enqueueEvent({ type: 'alert_create', alert: a, createdAt: Date.now() });
+      return a;
+    }
 
-    /******************************
-     * 13) Service Worker + Update
-     ******************************/
-    let swReg = null;
+    function markAlertDone(id){
+      const a = state.alerts.find(x=>x.id===id);
+      if(!a || a.doneAt) return;
+      a.doneAt = Date.now();
+      saveStore();
+      renderAlerts();
+      enqueueEvent({ type: 'alert_done', id, doneAt: a.doneAt, doneBy: {name: state.userName}, createdAt: Date.now() });
+    }
 
-    async function registerSW(){
-      if(!("serviceWorker" in navigator)) {
-        logLine("warn","ServiceWorker no soportado en este navegador.");
+    function renderAlerts(){
+      const box = $("alertsList");
+      box.innerHTML = '';
+      const active = state.alerts.filter(a=>!a.doneAt);
+      if(active.length===0){
+        const d = document.createElement('div');
+        d.className = 'msg';
+        d.innerHTML = `<div class="who">Sin alertas activas</div><div class="txt">Todo en orden. Puedes crear una alerta arriba.</div>`;
+        box.appendChild(d);
         return;
       }
-      try{
-        swReg = await navigator.serviceWorker.register("./sw.js", { scope: "./" });
-        logLine("ok","Service Worker registrado.");
-        // escuchar updates
-        swReg.addEventListener("updatefound", ()=>{
-          const newWorker = swReg.installing;
-          logLine("warn","Nueva versión detectada (instalando)...");
-          newWorker.addEventListener("statechange", ()=>{
-            if(newWorker.state === "installed"){
-              if(navigator.serviceWorker.controller){
-                logLine("ok","✅ Nueva versión lista. Presiona 'Actualizar'.");
-                beep();
-              }else{
-                logLine("ok","App lista para uso offline.");
-              }
-            }
-          });
+      active.slice(0,50).forEach(a=>{
+        const d = document.createElement('div');
+        d.className = 'msg';
+        const by = a.createdBy?.name ? `${a.createdBy.name}` : 'sistema';
+        d.innerHTML = `
+          <div class="who">${escapeHtml(a.tipo)} - ${escapeHtml(a.nivel.toUpperCase())}</div>
+          <div class="txt">${escapeHtml(a.text)}<br><span class="hint">Por: ${escapeHtml(by)} - ${new Date(a.createdAt).toLocaleString()}</span></div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn secondary" data-done="${a.id}">Marcar resuelta</button>
+          </div>
+        `;
+        box.appendChild(d);
+      });
+    }
+    renderAlerts();
+
+    $("btnAddAlert")?.addEventListener('click', ()=>{
+      const tipo = $("alertTipo").value;
+      const nivel = $("alertNivel").value;
+      const text = $("alertTexto").value;
+      const a = addAlert({tipo, nivel, text});
+      if(a){
+        pushMsg('RAULI', `Alerta creada: ${a.tipo}/${a.nivel}.`);
+        $("alertTexto").value='';
+      }
+    });
+
+    $("alertsList")?.addEventListener('click', (e)=>{
+      const id = e.target?.getAttribute?.('data-done');
+      if(id) markAlertDone(id);
+    });
+
+    $("btnAlertQuick1")?.addEventListener('click', ()=>{
+      addAlert({tipo:'insumos', nivel:'alto', text:'Harina bajo minimo'});
+      pushMsg('RAULI', 'Alerta creada: Harina bajo minimo.');
+    });
+    $("btnAlertQuick2")?.addEventListener('click', ()=>{
+      addAlert({tipo:'caja', nivel:'medio', text:'Caja pendiente de cierre'});
+      pushMsg('RAULI', 'Alerta creada: Caja pendiente de cierre.');
+    });
+
+    // ===== Asistente híbrido: flujo guiado local + ATLAS =====
+    function queueLiteEvent(type, payload = {}, meta = {}){
+      const evt = {
+        local_id: cryptoRandomId(),
+        type,
+        payload,
+        meta,
+        actor: { name: state.userName, role: 'base' },
+        created_at: new Date().toISOString()
+      };
+      enqueueEvent(evt);
+      state.sync.pending = loadQueue().length;
+      saveStore();
+      refreshSyncHint();
+      return evt;
+    }
+
+    function assistantHelp(){
+      return "Puedo ayudarte con entrada de almacen, venta, salida a produccion, alerta, cierre de caja, inventario y sincronizacion. Ejemplos: 'quiero reportar una venta', 'entrada de harina', 'salida a produccion', 'ver inventario'.";
+    }
+
+    function parseKeyVals(parts){
+      const out = {};
+      parts.forEach(p=>{
+        const i = p.indexOf('=');
+        if(i>0){
+          const k = p.slice(0,i).trim();
+          const v = p.slice(i+1).trim();
+          if(k) out[k]=v;
+        }
+      });
+      return out;
+    }
+
+    function startAssistantFlow(kind){
+      const flows = {
+        entrada: {
+          kind,
+          step: 'product',
+          data: {},
+          prompt: 'Vamos a registrar una entrada a almacen. Dime el producto.'
+        },
+        venta: {
+          kind,
+          step: 'product',
+          data: {},
+          prompt: 'Vamos a registrar una venta. Dime el producto.'
+        },
+        produccion: {
+          kind,
+          step: 'product',
+          data: {},
+          prompt: 'Vamos a registrar una salida a produccion. Dime el producto o lote.'
+        },
+        alerta: {
+          kind,
+          step: 'type',
+          data: {},
+          prompt: 'Vamos a crear una alerta. Dime el tipo: insumos, caja, produccion, ventas o general.'
+        },
+        caja: {
+          kind,
+          step: 'cash',
+          data: {},
+          prompt: 'Vamos con el cierre de caja. Dime el efectivo contado.'
+        },
+      };
+      state.assistant.pending = flows[kind] || null;
+      saveStore();
+      return state.assistant.pending?.prompt || assistantHelp();
+    }
+
+    function resetAssistantFlow(){
+      state.assistant.pending = null;
+      saveStore();
+    }
+
+    function isAffirmative(text){
+      return /^(si|sí|ok|confirmo|confirmar|dale|correcto)$/i.test(String(text || '').trim());
+    }
+
+    function isNegative(text){
+      return /^(no|cancelar|cancela|detener|salir)$/i.test(String(text || '').trim());
+    }
+
+    function detectAssistantIntent(text){
+      const t = String(text || '').toLowerCase();
+      if(t.startsWith('/entrada') || /\bentrada\b/.test(t) || /\balmac[ée]n\b/.test(t) || /\bcompra\b/.test(t)) return 'entrada';
+      if(t.startsWith('/venta') || /\bventa\b/.test(t)) return 'venta';
+      if(t.startsWith('/produccion') || t.startsWith('/producción') || /\bproducci/.test(t) || /\bsalida\b/.test(t)) return 'produccion';
+      if(t.startsWith('/alerta') || /\balerta\b/.test(t) || /\binsumo\b/.test(t)) return 'alerta';
+      if(t.startsWith('/caja') || /\bcierre\b/.test(t) || /\bcaja\b/.test(t)) return 'caja';
+      if(t.startsWith('/inventario') || /\binventario\b/.test(t) || /\bcat[aá]logo\b/.test(t)) return 'inventario';
+      if(t.startsWith('/reporte') || /\breporte\b/.test(t) || /\bresumen\b/.test(t)) return 'reporte';
+      if(t.startsWith('/ayuda') || /\bayuda\b/.test(t)) return 'ayuda';
+      return '';
+    }
+
+    function runCommand(raw){
+      const parts = raw.trim().split(/\s+/);
+      const cmd = (parts[0]||'').replace(/^\//,'').toLowerCase();
+      const kv = parseKeyVals(parts.slice(1));
+
+      if(cmd==='ayuda') return assistantHelp();
+      if(cmd==='sync') return 'sync_now';
+      if(cmd==='inventario'){
+        showView('inventario');
+        refreshInventory(false);
+        return 'Te llevo al inventario operativo.';
+      }
+      if(cmd==='entrada'){
+        const product = kv.producto || kv.product || '';
+        const quantity = normalizeMoney(kv.cantidad || kv.qty || 0);
+        const unit_cost = normalizeMoney(kv.precio || kv.costo || kv.unit_cost || 0);
+        const supplier = kv.proveedor || kv.supplier || '';
+        if(!product || !quantity || !unit_cost) return startAssistantFlow('entrada');
+        const total = Number((quantity * unit_cost).toFixed(2));
+        queueLiteEvent('entrada_almacen', { product, quantity, unit_cost, total, supplier, currency: state.currency });
+        return `Entrada guardada: ${product} x${quantity} por ${money(total)}.`;
+      }
+      if(cmd==='venta'){
+        const product = kv.producto || kv.product || '';
+        const quantity = normalizeMoney(kv.cantidad || kv.qty || 0);
+        const unit_price = normalizeMoney(kv.precio || kv.unit_price || 0);
+        const payment_method = kv.metodo || kv.method || 'efectivo';
+        if(!product || !quantity || !unit_price) return startAssistantFlow('venta');
+        const total = Number((quantity * unit_price).toFixed(2));
+        queueLiteEvent('venta', { product, quantity, unit_price, total, payment_method, currency: state.currency });
+        return `Venta guardada: ${product} x${quantity} por ${money(total)} (${payment_method}).`;
+      }
+      if(cmd==='alerta'){
+        const tipo = kv.tipo || kv.area || 'general';
+        const nivel = kv.nivel || kv.prioridad || 'medio';
+        const text = kv.texto || kv.text || kv.nombre || '';
+        if(!text) return startAssistantFlow('alerta');
+        addAlert({tipo, nivel, text});
+        queueLiteEvent('alerta', { tipo, nivel, text });
+        return `Alerta registrada (${tipo}/${nivel}).`;
+      }
+      if(cmd==='produccion'){
+        const product = kv.producto || kv.product || kv.lote || '';
+        const quantity = normalizeMoney(kv.cantidad || kv.qty || 0);
+        const unit = kv.unidad || kv.unit || 'unidad';
+        if(!product || !quantity) return startAssistantFlow('produccion');
+        queueLiteEvent('produccion', { product, quantity, unit });
+        return `Salida a produccion guardada: ${product} ${quantity} ${unit}.`;
+      }
+      if(cmd==='caja'){
+        queueLiteEvent('caja', { action: kv.accion || 'cierre' });
+        return 'Evento de caja registrado.';
+      }
+      if(cmd==='reporte'){
+        showView('inventario');
+        refreshInventory(false);
+        queueLiteEvent('reporte', { tipo: kv.tipo || 'dia' });
+        return `Resumen solicitado (${kv.tipo || 'dia'}).`;
+      }
+      return 'Comando no reconocido. Usa /ayuda.';
+    }
+
+    function finalizePendingFlow(flow){
+      if(flow.kind === 'entrada'){
+        const quantity = normalizeMoney(flow.data.quantity);
+        const unitCost = normalizeMoney(flow.data.unit_cost);
+        const total = Number((quantity * unitCost).toFixed(2));
+        const payload = {
+          product: flow.data.product,
+          quantity,
+          unit_cost: unitCost,
+          total,
+          supplier: flow.data.supplier || '',
+          currency: state.currency
+        };
+        queueLiteEvent('entrada_almacen', payload);
+        resetAssistantFlow();
+        return `Entrada guardada: ${payload.product} x${payload.quantity} por ${money(total)}.`;
+      }
+      if(flow.kind === 'venta'){
+        const quantity = normalizeMoney(flow.data.quantity);
+        const unitPrice = normalizeMoney(flow.data.unit_price);
+        const total = Number((quantity * unitPrice).toFixed(2));
+        const payload = {
+          product: flow.data.product,
+          quantity,
+          unit_price: unitPrice,
+          total,
+          payment_method: flow.data.payment_method || 'efectivo',
+          currency: state.currency
+        };
+        queueLiteEvent('venta', payload);
+        resetAssistantFlow();
+        return `Venta guardada: ${payload.product} x${payload.quantity} por ${money(total)} (${payload.payment_method}).`;
+      }
+      if(flow.kind === 'produccion'){
+        queueLiteEvent('produccion', {
+          product: flow.data.product,
+          quantity: normalizeMoney(flow.data.quantity),
+          unit: flow.data.unit || 'unidad',
+          notes: flow.data.notes || ''
         });
-      }catch(e){
-        logLine("err","SW error: " + (e?.message || e));
+        resetAssistantFlow();
+        return `Salida a produccion guardada: ${flow.data.product} ${flow.data.quantity} ${flow.data.unit || 'unidad'}.`;
       }
+      if(flow.kind === 'alerta'){
+        addAlert({ tipo: flow.data.type, nivel: flow.data.level, text: flow.data.text });
+        queueLiteEvent('alerta', { tipo: flow.data.type, nivel: flow.data.level, text: flow.data.text });
+        resetAssistantFlow();
+        return `Alerta guardada: ${flow.data.type}/${flow.data.level}.`;
+      }
+      if(flow.kind === 'caja'){
+        queueLiteEvent('caja', {
+          action: 'cierre',
+          cash: normalizeMoney(flow.data.cash),
+          transfer: normalizeMoney(flow.data.transfer),
+          note: flow.data.note || ''
+        });
+        resetAssistantFlow();
+        return 'Cierre de caja guardado y listo para sincronizar.';
+      }
+      resetAssistantFlow();
+      return 'Operacion guardada.';
     }
-    await registerSW();
 
-    // BOTÓN ACTUALIZAR (forzar tomar nueva versión)
-    $("btnUpdate").onclick = async ()=>{
-      beep();
-      logLine("warn","Buscando actualización...");
-      try{
-        if(swReg) await swReg.update();
-      }catch(e){}
+    function continuePendingFlow(text){
+      const flow = state.assistant.pending;
+      if(!flow) return null;
+      const value = String(text || '').trim();
 
-      // Si hay SW esperando, lo activamos
-      if(swReg?.waiting){
-        logLine("ok","Activando nueva versión...");
-        swReg.waiting.postMessage({ type: "SKIP_WAITING" });
-      }else{
-        logLine("warn","Si no cambia, cierra la app y vuelve a abrir. (A veces el cache tarda).");
+      if(isNegative(value)){
+        resetAssistantFlow();
+        return 'Operacion cancelada.';
       }
+
+      if(flow.step === 'confirm'){
+        if(isAffirmative(value)) return finalizePendingFlow(flow);
+        return 'Responde si para guardar o no para cancelar.';
+      }
+
+      if(flow.kind === 'entrada'){
+        if(flow.step === 'product'){
+          flow.data.product = value;
+          flow.step = 'quantity';
+          saveStore();
+          return 'Ahora dime la cantidad que entro al almacen.';
+        }
+        if(flow.step === 'quantity'){
+          const quantity = normalizeMoney(value);
+          if(quantity <= 0) return 'La cantidad debe ser mayor que cero. Dimela otra vez.';
+          flow.data.quantity = quantity;
+          flow.step = 'unit_cost';
+          saveStore();
+          return 'Ahora dime el costo unitario.';
+        }
+        if(flow.step === 'unit_cost'){
+          const unitCost = normalizeMoney(value);
+          if(unitCost <= 0) return 'El costo debe ser mayor que cero. Dimelo otra vez.';
+          flow.data.unit_cost = unitCost;
+          flow.step = 'supplier';
+          saveStore();
+          return 'Si quieres, dime proveedor u observacion. Si no, escribe listo.';
+        }
+        if(flow.step === 'supplier'){
+          flow.data.supplier = /^listo$/i.test(value) ? '' : value;
+          flow.step = 'confirm';
+          saveStore();
+          const total = normalizeMoney(flow.data.quantity) * normalizeMoney(flow.data.unit_cost);
+          return `Confirmo entrada de ${flow.data.product} x${flow.data.quantity} con costo ${money(flow.data.unit_cost)} y total ${money(total)}. Responde si o no.`;
+        }
+      }
+
+      if(flow.kind === 'venta'){
+        if(flow.step === 'product'){
+          flow.data.product = value;
+          flow.step = 'quantity';
+          saveStore();
+          return 'Ahora dime la cantidad vendida.';
+        }
+        if(flow.step === 'quantity'){
+          const quantity = normalizeMoney(value);
+          if(quantity <= 0) return 'La cantidad debe ser mayor que cero. Dimela otra vez.';
+          flow.data.quantity = quantity;
+          flow.step = 'unit_price';
+          saveStore();
+          return 'Ahora dime el precio unitario.';
+        }
+        if(flow.step === 'unit_price'){
+          const unitPrice = normalizeMoney(value);
+          if(unitPrice <= 0) return 'El precio debe ser mayor que cero. Dimelo otra vez.';
+          flow.data.unit_price = unitPrice;
+          flow.step = 'payment_method';
+          saveStore();
+          return 'Como se cobro? Ejemplos: efectivo, transferencia o tarjeta.';
+        }
+        if(flow.step === 'payment_method'){
+          flow.data.payment_method = value || 'efectivo';
+          const total = normalizeMoney(flow.data.quantity) * normalizeMoney(flow.data.unit_price);
+          flow.step = 'confirm';
+          saveStore();
+          return `Confirmo venta de ${flow.data.product} x${flow.data.quantity} a ${money(flow.data.unit_price)} (${flow.data.payment_method}), total ${money(total)}. Responde si o no.`;
+        }
+      }
+
+      if(flow.kind === 'produccion'){
+        if(flow.step === 'product'){
+          flow.data.product = value;
+          flow.step = 'quantity';
+          saveStore();
+          return 'Ahora dime la cantidad que salio a produccion.';
+        }
+        if(flow.step === 'quantity'){
+          const quantity = normalizeMoney(value);
+          if(quantity <= 0) return 'La cantidad debe ser mayor que cero.';
+          flow.data.quantity = quantity;
+          flow.step = 'unit';
+          saveStore();
+          return 'Cual es la unidad de medida? Ejemplos: unidad, lb, paquete.';
+        }
+        if(flow.step === 'unit'){
+          flow.data.unit = value || 'unidad';
+          flow.step = 'confirm';
+          saveStore();
+          return `Confirmo salida a produccion de ${flow.data.product} ${flow.data.quantity} ${flow.data.unit}. Responde si o no.`;
+        }
+      }
+
+      if(flow.kind === 'alerta'){
+        if(flow.step === 'type'){
+          flow.data.type = value || 'general';
+          flow.step = 'text';
+          saveStore();
+          return 'Describe la alerta.';
+        }
+        if(flow.step === 'text'){
+          flow.data.text = value;
+          flow.step = 'level';
+          saveStore();
+          return 'Que nivel tiene? bajo, medio o alto.';
+        }
+        if(flow.step === 'level'){
+          flow.data.level = value || 'medio';
+          flow.step = 'confirm';
+          saveStore();
+          return `Confirmo alerta ${flow.data.type}/${flow.data.level}: ${flow.data.text}. Responde si o no.`;
+        }
+      }
+
+      if(flow.kind === 'caja'){
+        if(flow.step === 'cash'){
+          const cash = normalizeMoney(value);
+          if(cash < 0) return 'El efectivo no puede ser negativo.';
+          flow.data.cash = cash;
+          flow.step = 'transfer';
+          saveStore();
+          return 'Ahora dime el total de transferencias.';
+        }
+        if(flow.step === 'transfer'){
+          const transfer = normalizeMoney(value);
+          if(transfer < 0) return 'Las transferencias no pueden ser negativas.';
+          flow.data.transfer = transfer;
+          flow.step = 'note';
+          saveStore();
+          return 'Si deseas, anade una observacion. Si no, escribe listo.';
+        }
+        if(flow.step === 'note'){
+          flow.data.note = /^listo$/i.test(value) ? '' : value;
+          flow.step = 'confirm';
+          saveStore();
+          return `Confirmo cierre con efectivo ${money(flow.data.cash)} y transferencias ${money(flow.data.transfer)}. Responde si o no.`;
+        }
+      }
+
+      return null;
+    }
+
+    async function askAtlasAssistant(text){
+      const history = (state.messages || []).slice(0, 6).map((m) => ({
+        role: String(m.who || '').includes('RAULI') ? 'assistant' : 'user',
+        content: fixMojibake(m.txt)
+      })).reverse();
+      const result = await fetchJsonAny('/api/lite/chat', {
+        method: 'POST',
+        body: JSON.stringify({
+          message: text,
+          context: {
+            profile_name: state.userName,
+            role: state.userRole,
+            device_id: getDeviceId(),
+            channel: 'rauli-lite-web'
+          },
+          history
+        })
+      });
+      if(result.ok && result.data?.reply){
+        return {
+          reply: fixMojibake(result.data.reply),
+          provider: result.data.provider || 'atlas',
+          offline: Boolean(result.data.offline)
+        };
+      }
+      return {
+        reply: 'Sigo operativo en modo local. Puedo ayudarte con inventario, ventas, produccion y alertas aunque ATLAS tarde en responder.',
+        provider: 'local_fallback',
+        offline: true
+      };
+    }
+
+    async function handleAssistant(text){
+      if(text.startsWith('/')){
+        const reply = runCommand(text);
+        if(reply === 'sync_now'){
+          await syncQueueNow(true);
+          return 'Sincronizacion ejecutada.';
+        }
+        return reply;
+      }
+
+      const pendingReply = continuePendingFlow(text);
+      if(pendingReply) return pendingReply;
+
+      const detected = detectAssistantIntent(text);
+      if(detected === 'entrada' || detected === 'venta' || detected === 'produccion' || detected === 'alerta' || detected === 'caja'){
+        return startAssistantFlow(detected);
+      }
+      if(detected === 'inventario' || detected === 'reporte'){
+        showView('inventario');
+        await refreshInventory(false);
+        return 'Te llevo al inventario operativo y dejo la base lista para seguir registrando eventos.';
+      }
+      if(detected === 'ayuda'){
+        return assistantHelp();
+      }
+
+      const remote = await askAtlasAssistant(text);
+      return remote.reply;
+    }
+
+    $("btnSendAI").onclick = async ()=>{
+      const text = $("aiInput").value.trim();
+      if(!text) return;
+      pushMsg("Tu", text);
+      $("aiInput").value = "";
+      const reply = await handleAssistant(text);
+      pushMsg("RAULI", reply);
+      if(navigator.onLine) setTimeout(() => { syncQueueNow(false); }, 50);
     };
 
-    // Recargar cuando el SW nuevo tome control
-    navigator.serviceWorker?.addEventListener("controllerchange", ()=>{
-      logLine("ok","Controlador actualizado. Recargando…");
-      setTimeout(()=> location.reload(), 200);
+    // ===== Inventario =====
+    async function refreshInventory(verbose = false){
+      state.inventory = state.inventory || { items: [], lastLoadedAt: null, lowCount: 0 };
+      const result = await fetchJsonAny('/api/lite/catalog');
+      if(result.ok){
+        const items = Array.isArray(result.data?.products) ? result.data.products : [];
+        state.inventory.items = items;
+        state.inventory.lastLoadedAt = Date.now();
+        state.inventory.lowCount = items.filter((item) => Number(item.stock || 0) <= Number(item.min_stock || 0)).length;
+        saveStore();
+        renderInventory();
+        if(verbose) toast('ok','Inventario',`Catalogo actualizado: ${items.length} producto(s).`);
+        return { ok: true, items };
+      }
+      renderInventory();
+      if(verbose) toast('err','Inventario','No pude actualizar el catalogo. Se muestran datos locales.');
+      return { ok: false, errors: result.errors || [] };
+    }
+
+    function renderInventory(){
+      state.inventory = state.inventory || { items: [], lastLoadedAt: null, lowCount: 0 };
+      const items = Array.isArray(state.inventory.items) ? state.inventory.items : [];
+      const lowItems = items.filter((item) => Number(item.stock || 0) <= Number(item.min_stock || 0));
+      const pending = loadQueue().length;
+      state.sync.pending = pending;
+      const lastSync = state.sync?.lastAt ? new Date(state.sync.lastAt).toLocaleTimeString() : 'Sin sync';
+      const lastLoad = state.inventory.lastLoadedAt ? new Date(state.inventory.lastLoadedAt).toLocaleTimeString() : 'Sin catalogo';
+
+      if($("homeInvCount")) $("homeInvCount").textContent = String(items.length);
+      if($("homeInvLow")) $("homeInvLow").textContent = String(lowItems.length);
+      if($("homePendingCount")) $("homePendingCount").textContent = String(pending);
+      if($("homeInventoryNote")){
+        $("homeInventoryNote").textContent = items.length
+          ? `Catalogo listo: ${items.length} producto(s), ${lowItems.length} bajo minimo, actualizado ${lastLoad}.`
+          : 'Todavia no hay catalogo cargado. Usa Actualizar catalogo para traer los productos base.';
+      }
+
+      if($("invProductsCount")) $("invProductsCount").textContent = String(items.length);
+      if($("invLowCount")) $("invLowCount").textContent = String(lowItems.length);
+      if($("invPendingCount")) $("invPendingCount").textContent = String(pending);
+      if($("invLastSync")) $("invLastSync").textContent = lastSync;
+
+      const box = $("inventoryList");
+      if(box){
+        box.innerHTML = '';
+        if(items.length === 0){
+          const d = document.createElement('div');
+          d.className = 'msg';
+          d.innerHTML = `<div class="who">Catalogo vacio</div><div class="txt">No hay productos cargados aun. Pulsa Actualizar catalogo o sigue trabajando con el asistente.</div>`;
+          box.appendChild(d);
+        }else{
+          items.slice(0, 12).forEach((item) => {
+            const stock = Number(item.stock || 0);
+            const min = Number(item.min_stock || 0);
+            const flag = stock <= min ? 'Bajo minimo' : 'Disponible';
+            const d = document.createElement('div');
+            d.className = 'msg';
+            d.innerHTML = `<div class="who">${escapeHtml(item.name || 'Producto')} - ${escapeHtml(flag)}</div><div class="txt">Stock: ${escapeHtml(stock)} ${escapeHtml(item.unit || 'u')} - Minimo: ${escapeHtml(min)} - Precio: ${escapeHtml(money(item.price || 0))}</div>`;
+            box.appendChild(d);
+          });
+        }
+      }
+    }
+
+    $("btnInvRefresh").onclick = ()=> refreshInventory(true);
+    $("btnInvEntry").onclick = ()=>{ showView('home'); pushMsg('RAULI', startAssistantFlow('entrada')); $("aiInput").focus(); };
+    $("btnInvOutput").onclick = ()=>{ showView('home'); pushMsg('RAULI', startAssistantFlow('produccion')); $("aiInput").focus(); };
+    $("btnInvSale").onclick = ()=>{ showView('home'); pushMsg('RAULI', startAssistantFlow('venta')); $("aiInput").focus(); };
+
+    // ===== Produccion / Ventas =====
+    $("btnProdSave").onclick = ()=>{
+      const product = ($("prodProducto").value || '').trim();
+      const quantity = normalizeMoney($("prodCantidad").value || 0);
+      const unit = ($("prodUnidad").value || 'unidad').trim() || 'unidad';
+      if(!product || quantity <= 0){ toast('err','Produccion','Completa producto y cantidad.'); return; }
+      $("prodProducto").value = '';
+      $("prodCantidad").value = '';
+      $("prodUnidad").value = 'unidad';
+      queueLiteEvent('produccion', { product, quantity, unit });
+      pushMsg('RAULI', `Salida a produccion guardada: ${product} ${quantity} ${unit}.`);
+      if(navigator.onLine) setTimeout(() => { syncQueueNow(false); }, 50);
+    };
+    $("btnProdGuide").onclick = ()=>{ showView('home'); pushMsg('RAULI', startAssistantFlow('produccion')); $("aiInput").focus(); };
+    $("btnProdMin").onclick = ()=>{
+      addAlert({tipo:'insumos', nivel:'alto', text:'Revisar minimos antes de producir'});
+      pushMsg('RAULI','Alerta de minimos registrada.');
+      if(navigator.onLine) setTimeout(() => { syncQueueNow(false); }, 50);
+    };
+
+    $("btnVenta").onclick = ()=>{
+      const product = ($("ventaProducto").value || '').trim();
+      const quantity = normalizeMoney($("ventaCantidad").value || 0);
+      const unit_price = normalizeMoney($("ventaPrecio").value || 0);
+      const payment_method = $("ventaMetodo").value || 'efectivo';
+      if(!product || quantity <= 0 || unit_price <= 0){ toast('err','Ventas','Completa producto, cantidad y precio.'); return; }
+      const total = Number((quantity * unit_price).toFixed(2));
+      $("ventaProducto").value = '';
+      $("ventaCantidad").value = '';
+      $("ventaPrecio").value = '';
+      $("ventaMetodo").value = 'efectivo';
+      queueLiteEvent('venta', { product, quantity, unit_price, total, payment_method, currency: state.currency });
+      pushMsg('RAULI', `Venta guardada: ${product} x${quantity} por ${money(total)} (${payment_method}).`);
+      if(navigator.onLine) setTimeout(() => { syncQueueNow(false); }, 50);
+    };
+    $("btnVentaGuide").onclick = ()=>{ showView('home'); pushMsg('RAULI', startAssistantFlow('venta')); $("aiInput").focus(); };
+
+    // ===== Export/Import =====
+    function exportAll(){
+      const payload = {
+        app: APP.VERSION,
+        exportedAt: new Date().toISOString(),
+        store: state,
+        queue: loadQueue()
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `RAULI_BACKUP_${Date.now()}.json`;
+      a.click();
+      setTimeout(()=> URL.revokeObjectURL(url), 1000);
+      toast('ok','Exportar','Backup descargado.');
+    }
+
+    function importAllFromFile(file){
+      const r = new FileReader();
+      r.onload = ()=>{
+        try{
+          const data = JSON.parse(String(r.result||'{}'));
+          if(data?.store) {
+            Object.assign(state, data.store);
+            saveStore();
+          }
+          if(Array.isArray(data?.queue)) saveQueue(data.queue);
+          renderMsgs();
+          renderAlerts();
+          renderInventory();
+          refreshSyncHint();
+          refreshInventory(false);
+          toast('ok','Importar','Backup cargado.');
+          logLine('ok','Importación completada.');
+        }catch(e){
+          toast('err','Importar','Archivo invalido.');
+          logLine('err','Import error: ' + (e?.message||e));
+        }
+      };
+      r.readAsText(file);
+    }
+
+    $("btnExport").onclick = exportAll;
+    $("btnImport").onclick = ()=> $("fileImport").click();
+    $("fileImport").addEventListener('change', (e)=>{
+      const f = e.target.files?.[0];
+      if(f) importAllFromFile(f);
+      e.target.value = '';
     });
 
-    /******************************
-     * 14) Redirecciones “análisis”
-     ******************************/
-    // Por ahora, panel interno. Si quieres URLs específicas (por país/idioma),
-    // me las dices y las agrego en botones.
-    /********************
-     * 15) Inicio
-     ********************/
-    logLine("ok","RAULI cargó correctamente.");
-    if(navigator.onLine) setTimeout(syncQueue, 700);
+    function refreshSyncHint(){
+      const pending = loadQueue().length;
+      state.sync.pending = pending;
+      const online = navigator.onLine;
+      const parts = [];
+      parts.push(online ? "Online" : "Offline");
+      parts.push(`${pending} pendiente${pending===1 ? '' : 's'}`);
+      if(state.sync.lastAt){
+        parts.push(`ultima sync ${new Date(state.sync.lastAt).toLocaleTimeString()}`);
+      }
+      $("syncHint").textContent = parts.join(" · ");
+      saveStore();
+    }
+
+    async function syncQueueNow(verbose = true){
+      const queue = loadQueue();
+      refreshSyncHint();
+      if(queue.length === 0){
+        if(verbose) toast('ok','Sincronizar','No hay eventos pendientes.');
+        return { ok: true, synced: [] };
+      }
+      const result = await fetchJsonAny('/api/lite/sync', {
+        method: 'POST',
+        body: JSON.stringify({
+          device_id: getDeviceId(),
+          operations: queue
+        })
+      });
+      if(!result.ok){
+        if(verbose) toast('err','Sincronizar','No pude sincronizar con ATLAS en este momento.');
+        logLine('warn', `Sync error: ${JSON.stringify(result.errors || [])}`);
+        refreshSyncHint();
+        return { ok: false, errors: result.errors || [] };
+      }
+      const syncedIds = new Set((result.data?.synced || []).map((item) => item.local_id));
+      const remaining = queue.filter((item) => !syncedIds.has(item.local_id || item.id));
+      saveQueue(remaining);
+      state.sync.lastAt = new Date().toISOString();
+      state.sync.lastResult = result.data;
+      saveStore();
+      refreshSyncHint();
+      await refreshInventory(false);
+      if(verbose) toast('ok','Sincronizar',`Sincronizados ${syncedIds.size} evento(s).`);
+      logLine('ok', `Sync ok: ${syncedIds.size} evento(s).`);
+      return { ok: true, synced: result.data?.synced || [] };
+    }
+
+    $("btnSync").onclick = ()=>{ syncQueueNow(true); };
+
+    // "Refrescar UI" (sin cache PWA)
+    $("btnUpdate").onclick = ()=>{
+      logLine('ok','Refrescando UI...');
+      location.reload();
+    };
+
+    // init render
+    renderInventory();
+    renderAlerts();
+    refreshSyncHint();
+    refreshInventory(false);
+    logLine("ok","RAULI UI cargo (Desktop/Local). Si antes solo veias una pantalla simple, ya quedas en modo operativo compacto.");
 
   </script>
 </body>
 </html>
+

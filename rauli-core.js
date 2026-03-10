@@ -82,7 +82,6 @@ export const session = { uid:null, email:null, role:null, name:null };
 const ROLE = {
   owner:"owner",
   co_owner:"co_owner",
-  supervisor:"supervisor",
   admin_produccion:"admin_produccion",
   contadora:"contadora",
   operario:"operario",
@@ -112,7 +111,6 @@ const DEFAULT_SETTINGS = {
 
   // editable SOLO Raúl
   betyPct: 0.08,
-  orlanditoPct: 0.06,
 
   // editable contadora y Raúl
   operarioRatePerLb: 0.45,
@@ -220,7 +218,7 @@ async function setSettingsPartial(partial){
 
   for(const k of Object.keys(partial)){
     if(k==="fundTarget" && !canEditFund()) continue;
-    if((k==="betyPct" || k==="orlanditoPct") && !canEditIndirectPercents()) continue;
+    if(k==="betyPct" && !canEditIndirectPercents()) continue;
     if((k==="operarioRatePerLb" || k==="vendedorRatePerUnit") && !canEditRates()) continue;
     next[k] = partial[k];
   }
@@ -281,8 +279,7 @@ async function recalcPayroll(day){
   const ownerPool   = baseDistribucion > 0 ? baseDistribucion * safeNum(s.ownerPoolPct,0.50) : 0;
 
   const betyAmount = ownerPool * safeNum(s.betyPct,0);
-  const orlanditoAmount = ownerPool * safeNum(s.orlanditoPct,0);
-  const ownerRemaining = ownerPool - betyAmount - orlanditoAmount;
+  const ownerRemaining = ownerPool - betyAmount;
 
   // Guardar resumen diario
   const dailyRef = doc(db, "business", BIZ, "payroll_daily", day);
@@ -298,7 +295,6 @@ async function recalcPayroll(day){
     amortAmount,
     ownerPool,
     betyAmount,
-    orlanditoAmount,
     ownerRemaining,
     createdAt: serverTimestamp()
   }, { merge:true });
@@ -327,7 +323,6 @@ async function recalcPayroll(day){
     amortAmount,
     ownerPool,
     betyAmount,
-    orlanditoAmount,
     ownerRemaining
   };
 }
@@ -337,7 +332,6 @@ function earningsForUser(summary){
   const r = session.role;
   if(r===ROLE.admin_produccion) return summary.adminAmount;          // Papito
   if(r===ROLE.contadora) return summary.betyAmount;                 // Bety
-  if(r===ROLE.supervisor) return summary.orlanditoAmount;           // Orlandito
   if(r===ROLE.owner) return summary.ownerRemaining;                 // Raúl
   if(r===ROLE.co_owner) return summary.ownerRemaining;              // Lisi (por ahora igual; luego lo separamos)
   // otros (operario/ventas) se verán cuando asignemos IDs por persona
@@ -479,3 +473,4 @@ window.RAULI_CORE = {
 // Primer render
 await renderFinance().catch(()=>{});
 setUserChip();
+

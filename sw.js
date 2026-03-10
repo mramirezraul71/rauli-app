@@ -2,6 +2,7 @@ const CACHE_NAME = "rauli-cache-v1";
 const CORE_ASSETS = [
   "./",
   "./index.html",
+  "./version.json",
   "./manifest.json",
   "./icon-512.png",
   "./rauli.html" // si existe, lo cachea (aunque el principal sea index.html)
