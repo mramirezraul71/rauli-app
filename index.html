@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#173B7A" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="icon" type="image/png" href="./icon-512.png" />
+  <link rel="apple-touch-icon" href="./icon-512.png" />
 
   <title>RAULI - Panaderia & Dulceria</title>
 
@@ -514,9 +516,16 @@
             signal: controller.signal
           });
           clearTimeout(timeoutId);
-          const data = await res.json().catch(() => ({}));
-          if(res.ok) return { ok: true, base, data };
-          errors.push({ base, error: data?.error || `http_${res.status}` });
+          const contentType = String(res.headers.get("content-type") || "").toLowerCase();
+          const data = await res.json().catch(() => null);
+          if(res.ok && data && typeof data === "object" && !Array.isArray(data) && (contentType.includes("application/json") || String(path).startsWith("/api/"))){
+            return { ok: true, base, data };
+          }
+          if(res.ok){
+            errors.push({ base, error: "invalid_api_payload" });
+          }else{
+            errors.push({ base, error: data?.error || `http_${res.status}` });
+          }
         }catch(err){
           errors.push({ base, error: err?.name === "AbortError" ? "timeout" : (err?.message || "network_error") });
         }
@@ -1254,17 +1263,22 @@
 
     // ===== Inventario =====
     async function refreshInventory(verbose = false){
-      state.inventory = state.inventory || { items: [], lastLoadedAt: null, lowCount: 0 };
+      state.inventory = state.inventory || { items: [], lastLoadedAt: null, lowCount: 0, remoteCount: 0 };
       const result = await fetchJsonAny('/api/lite/catalog');
       if(result.ok){
         const items = Array.isArray(result.data?.products) ? result.data.products : [];
         state.inventory.items = items;
         state.inventory.lastLoadedAt = Date.now();
         state.inventory.lowCount = items.filter((item) => Number(item.stock || 0) <= Number(item.min_stock || 0)).length;
+        state.inventory.remoteCount = items.length;
         saveStore();
         renderInventory();
         if(verbose) toast('ok','Inventario',`Catalogo actualizado: ${items.length} producto(s).`);
         return { ok: true, items };
+      }
+      const status = await fetchJsonAny('/api/lite/status');
+      if(status.ok){
+        state.inventory.remoteCount = Number(status.data?.products || 0);
       }
       renderInventory();
       if(verbose) toast('err','Inventario','No pude actualizar el catalogo. Se muestran datos locales.');
@@ -1272,24 +1286,28 @@
     }
 
     function renderInventory(){
-      state.inventory = state.inventory || { items: [], lastLoadedAt: null, lowCount: 0 };
+      state.inventory = state.inventory || { items: [], lastLoadedAt: null, lowCount: 0, remoteCount: 0 };
       const items = Array.isArray(state.inventory.items) ? state.inventory.items : [];
+      const remoteCount = Number(state.inventory.remoteCount || 0);
+      const shownCount = items.length || remoteCount;
       const lowItems = items.filter((item) => Number(item.stock || 0) <= Number(item.min_stock || 0));
       const pending = loadQueue().length;
       state.sync.pending = pending;
       const lastSync = state.sync?.lastAt ? new Date(state.sync.lastAt).toLocaleTimeString() : 'Sin sync';
       const lastLoad = state.inventory.lastLoadedAt ? new Date(state.inventory.lastLoadedAt).toLocaleTimeString() : 'Sin catalogo';
 
-      if($("homeInvCount")) $("homeInvCount").textContent = String(items.length);
+      if($("homeInvCount")) $("homeInvCount").textContent = String(shownCount);
       if($("homeInvLow")) $("homeInvLow").textContent = String(lowItems.length);
       if($("homePendingCount")) $("homePendingCount").textContent = String(pending);
       if($("homeInventoryNote")){
         $("homeInventoryNote").textContent = items.length
           ? `Catalogo listo: ${items.length} producto(s), ${lowItems.length} bajo minimo, actualizado ${lastLoad}.`
-          : 'Todavia no hay catalogo cargado. Usa Actualizar catalogo para traer los productos base.';
+          : (remoteCount > 0
+              ? `Base conectada: ${remoteCount} producto(s) disponibles. Usa Ver inventario o sigue trabajando con el asistente.`
+              : 'Todavia no hay catalogo cargado. Usa Ver inventario o sigue trabajando con el asistente.');
       }
 
-      if($("invProductsCount")) $("invProductsCount").textContent = String(items.length);
+      if($("invProductsCount")) $("invProductsCount").textContent = String(shownCount);
       if($("invLowCount")) $("invLowCount").textContent = String(lowItems.length);
       if($("invPendingCount")) $("invPendingCount").textContent = String(pending);
       if($("invLastSync")) $("invLastSync").textContent = lastSync;
