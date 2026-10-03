@@ -1,0 +1,6 @@
+# artefactos temporales de build
+.tmp-*
+*.tmp
+# basura del SO
+.DS_Store
+Thumbs.db
